@@ -4,6 +4,7 @@ import styles from './common/styles'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from './profile'
+import PlanDietarioScreen from './plan_dietario'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import logo from './../assets/logo.jpeg'
 
@@ -46,6 +47,10 @@ function HomeScreen() {
                         if (route.name === 'Search') {
                             iconName = 'ios-search';
                         }
+
+                        if (route.name === 'Plan') {
+                            iconName = 'md-list';
+                        }
         
                         // You can return any component that you like here!
                         return <Ionicons name={iconName} size={size} color={color} />;
@@ -58,6 +63,7 @@ function HomeScreen() {
             <Tab.Screen name="Home" component={HomeContent} />
             <Tab.Screen name="Search" component={SearchContent} />
             <Tab.Screen name="Profile" component={ProfileScreen} />
+            <Tab.Screen name="Plan" component={PlanDietarioScreen} />
         </Tab.Navigator>
         </NavigationContainer>
     );
