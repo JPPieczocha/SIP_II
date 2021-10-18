@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
-import styles from './common/styles'
-import logo from './../assets/logo.jpeg'
+import styles from '../common/styles'
+// import logo from './../assets/logo.jpeg'
+import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
-import config from '../config';
+import config from '../../config';
 
 const stylesCards = StyleSheet.create({
     container:{
