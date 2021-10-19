@@ -3,47 +3,63 @@ import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, A
 import styles from './common/styles'
 import logo from './../assets/logo.jpeg'
 import axios from 'axios'
-import { render } from 'react-dom';
 import config from '../config';
-
-
 
 function ProfileScreen() {
     let fullName = config.currentUser.fullName
     let email = config.currentUser.email
+    let self = this;
     const [diabetes, setDiabetesSelection] = useState(false);
     const [celiaquia, setCeliaquiaSelection] = useState(false);
     const [obesidad, setObesidadSelection] = useState(false);
     const [patologias, setPatologias] = useState([])
     const [patologiasUsuario, setPatologiasUsuario] = useState([])
-
-    async function getPatologias(){
-        await axios.get(config.backendURLs.patologiasList).then(function(response){
-            setPatologias(response.data)
-        }).catch(function(error) {
-            console.log(error)
+ 
+    const getPatologias = () => {
+        return axios.get(config.backendURLs.patologiasList).then(function(response){
+            setPatologias(response.data)    
         })
-    }
+    } 
 
-    async function getPatologiasByUser(){
-        await axios.get(config.backendURLs.patologiasUsuariosList).then(function(response){
-            let patologias = []
+    const getPatologiasByUser = () => {
+        axios.get(config.backendURLs.patologiasUsuariosList).then(function(response){
+            let patologias_usuarios = []
             if(response.data != undefined && response.data.length > 0){
                 response.data.forEach((e) => {
-                    if(e.id_usuario === config.currentUser.id){
-                        patologias.push(e)
+                    if(e.id_usuario == config.currentUser.id){
+                        patologias_usuarios.push(e)
+                        let patologia = patologias.find((f) => f.id_patologia == e.id_patologia)
+                        if(patologia != undefined){
+                            switch(patologia.descripcion){
+                                case "Celiaquía": setCeliaquiaSelection(true)
+                                    break;
+                                case "Obesidad": setObesidadSelection(true)
+                                    break;
+                                case "Diabetes": setDiabetesSelection(true)
+                                    break;
+                            }
+                        }
                     }
                 })
+                setPatologiasUsuario(patologias_usuarios)
             }
-            setPatologiasUsuario(patologias)
+            
         }).catch(function(error) {
             console.log(error)
         })
     }
 
-    React.useEffect( () => {
-        getPatologias();
+    async function fetchData(){
+        await getPatologias();
+    }
+
+    React.useEffect(() => {
+        fetchData();
     }, []);
+
+    React.useEffect(() => {
+        getPatologiasByUser();
+    }, [patologias])
 
     function renderPatologias(list){
         if(list != undefined){
@@ -95,36 +111,99 @@ function ProfileScreen() {
         }
     }
 
-    function updatePatologias(){
+    async function updatePatologias(){
+        let userHadDiabetes = patologiasUsuario.find((e) => e.patologias.descripcion === "Diabetes") != undefined ? true : false;
+        let userHadCeliaquia = patologiasUsuario.find((e) => e.patologias.descripcion === "Celiaquía") != undefined ? true : false;
+        let userHadObesidad = patologiasUsuario.find((e) => e.patologias.descripcion === "Obesidad") != undefined ? true : false;
+        
         if(diabetes){
-            let diabetesId = patologias.find((e) => e.descripcion === "Diabetes").id_patologia;
-            updatePatologia(diabetesId)
+            let patologia = patologias.find((e) => e.descripcion === "Diabetes");
+            if(!userHadDiabetes){
+                await updatePatologia(patologia.id_patologia)
+            }
+        } else {
+            if(userHadDiabetes){
+                let patologia = patologiasUsuario.find((e) => e.patologias.descripcion === "Diabetes");
+                if(patologia != undefined){
+                    await deletePatologia(patologia.id_patologia)
+                    setDiabetesSelection(false)
+                }
+            }
         }
 
         if(celiaquia){
-            let celiaquiaId = patologias.find((e) => e.descripcion === "Celiaquía").id_patologia;
-            updatePatologia(celiaquiaId)
+            let patologia = patologias.find((e) => e.descripcion === "Celiaquía");
+            if(!userHadCeliaquia){
+                await updatePatologia(patologia.id_patologia)
+            }
+        } else {
+            if(userHadCeliaquia){
+                let patologia = patologiasUsuario.find((e) => e.patologias.descripcion === "Celiaquía"); 
+                if(patologia != undefined){
+                    await deletePatologia(patologia.id_patologia)
+                    setCeliaquiaSelection(false)
+                }
+            }
         }
 
         if(obesidad){
-            let obesidadId = patologias.find((e) => e.descripcion === "Diabetes").id_patologia;
-            updatePatologia(obesidadId)
+            let patologia = patologias.find((e) => e.descripcion === "Obesidad");
+            if(!userHadObesidad){
+                await updatePatologia(patologia.id_patologia)
+            }
+        } else {
+            if(userHadObesidad){
+                let patologia = patologiasUsuario.find((e) => e.patologias.descripcion === "Obesidad");
+                if(patologia != undefined){
+                    await deletePatologia(patologia.id_patologia)
+                    setObesidadSelection(false)
+                }
+            }
         }
-
+        fetchData();
         Alert.alert(
             "Patologías",
             "Patologías actualizadas!"
         )
     }
 
-    async function updatePatologia(idPatologia){
-        await axios.post(config.backendURLs.patologiasUsuariosCreate,{
+    function updatePatologia(idPatologia){
+        return axios.post(config.backendURLs.patologiasUsuariosCreate,{
             patologia:idPatologia,
             usuario: config.currentUser.id,
         }).then(function(response){
             
         }).catch(function(error) {
             console.log(error)
+        })
+    }
+
+    function deletePatologia(idPatologia){
+        return axios.delete(`${config.backendURLs.patologiasUsuariosDelete}?id_patologia=${idPatologia}&id_usuario=${config.currentUser.id}`)
+        .then(function(response){
+
+        })
+        .catch(function(error) {
+            if (error.response) {
+                /*
+                 * The request was made and the server responded with a
+                 * status code that falls out of the range of 2xx
+                 */
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                /*
+                 * The request was made but no response was received, `error.request`
+                 * is an instance of XMLHttpRequest in the browser and an instance
+                 * of http.ClientRequest in Node.js
+                 */
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request and triggered an Error
+                console.log('Error', error.message);
+            }
+            console.log(error);
         })
     }
 
@@ -172,7 +251,6 @@ function ProfileScreen() {
                 </View>
             </View>
         </ScrollView>
-        
     );
 }
 
