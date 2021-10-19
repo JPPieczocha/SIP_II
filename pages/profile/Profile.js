@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
-import styles from './common/styles'
-import logo from './../assets/logo.jpeg'
+import styles from '../common/styles'
+// import logo from './../assets/logo.jpeg'
+import logo from '../../assets/logo.jpeg';
+
 import axios from 'axios'
-import config from '../config';
+import { render } from 'react-dom';
+import config from '../../config';
 
 function ProfileScreen() {
     let fullName = config.currentUser.fullName
