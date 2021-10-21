@@ -25,22 +25,21 @@ function ProfileScreen() {
     } 
 
     const getPatologiasByUser = () => {
-        axios.get(config.backendURLs.patologiasUsuariosList).then(function(response){
+        axios.get(`${config.backendURLs.patologiasUsuariosGet}?id_usuario=${config.currentUser.id}`)
+        .then(function(response){
             let patologias_usuarios = []
             if(response.data != undefined && response.data.length > 0){
                 response.data.forEach((e) => {
-                    if(e.id_usuario == config.currentUser.id){
-                        patologias_usuarios.push(e)
-                        let patologia = patologias.find((f) => f.id_patologia == e.id_patologia)
-                        if(patologia != undefined){
-                            switch(patologia.descripcion){
-                                case "Celiaquía": setCeliaquiaSelection(true)
-                                    break;
-                                case "Obesidad": setObesidadSelection(true)
-                                    break;
-                                case "Diabetes": setDiabetesSelection(true)
-                                    break;
-                            }
+                    patologias_usuarios.push(e)
+                    let patologia = patologias.find((f) => f.id_patologia == e.id_patologia)
+                    if(patologia != undefined){
+                        switch(patologia.descripcion){
+                            case "Celiaquía": setCeliaquiaSelection(true)
+                                break;
+                            case "Obesidad": setObesidadSelection(true)
+                                break;
+                            case "Diabetes": setDiabetesSelection(true)
+                                break;
                         }
                     }
                 })
