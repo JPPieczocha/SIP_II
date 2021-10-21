@@ -27,7 +27,6 @@ function ProfileScreen() {
     const getPatologiasByUser = () => {
         axios.get(`${config.backendURLs.patologiasUsuariosGet}?id_usuario=${config.currentUser.id}`)
         .then(function(response){
-            console.log(response.data)
             let patologias_usuarios = []
             if(response.data != undefined && response.data.length > 0){
                 response.data.forEach((e) => {
