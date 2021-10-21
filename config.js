@@ -4,9 +4,9 @@ const BACKEND_PLAN_BASE_URL = `http://${LOCAL_IP}:3050`
 let config = {
     backendURLs: {
         patologiasList: `${BACKEND_BASE_URL}/api/patologias/list`,
-        patologiasUsuariosList: `${BACKEND_BASE_URL}/api/usuarios_patologias/list`,
         patologiasUsuariosCreate: `${BACKEND_BASE_URL}/api/usuarios_patologias/create`,
         patologiasUsuariosDelete: `${BACKEND_BASE_URL}/api/usuarios_patologias/deleteByIdUsuario_IdPatologia`,
+        patologiasUsuariosGet: `${BACKEND_BASE_URL}/api/usuarios_patologias/findPatologiasByIdUsuario`,
         planDietario: `${BACKEND_PLAN_BASE_URL}/plan`
     },
     currentUser: {
