@@ -8,9 +8,9 @@ import axios from 'axios'
 import { render } from 'react-dom';
 import config from '../../config';
 
-function ProfileScreen() {
-    let fullName = config.currentUser.fullName
-    let email = config.currentUser.email
+function ProfileScreen(props) {
+    let fullName = `${props.userData.apellido} ${props.userData.nombre}`
+    let email = props.userData.email
     let self = this;
     const [diabetes, setDiabetesSelection] = useState(false);
     const [celiaquia, setCeliaquiaSelection] = useState(false);
@@ -25,7 +25,7 @@ function ProfileScreen() {
     } 
 
     const getPatologiasByUser = () => {
-        axios.get(`${config.backendURLs.patologiasUsuariosGet}?id_usuario=${config.currentUser.id}`)
+        axios.get(`${config.backendURLs.patologiasUsuariosGet}?id_usuario=${props.userData.id_usuario}`)
         .then(function(response){
             let patologias_usuarios = []
             if(response.data != undefined && response.data.length > 0){
@@ -163,6 +163,7 @@ function ProfileScreen() {
             }
         }
         fetchData();
+        props.onProfileUpdate();
         Alert.alert(
             "Patologías",
             "Patologías actualizadas!"
@@ -172,16 +173,16 @@ function ProfileScreen() {
     function updatePatologia(idPatologia){
         return axios.post(config.backendURLs.patologiasUsuariosCreate,{
             patologia:idPatologia,
-            usuario: config.currentUser.id,
+            usuario: props.userData.id_usuario,
         }).then(function(response){
             
         }).catch(function(error) {
             console.log(error)
         })
-    }
+    } 
 
     function deletePatologia(idPatologia){
-        return axios.delete(`${config.backendURLs.patologiasUsuariosDelete}?id_patologia=${idPatologia}&id_usuario=${config.currentUser.id}`)
+        return axios.delete(`${config.backendURLs.patologiasUsuariosDelete}?id_patologia=${idPatologia}&id_usuario=${props.userData.id_usuario}`)
         .then(function(response){
 
         })
