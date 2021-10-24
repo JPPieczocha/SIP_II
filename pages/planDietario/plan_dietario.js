@@ -238,7 +238,7 @@ function PlanDietarioScreen(props) {
     } , [isFocused])
 
     React.useEffect( () => {
-        getPlan();
+        
     }, []);
 
     return (
@@ -266,8 +266,6 @@ function PlanDietarioScreen(props) {
                     {renderPatologiasText()}
                     
                     {renderPlanDetails()}
-
-
 
                     {renderPlan(planDietario)}
                 </View>
