@@ -4,14 +4,23 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Image } from 'react-native';
 import axios from 'axios'
+
+import { useFonts } from 'expo-font'
+
 import logo from './assets/logo.jpeg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './pages/common/styles';
+
 import HomeScreen from './pages/home/Home';
 import Search from './pages/search/Search';
 import ProfileScreen from './pages/profile/Profile';
 import PlanDietarioScreen from './pages/planDietario/plan_dietario';
 import config from './config'
+
+import Product from './pages/product/Product';
+import Recipe from './pages/recipe/Recipe'
+
+import colors from './pages/common/colors';
 
 function App() {
     const [userData,setUserData] = React.useState()
@@ -46,9 +55,19 @@ function App() {
 	// const Stack = createNativeStackNavigator();
 	const Tab = createBottomTabNavigator();
 
-	return (
-		<NavigationContainer>
-			<Tab.Navigator
+    const Stack = createNativeStackNavigator();
+
+    const [loaded] = useFonts({
+        SimplyDiet: require('./assets/fonts/SimplyDiet.ttf'),
+    });
+
+    if (!loaded) {
+        return null;
+    }
+
+    const mainTab = () => {
+        return (
+            <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         if (route.name === 'Profile') {
@@ -74,11 +93,12 @@ function App() {
                     },
                     tabBarStyle: {...styles.tabBar},
                     tabBarActiveTintColor: '#fafafa',
-                    tabBarInactiveTintColor: 'gray',
+                    tabBarActiveBackgroundColor: colors.primaryv2,
+                    tabBarInactiveTintColor: 'black',
                 })}
         >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Search" component={Search} />
+                <Tab.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
+                <Tab.Screen name="Search" component={Search} />
             <Tab.Screen 
                 name="Profile" 
                 children={()=><ProfileScreen 
@@ -94,9 +114,20 @@ function App() {
                 />}
             />
 			</Tab.Navigator>
+        )
+    }
+
+	return (
+		<NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Main" component={mainTab} options={{headerShown:false}}/>
+                <Stack.Screen name="Product" component={Product}/>
+                <Stack.Screen name="Recipe" component={Recipe}/>
+                
+            </Stack.Navigator>
+			
 
 		</NavigationContainer>
-		// <HomeScreen></HomeScreen>
 	);
 }
 
