@@ -14,6 +14,8 @@ import Search from './pages/search/Search';
 import ProfileScreen from './pages/profile/Profile';
 import PlanDietarioScreen from './pages/planDietario/plan_dietario';
 
+import colors from './pages/common/colors';
+
 function App() {
 
 	// const Stack = createNativeStackNavigator();
@@ -55,10 +57,11 @@ function App() {
                     },
                     tabBarStyle: {...styles.tabBar},
                     tabBarActiveTintColor: '#fafafa',
-                    tabBarInactiveTintColor: 'gray',
+                    tabBarActiveBackgroundColor: colors.primaryv2,
+                    tabBarInactiveTintColor: 'black',
                 })}
         >
-            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
             <Tab.Screen name="Search" component={Search} />
             <Tab.Screen name="Profile" component={ProfileScreen} />
             <Tab.Screen name="Plan" component={PlanDietarioScreen} />

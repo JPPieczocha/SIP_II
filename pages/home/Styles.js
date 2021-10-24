@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         height: 128,
-        marginTop: 10,
+        marginTop: 25,
         marginLeft: 10
     },
 
