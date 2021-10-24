@@ -10,7 +10,7 @@ export default function Carousel(props) {
         <View key={props.data.id} style={styles.container}>
             <Text style={styles.titleText}>{props.data.title}</Text>
 
-            <ScrollView horizontal={true}>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
                 {props.data.food.map(item => <FoodItem key={item.id} data={item}/>)}
             </ScrollView>
         </View>

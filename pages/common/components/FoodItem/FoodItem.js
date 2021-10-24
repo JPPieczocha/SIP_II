@@ -4,6 +4,9 @@ import styles from './Styles';
 
 
 export default function FoodItem(props) {
+
+
+    
     return (
         <TouchableOpacity style={styles.container}>
             <Image
@@ -13,7 +16,7 @@ export default function FoodItem(props) {
                 }}
             />
             <View style={styles.tag}>
-                <Text style={styles.tagText}>{props.data.title}</Text>
+                <Text style={styles.tagText} adjustsFontSizeToFit={true} numberOfLines={2}>{props.data.title}</Text>
             </View>
         </TouchableOpacity>
     )

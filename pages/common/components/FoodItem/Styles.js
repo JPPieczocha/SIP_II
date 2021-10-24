@@ -19,12 +19,17 @@ const styles = StyleSheet.create({
         backgroundColor: Color.secondary,
         borderRadius: 15,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: 1
     },
 
     tagText: {
         color: 'white',
-        fontSize: 24
+        fontSize: 24,
+        maxWidth: '100%',
+        maxHeight: '100%',
+        alignSelf: 'center',
+        textAlign: 'center',
     }
 });
 

@@ -81,7 +81,7 @@ const carouselData = [
 
 function HomeScreen() {
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
             <View style={styles.header}> 
 
