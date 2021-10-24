@@ -29,7 +29,7 @@ const Search = ({navigation}) => {
         <View style={styles.container}>
 
             <View style={styles.header}>
-                <Image style={styles.headerLogo} source={logo} />;
+                <Image style={styles.headerLogo} source={logo} />
                 <Text style={styles.headerTitle}>¿Buscabas algo?</Text>
             </View>
 
@@ -39,6 +39,7 @@ const Search = ({navigation}) => {
             </View>
 
             <View style={styles.main}>
+
 
             </View>
 
