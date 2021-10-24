@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import styles from '../common/styles'
-// import logo from './../assets/logo.jpeg'
 import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
 import config from '../../config';
+import { useIsFocused } from '@react-navigation/native'
 
 const stylesCards = StyleSheet.create({
     container:{
@@ -44,20 +44,19 @@ const stylesCards = StyleSheet.create({
   
 
 
-function PlanDietarioScreen() {
+function PlanDietarioScreen(props) {
     const [planDietario, setPlanDietario] = useState([]);
+    const [patologiasUsuario, setPatologiasUsuario] = useState({});
     const scrollRef = React.useRef();
 
     async function getPlan(){
-        await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=true`)
+        await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico=${patologiasUsuario.aptoDiabetes}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
         .then(function(response){
-            if(response.data != undefined && response.data.length > 0){
-                setPlanDietario(response.data)
-                scrollRef.current?.scrollTo({
-                    y: 0,
-                    animated: true,
-                });
-            }
+            setPlanDietario(response.data)
+            scrollRef.current?.scrollTo({
+                y: 0,
+                animated: true,
+            });
         }).catch(function(error) {
             console.log(error)
         })
@@ -99,10 +98,53 @@ function PlanDietarioScreen() {
         }
     }
 
+    function renderPatologiasText(){
+        return `Apto diabetes: ${patologiasUsuario.aptoDiabetes ? "Si" : "No"} - Apto celiaco: ${patologiasUsuario.aptoCeliaco ? "Si" : "No"} - Apto obesidad: ${patologiasUsuario.aptoObesidad ? "Si" : "No"}`
+    }
+
+    function refreshUserData(){
+        let loggedUserData = props.getUserData()
+        let aptoDiabetes = false;
+        let aptoCeliaco = false;
+        let aptoObesidad = false;
+
+        if(loggedUserData.patologias != undefined && loggedUserData.patologias.length > 0){
+            if(loggedUserData.patologias.find((e) => e.patologias.descripcion === "Diabetes")){
+                aptoDiabetes = true
+            }
+
+            if(loggedUserData.patologias.find((e) => e.patologias.descripcion === "Celiaquía")){
+                aptoCeliaco = true
+            }
+
+            if(loggedUserData.patologias.find((e) => e.patologias.descripcion === "Obesidad")){
+                aptoObesidad = true
+            }
+
+        } 
+        setPatologiasUsuario({
+            aptoCeliaco: aptoCeliaco,
+            aptoDiabetes: aptoDiabetes,
+            aptoObesidad: aptoObesidad
+        })
+    }
+
+    React.useEffect(() => {
+        getPlan()
+    }, [patologiasUsuario])
+
+    const isFocused = useIsFocused()
+
+    React.useEffect(() => {
+        //Update the state you want to be updated
+        if(isFocused){
+            refreshUserData()
+        }
+    } , [isFocused])
+
     React.useEffect( () => {
         getPlan();
     }, []);
-
 
     return (
         <ScrollView ref={scrollRef}>
@@ -122,7 +164,14 @@ function PlanDietarioScreen() {
                             paddingBottom: 20, 
                             textDecorationLine: "underline"
                         }}
-                    >Plan semanal</Text>
+                    >Plan semanal
+                    </Text>
+                    <Text
+                        style={{
+                            width: 280,
+                            textAlign: "center"
+                        }}
+                    >{renderPatologiasText()}</Text>
                     {renderPlan(planDietario)}
                     <Text
                         style={{
