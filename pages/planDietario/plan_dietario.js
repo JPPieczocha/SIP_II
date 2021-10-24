@@ -46,12 +46,17 @@ const stylesCards = StyleSheet.create({
 
 function PlanDietarioScreen() {
     const [planDietario, setPlanDietario] = useState([]);
+    const scrollRef = React.useRef();
 
     async function getPlan(){
         await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=true`)
         .then(function(response){
             if(response.data != undefined && response.data.length > 0){
                 setPlanDietario(response.data)
+                scrollRef.current?.scrollTo({
+                    y: 0,
+                    animated: true,
+                });
             }
         }).catch(function(error) {
             console.log(error)
@@ -73,7 +78,7 @@ function PlanDietarioScreen() {
                         >{e.type.toUpperCase()}</Text>
                         <Image 
                             style={stylesCards.card_image}
-                            source={{uri:"https://product-image.juniqe-production.juniqe.com/media/catalog/product/seo-cache/x800/269/14/269-14-101P/Lorem-Ipsum-Dolor-WORDS-BRAND-Poster.jpg"}}
+                            source={{uri:e.receta.url_imagen}}
                         />
                         <View
                             style={stylesCards.text_container}
@@ -83,7 +88,7 @@ function PlanDietarioScreen() {
                             >{e.receta.descripcion.toUpperCase()}</Text>
                             <Text
                                 style={{color:"#fff",position:"absolute",right:6, bottom: 24, fontSize:12}}
-                            >Cantidades: {e.cantidades}</Text>
+                            >Cantidades: {e.receta.cantidades}</Text>
                             <Text
                                 style={{color:"#fff",position:"absolute",right:6, bottom: 4, fontSize:12}}
                             >KCalorias: {Math.round(e.kcal*100)/100}</Text>
@@ -100,7 +105,7 @@ function PlanDietarioScreen() {
 
 
     return (
-        <ScrollView>
+        <ScrollView ref={scrollRef}>
             <View style={styles.formContainer}>
                 <View style={styles.formHeader}>
                     <Image
