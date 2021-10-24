@@ -131,7 +131,7 @@ function PlanDietarioScreen(props) {
                         fontStyle:"italic"
                     }}
                 >
-                    {Math.round(planDietario.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
+                    {Math.round(planDietario.reduce((prev,curr) => prev + curr.hc,0)*100)/100}
                 </Text>
             </View>
         </View>
@@ -238,7 +238,7 @@ function PlanDietarioScreen(props) {
     } , [isFocused])
 
     React.useEffect( () => {
-        getPlan();
+        
     }, []);
 
     return (
@@ -266,8 +266,6 @@ function PlanDietarioScreen(props) {
                     {renderPatologiasText()}
                     
                     {renderPlanDetails()}
-
-
 
                     {renderPlan(planDietario)}
                 </View>
