@@ -1,14 +1,13 @@
-const LOCAL_IP = "192.168.0.236"
-const BACKEND_BASE_URL = `http://${LOCAL_IP}:8000`
-const BACKEND_PLAN_BASE_URL = `http://${LOCAL_IP}:3050`
+const NGROK_IP_USUARIOS = "http://7d45-24-232-230-126.ngrok.io"
+const NGROK_IP_PLAN_DIETARIO = "https://fc37-24-232-230-126.ngrok.io"
 let config = {
     backendURLs: {
-        getUser:`${BACKEND_BASE_URL}/api/usuarios/findOne`,
-        patologiasList: `${BACKEND_BASE_URL}/api/patologias/list`,
-        patologiasUsuariosCreate: `${BACKEND_BASE_URL}/api/usuarios_patologias/create`,
-        patologiasUsuariosDelete: `${BACKEND_BASE_URL}/api/usuarios_patologias/deleteByIdUsuario_IdPatologia`,
-        patologiasUsuariosGet: `${BACKEND_BASE_URL}/api/usuarios_patologias/findPatologiasByIdUsuario`,
-        planDietario: `${BACKEND_PLAN_BASE_URL}/plan`
+        getUser:`${NGROK_IP_USUARIOS}/api/usuarios/findOne`,
+        patologiasList: `${NGROK_IP_USUARIOS}/api/patologias/list`,
+        patologiasUsuariosCreate: `${NGROK_IP_USUARIOS}/api/usuarios_patologias/create`,
+        patologiasUsuariosDelete: `${NGROK_IP_USUARIOS}/api/usuarios_patologias/deleteByIdUsuario_IdPatologia`,
+        patologiasUsuariosGet: `${NGROK_IP_USUARIOS}/api/usuarios_patologias/findPatologiasByIdUsuario`,
+        planDietario: `${NGROK_IP_PLAN_DIETARIO}/plan`
     },
     loggedUser:{
         id:1
