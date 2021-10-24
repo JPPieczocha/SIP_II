@@ -1,4 +1,4 @@
-const LOCAL_IP = "192.168.1.105"
+const LOCAL_IP = "192.168.0.236"
 const BACKEND_BASE_URL = `http://${LOCAL_IP}:8000`
 const BACKEND_PLAN_BASE_URL = `http://${LOCAL_IP}:3050`
 let config = {
