@@ -21,15 +21,18 @@ const styles = StyleSheet.create({
     },
 
     titleContainer: {
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 
     headerTitle: {
-        fontSize: 32
+        fontSize: 64,
+        fontFamily: 'SimplyDiet',
+        maxWidth: '70%'
     },
 
     headerSubtitle: {
-        fontSize: 18
+        fontSize: 24,
+        fontFamily: 'SimplyDiet'
     },
 
 })

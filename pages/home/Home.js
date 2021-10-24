@@ -86,7 +86,7 @@ function HomeScreen() {
             <View style={styles.header}> 
 
                 <View style={styles.titleContainer}>
-                    <Text style={styles.headerTitle}>Hola, [user]</Text>
+                    <Text style={styles.headerTitle} adjustsFontSizeToFit={true} numberOfLines={1}>Hola, Juan</Text>
                     <Text style={styles.headerSubtitle}>¿Qué querés comer hoy?</Text>
                 </View>
 

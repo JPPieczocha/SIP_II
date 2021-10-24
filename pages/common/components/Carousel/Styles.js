@@ -7,8 +7,9 @@ const styles = StyleSheet.create({
     },
 
     titleText: {
-        fontSize: 32,
-        paddingVertical: 5
+        fontSize: 40,
+        paddingVertical: 5,
+        fontFamily: 'SimplyDiet'
     }
 });
 

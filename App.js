@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Image } from 'react-native';
 
+import { useFonts } from 'expo-font'
+
 import logo from './assets/logo.jpeg';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './pages/common/styles';
@@ -17,7 +19,13 @@ function App() {
 	// const Stack = createNativeStackNavigator();
 	const Tab = createBottomTabNavigator();
 
-
+    const [loaded] = useFonts({
+        SimplyDiet: require('./assets/fonts/SimplyDiet.ttf'),
+    });
+      
+    if (!loaded) {
+        return null;
+    }
 
 	return (
 		<NavigationContainer>
