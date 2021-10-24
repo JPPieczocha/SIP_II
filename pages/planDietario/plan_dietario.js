@@ -1,47 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
 import { Text, View, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import styles from '../common/styles'
 import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
 import config from '../../config';
 import { useIsFocused } from '@react-navigation/native'
-
-const stylesCards = StyleSheet.create({
-    container:{
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    card_template:{
-        width: 220,
-        height: 220,
-        shadowColor: '#470000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.2,
-        elevation: 1,
-        marginBottom:36
-    },
-    card_image: {
-      width: 220,
-      height: 180,
-      borderRadius : 10
-    },
-    text_container:{
-      position: "absolute",
-      width: 220,
-      height: 70,
-      bottom:0,
-      padding: 5,
-      backgroundColor: "rgba(0,0,0, 0.7)",
-      borderBottomLeftRadius : 10,
-      borderBottomRightRadius: 10
-    },
-    card_title: {
-       color: "white",
-    }
-  });
-  
+import stylesPlanDietario from './Styles'
+import { FontAwesome5 } from '@expo/vector-icons';
+import StylePlanDietario from './Styles';
 
 
 function PlanDietarioScreen(props) {
@@ -67,29 +33,41 @@ function PlanDietarioScreen(props) {
             return list.map((e, index) => {
                 return (<View
                             key={index}
-                            style={stylesCards.card_template}
+                            style={stylesPlanDietario.card_template}
                         >
-                        <Text
-                            style={{
-                                paddingBottom:10, 
-                                fontStyle:"italic", 
-                            }}
-                        >{e.type.toUpperCase()}</Text>
+                        
                         <Image 
-                            style={stylesCards.card_image}
+                            style={stylesPlanDietario.card_image}
                             source={{uri:e.receta.url_imagen}}
                         />
                         <View
-                            style={stylesCards.text_container}
+                            style={stylesPlanDietario.text_container}
                         >
                             <Text
-                                style={{color:"#fff"}}
+                                style={{
+                                    paddingBottom:4, 
+                                    fontStyle:"italic",
+                                    color:"#fafafa" 
+                                }}
+                            >{e.type.toUpperCase()}</Text>
+                            <Text
+                                style={{
+                                    color:"#fff",
+                                    fontSize:10,
+                                    width: 120
+                                }}
                             >{e.receta.descripcion.toUpperCase()}</Text>
                             <Text
-                                style={{color:"#fff",position:"absolute",right:6, bottom: 24, fontSize:12}}
+                                style={{
+                                    color:"#fff",
+                                    position:"absolute",
+                                    right:6, 
+                                    bottom: 18,
+                                    fontSize:10
+                                }}
                             >Cantidades: {e.receta.cantidades}</Text>
                             <Text
-                                style={{color:"#fff",position:"absolute",right:6, bottom: 4, fontSize:12}}
+                                style={{color:"#fff",position:"absolute",right:6, bottom: 4, fontSize:10}}
                             >KCalorias: {Math.round(e.kcal*100)/100}</Text>
                         </View>
                     </View>
@@ -98,8 +76,125 @@ function PlanDietarioScreen(props) {
         }
     }
 
+    function renderPlanDetails(){
+        return(
+        <View
+            style={{
+                display:"flex",
+                padding: 12,
+                flexDirection:"row",
+                marginTop: 8,
+                marginBottom: 8,
+            }}
+        >
+            <View
+                style={StylePlanDietario.container_plan_detail}
+            >
+                <FontAwesome5 
+                    name="fire" 
+                    size={24} 
+                    color="#D15493"
+                    style={{
+                        paddingTop: 8,
+                        paddingBottom: 8,
+                    }}
+                />
+                <Text
+                >
+                    Calorías
+                </Text>
+                <Text
+                    style={{
+                        fontStyle:"italic"
+                    }}
+                >
+                    {Math.round(planDietario.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
+                </Text>
+            </View>
+            <View
+                style={StylePlanDietario.container_plan_detail}
+            >
+                <FontAwesome5 
+                    name="bread-slice" 
+                    size={24} 
+                    color="#D3B23A" 
+                    style={{
+                        paddingTop: 8,
+                        paddingBottom: 8,
+                    }}
+                    />
+                <Text>
+                    Carbohidratos
+                </Text>
+                <Text
+                    style={{
+                        fontStyle:"italic"
+                    }}
+                >
+                    {Math.round(planDietario.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
+                </Text>
+            </View>
+        </View>
+        )
+    }
+
     function renderPatologiasText(){
-        return `Apto diabetes: ${patologiasUsuario.aptoDiabetes ? "Si" : "No"} - Apto celiaco: ${patologiasUsuario.aptoCeliaco ? "Si" : "No"} - Apto obesidad: ${patologiasUsuario.aptoObesidad ? "Si" : "No"}`
+        return (
+            <View
+                style={{
+                    display:"flex",
+                    flexDirection:"row",
+                }}
+            >
+                {patologiasUsuario.aptoCeliaco ? 
+                <View
+                    style={
+                        {...stylesPlanDietario.container_grey,
+                            width: 60,
+                            display:"flex",
+                            justifyContent:"center",
+                            alignItems:"center"
+                        }}
+                >
+                    <Text
+                        style={{
+                            fontSize:12
+                        }}
+                    >Celiaco</Text>
+                </View> : null}
+                {patologiasUsuario.aptoDiabetes ? 
+                <View
+                    style={
+                        {...stylesPlanDietario.container_grey,
+                            width: 60,
+                            display:"flex",
+                            justifyContent:"center",
+                            alignItems:"center"
+                        }}
+                >
+                    <Text
+                        style={{
+                            fontSize:12
+                        }}
+                    >Diabetes</Text>
+                </View> : null}
+                {patologiasUsuario.aptoObesidad ? 
+                <View
+                    style={
+                        {...stylesPlanDietario.container_grey,
+                            width: 70,
+                            display:"flex",
+                            justifyContent:"center",
+                            alignItems:"center"
+                        }}
+                >
+                    <Text
+                    style={{
+                        fontSize:12
+                    }}>Obesidad</Text>
+                </View> : null}
+            </View>
+        )
     }
 
     function refreshUserData(){
@@ -153,36 +248,28 @@ function PlanDietarioScreen(props) {
                     <Image
                     style={styles.logoIcon}
                     source={logo} />
-                </View>
+                </View>  
                 
                 <View 
-                    style={stylesCards.container}>
+                    style={stylesPlanDietario.container}>
                     <Text
                         style={{
                             textTransform: "uppercase", 
                             fontSize: 18, 
-                            paddingBottom: 20, 
+                            paddingBottom: 16, 
                             textDecorationLine: "underline"
                         }}
-                    >Plan semanal
-                    </Text>
-                    <Text
-                        style={{
-                            width: 280,
-                            textAlign: "center"
-                        }}
-                    >{renderPatologiasText()}</Text>
-                    {renderPlan(planDietario)}
-                    <Text
-                        style={{
-                            padding: 12,
-                            marginBottom: 12,
-                            borderRadius: 8,
-                            backgroundColor:"#c1c1c1"
-                        }}
                     >
-                        Kcal Totales: {Math.round(planDietario.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
+                        Plan semanal
                     </Text>
+                    
+                    {renderPatologiasText()}
+                    
+                    {renderPlanDetails()}
+
+
+
+                    {renderPlan(planDietario)}
                 </View>
 
                 <View style={styles.centeredContent}>
