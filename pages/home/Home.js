@@ -101,6 +101,8 @@ function HomeScreen() {
                 <Carousel key={2} data={carouselData[2]}/>
             </View>
 
+            <Text></Text>
+
         </ScrollView>
     );
 }

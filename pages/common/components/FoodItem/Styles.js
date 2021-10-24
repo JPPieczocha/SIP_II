@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         width:  192,
         borderRadius: 15,
         backgroundColor: Color.secondary,
-        marginRight: 20
+        marginHorizontal: 10
     },
 
     tag: {

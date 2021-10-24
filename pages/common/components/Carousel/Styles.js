@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 40,
         paddingVertical: 5,
+        marginLeft: 10,
         fontFamily: 'SimplyDiet'
     }
 });
