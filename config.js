@@ -1,5 +1,5 @@
-const NGROK_IP_USUARIOS = "http://7638-24-232-230-126.ngrok.io"
-const NGROK_IP_PLAN_DIETARIO = "http://8bc0-24-232-230-126.ngrok.io"
+const NGROK_IP_USUARIOS = "http://a79d-24-232-230-126.ngrok.io"
+const NGROK_IP_PLAN_DIETARIO = "http://c24e-24-232-230-126.ngrok.io"
 let config = {
     backendURLs: {
         getUser:`${NGROK_IP_USUARIOS}/api/usuarios/findOne`,

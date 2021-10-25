@@ -68,30 +68,16 @@ function PlanDietarioScreen(props) {
                             style={stylesPlanDietario.text_container}
                         >
                             <Text
-                                style={{
-                                    paddingBottom:4, 
-                                    fontStyle:"italic",
-                                    color:"#fafafa" 
-                                }}
+                                style={stylesPlanDietario.plan_item_type}
                             >{e.type.toUpperCase()}</Text>
                             <Text
-                                style={{
-                                    color:"#fff",
-                                    fontSize:10,
-                                    width: 120
-                                }}
+                                style={stylesPlanDietario.plan_item_description}
                             >{e.receta.descripcion.toUpperCase()}</Text>
                             <Text
-                                style={{
-                                    color:"#fff",
-                                    position:"absolute",
-                                    right:6, 
-                                    bottom: 18,
-                                    fontSize:10
-                                }}
+                                style={stylesPlanDietario.plan_item_details_quantites}
                             >Cantidades: {e.receta.cantidades}</Text>
                             <Text
-                                style={{color:"#fff",position:"absolute",right:6, bottom: 4, fontSize:10}}
+                                style={stylesPlanDietario.plan_item_details_kcal}
                             >KCalorias: {Math.round(e.kcal*100)/100}</Text>
                         </View>
                     </View>
@@ -124,12 +110,13 @@ function PlanDietarioScreen(props) {
                     }}
                 />
                 <Text
+                    style={StylePlanDietario.totals_details}
                 >
                     Calorías
                 </Text>
                 <Text
                     style={{
-                        fontStyle:"italic"
+                        ...StylePlanDietario.totals_details,
                     }}
                 >
                     {Math.round(planDietario.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
@@ -147,12 +134,14 @@ function PlanDietarioScreen(props) {
                         paddingBottom: 8,
                     }}
                     />
-                <Text>
+                <Text
+                    style={StylePlanDietario.totals_details}
+                >
                     Carbohidratos
                 </Text>
                 <Text
                     style={{
-                        fontStyle:"italic"
+                        ...StylePlanDietario.totals_details,
                     }}
                 >
                     {Math.round(planDietario.reduce((prev,curr) => prev + curr.hc,0)*100)/100}
@@ -172,50 +161,34 @@ function PlanDietarioScreen(props) {
             >
                 {patologiasUsuario.aptoCeliaco ? 
                 <View
-                    style={
-                        {...stylesPlanDietario.container_grey,
-                            width: 60,
-                            display:"flex",
-                            justifyContent:"center",
-                            alignItems:"center"
-                        }}
+                    style={stylesPlanDietario.container_patologias}
                 >
                     <Text
-                        style={{
-                            fontSize:12
-                        }}
+                        style={stylesPlanDietario.patologias_text}
                     >Celiaco</Text>
                 </View> : null}
                 {patologiasUsuario.aptoDiabetes ? 
                 <View
-                    style={
-                        {...stylesPlanDietario.container_grey,
-                            width: 60,
-                            display:"flex",
-                            justifyContent:"center",
-                            alignItems:"center"
-                        }}
+                    style={stylesPlanDietario.container_patologias}
                 >
                     <Text
                         style={{
-                            fontSize:12
+                            ...stylesPlanDietario.patologias_text,
+                            width: 55,
                         }}
-                    >Diabetes</Text>
+                    >
+                        Diabetes
+                    </Text>
                 </View> : null}
                 {patologiasUsuario.aptoObesidad ? 
                 <View
                     style={
-                        {...stylesPlanDietario.container_grey,
+                        {...stylesPlanDietario.container_patologias,
                             width: 70,
-                            display:"flex",
-                            justifyContent:"center",
-                            alignItems:"center"
                         }}
                 >
                     <Text
-                    style={{
-                        fontSize:12
-                    }}>Obesidad</Text>
+                    style={stylesPlanDietario.patologias_text}>Obesidad</Text>
                 </View> : null}
             </View>
         )
@@ -268,7 +241,9 @@ function PlanDietarioScreen(props) {
     return (
         <ScrollView ref={scrollRef}>
             <View style={styles.formContainer}>
-                <View style={styles.formHeader}>
+                <View 
+                    style={styles.formHeader}
+                >
                     <Image
                     style={styles.logoIcon}
                     source={logo} />
@@ -277,14 +252,9 @@ function PlanDietarioScreen(props) {
                 <View 
                     style={stylesPlanDietario.container}>
                     <Text
-                        style={{
-                            textTransform: "uppercase", 
-                            fontSize: 18, 
-                            paddingBottom: 16, 
-                            textDecorationLine: "underline"
-                        }}
+                        style={stylesPlanDietario.plan_dietario_title}
                     >
-                        Plan semanal
+                        Plan Dietario
                     </Text>
                     
                     {renderPatologiasText()}
@@ -304,7 +274,6 @@ function PlanDietarioScreen(props) {
                 </View>
             </View>
         </ScrollView>
-        
     );
 }
 

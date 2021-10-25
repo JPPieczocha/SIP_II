@@ -108,7 +108,8 @@ function App() {
                 children={()=><ProfileScreen 
                     userData={userData}
                     onProfileUpdate={updateLoggedUserData}/>
-                } 
+                }
+                options={{headerShown:false}}
             />
             <Tab.Screen 
                 name="Plan" 
@@ -116,6 +117,7 @@ function App() {
                     userData={userData}
                     getUserData={getUserLoggedData}
                 />}
+                options={{headerShown:false}}
             />
 			</Tab.Navigator>
         )
