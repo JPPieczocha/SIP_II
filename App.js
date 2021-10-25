@@ -30,11 +30,15 @@ function App() {
         await axios.get(`${config.backendURLs.getUser}?id_usuario=${config.loggedUser.id}`)
         .then(function(response){
             loggedUserData = response.data
+        }).catch(function(error){
+            console.log(error)
         })
 
         await axios.get(`${config.backendURLs.patologiasUsuariosGet}?id_usuario=${config.loggedUser.id}`)
         .then(function(response){
             loggedUserData.patologias = response.data
+        }).catch(function(error){
+            console.log(error)
         })
 
         setUserData(loggedUserData)
