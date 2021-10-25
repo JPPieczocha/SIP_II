@@ -7,9 +7,9 @@ export default function FoodItem({navigation, data}) {
 
     const handleTouch = () => {
         if(data.type === 'product'){
-            navigation.navigate('Product', {nombre: data.title, id: data.id});
+            navigation.navigate('Product', {nombre: data.title, id: data.id, imagen: data.imagen});
         }else{
-            navigation.navigate('Recipe',  {nombre: data.title, id: data.id});
+            navigation.navigate('Recipe',  {nombre: data.title, id: data.id, imagen: data.imagen});
         }
     }
 
