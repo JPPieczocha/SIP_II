@@ -1,36 +1,57 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import styles from '../common/styles'
-// import logo from './../assets/logo.jpeg'
 import logo from '../../assets/logo.jpeg';
 
 import axios from 'axios'
-import { render } from 'react-dom';
 import config from '../../config';
 
 function ProfileScreen(props) {
-    let fullName = `${props.userData.apellido} ${props.userData.nombre}`
-    let email = props.userData.email
-    let self = this;
+    let fullName = props != undefined && props.userData != undefined && props.userData.apellido != undefined && props.userData.nombre != undefined? `${props.userData.apellido} ${props.userData.nombre}` : ""
+    let email = props != undefined && props.userData != undefined ? props.userData.email : ""
     const [diabetes, setDiabetesSelection] = useState(false);
     const [celiaquia, setCeliaquiaSelection] = useState(false);
     const [obesidad, setObesidadSelection] = useState(false);
     const [patologias, setPatologias] = useState([])
     const [patologiasUsuario, setPatologiasUsuario] = useState([])
+
+    function logResponseError(context,error){
+        console.log("Error ocurrido en contexto: ", context)
+        if (error.response) {
+            /*
+             * The request was made and the server responded with a
+             * status code that falls out of the range of 2xx
+             */
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+        } else if (error.request) {
+            /*
+             * The request was made but no response was received, `error.request`
+             * is an instance of XMLHttpRequest in the browser and an instance
+             * of http.ClientRequest in Node.js
+             */
+            console.log(error.request);
+        } else {
+            // Something happened in setting up the request and triggered an Error
+            console.log('Error', error.message);
+        }
+        console.log(error);
+    }
  
     const getPatologias = () => {
-        return axios.get(config.backendURLs.patologiasList).then(function(response){
+        return axios.get(config.backendURLs.patologiasList)
+        .then(function(response){
             setPatologias(response.data)    
+        }).catch(function(error){
+            logResponseError("Get patologías",error)
         })
     } 
 
-    const getPatologiasByUser = () => {
-        axios.get(`${config.backendURLs.patologiasUsuariosGet}?id_usuario=${props.userData.id_usuario}`)
-        .then(function(response){
-            let patologias_usuarios = []
-            if(response.data != undefined && response.data.length > 0){
-                response.data.forEach((e) => {
-                    patologias_usuarios.push(e)
+    const setPatologiasByUser = () => {
+        if(props != undefined && props.userData != undefined){
+            if(props.userData != undefined && props.userData.patologias.length > 0){
+                props.userData.patologias.forEach((e) => {
                     let patologia = patologias.find((f) => f.id_patologia == e.id_patologia)
                     if(patologia != undefined){
                         switch(patologia.descripcion){
@@ -43,12 +64,8 @@ function ProfileScreen(props) {
                         }
                     }
                 })
-                setPatologiasUsuario(patologias_usuarios)
             }
-            
-        }).catch(function(error) {
-            console.log(error)
-        })
+        }
     }
 
     async function fetchData(){
@@ -60,7 +77,8 @@ function ProfileScreen(props) {
     }, []);
 
     React.useEffect(() => {
-        getPatologiasByUser();
+        setPatologiasUsuario(props.userData.patologias)
+        setPatologiasByUser();
     }, [patologias])
 
     function renderPatologias(list){
@@ -162,7 +180,6 @@ function ProfileScreen(props) {
                 }
             }
         }
-        fetchData();
         props.onProfileUpdate();
         Alert.alert(
             "Patologías",
@@ -173,41 +190,25 @@ function ProfileScreen(props) {
     function updatePatologia(idPatologia){
         return axios.post(config.backendURLs.patologiasUsuariosCreate,{
             patologia:idPatologia,
-            usuario: props.userData.id_usuario,
+            usuario: props != undefined && props.userData != undefined ? props.userData.id_usuario : 0,
         }).then(function(response){
             
         }).catch(function(error) {
-            console.log(error)
+            logResponseError("Create patologia", error)
         })
     } 
 
     function deletePatologia(idPatologia){
-        return axios.delete(`${config.backendURLs.patologiasUsuariosDelete}?id_patologia=${idPatologia}&id_usuario=${props.userData.id_usuario}`)
-        .then(function(response){
-
-        })
-        .catch(function(error) {
-            if (error.response) {
-                /*
-                 * The request was made and the server responded with a
-                 * status code that falls out of the range of 2xx
-                 */
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                /*
-                 * The request was made but no response was received, `error.request`
-                 * is an instance of XMLHttpRequest in the browser and an instance
-                 * of http.ClientRequest in Node.js
-                 */
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request and triggered an Error
-                console.log('Error', error.message);
-            }
-            console.log(error);
-        })
+        if(props != undefined && props.userData != undefined){
+            return axios.delete(`${config.backendURLs.patologiasUsuariosDelete}?id_patologia=${idPatologia}&id_usuario=${props.userData.id_usuario}`)
+            .then(function(response){
+    
+            })
+            .catch(function(error) {
+                logResponseError("Eliminar patología", error)
+            })
+        }
+        
     }
 
     return (
