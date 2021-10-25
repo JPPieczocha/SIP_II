@@ -20,11 +20,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         height: 110,
+        marginTop: 30
     },
     formGroup:{
-        padding: 12
+        padding: 14
+    },
+    formInputLabel:{
+        fontFamily: 'SimplyDiet',
+        fontSize:20,
+        paddingBottom: 8
     },
     formInput:{
+        fontFamily: 'SimplyDiet',
+        fontSize:16,
         width: "100%",
         height: 40,
         borderRadius: 8,
@@ -40,19 +48,25 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     checkboxLabel:{
-        margin: 8
+        margin: 8,
+        fontFamily: 'SimplyDiet',
+        fontSize:16
     },
     primaryButton:{
         display: "flex",
         backgroundColor: primaryColor,
         width: 220,
         padding: 12,
-        borderRadius: 12
+        borderRadius: 12,
+        fontFamily: 'SimplyDiet',
+        fontSize: 22
     },
     primaryButtonText:{
         color:"#fff",
         textAlign: "center",
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+        fontFamily: 'SimplyDiet',
+        fontSize: 22
     },
     logoIcon:{
         width: 50,

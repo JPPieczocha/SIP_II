@@ -2,9 +2,16 @@ import { StyleSheet } from 'react-native';
 
 const StylePlanDietario = StyleSheet.create({
     container:{
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    plan_dietario_title:{
+        fontFamily: 'SimplyDiet',
+        textTransform: "uppercase", 
+        fontSize: 40, 
+        paddingBottom: 16, 
+        textDecorationLine: "underline"
     },
     card_template:{
         width: 220,
@@ -16,29 +23,42 @@ const StylePlanDietario = StyleSheet.create({
         marginBottom:36
     },
     card_image: {
-      width: 220,
-      height: 220,
-      borderRadius : 10
+        width: 220,
+        height: 220,
+        borderRadius : 10
     },
     text_container:{
-      position: "absolute",
-      width: 220,
-      height: 70,
-      bottom:0,
-      padding: 5,
-      backgroundColor: "rgba(209,84,131, 0.8)",
-      borderBottomLeftRadius : 10,
-      borderBottomRightRadius: 10
+        position: "absolute",
+        width: 220,
+        height: 70,
+        bottom:0,
+        padding: 5,
+        backgroundColor: "rgba(209,84,131, 0.8)",
+        borderBottomLeftRadius : 10,
+        borderBottomRightRadius: 10
     },
     card_title: {
        color: "white",
     },
-    container_grey:{
+    container_patologias:{
+        fontFamily: 'SimplyDiet',
         padding: 6,
         textAlign: "center",
         borderRadius: 8,
         marginLeft:8,
-        backgroundColor:"#d1d1d1"
+        backgroundColor:"#d1d1d1",
+        width: 70,
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    patologias_text: {
+        fontFamily: 'SimplyDiet',
+        fontSize:16
+    },
+    totals_details:{
+        fontFamily: 'SimplyDiet',
+        fontSize: 18
     },
     container_plan_detail:{
         width: "50%",
@@ -51,6 +71,34 @@ const StylePlanDietario = StyleSheet.create({
         borderColor:"#e2e2e2",
         borderRadius:14,
         margin:4
+    },
+    plan_item_type:{
+        fontFamily: 'SimplyDiet',
+        paddingBottom:4, 
+        color:"#fafafa",
+        fontSize:20
+    },
+    plan_item_description:{
+        fontFamily: 'SimplyDiet',
+        color:"#fff",
+        fontSize:12,
+        width: 130
+    },
+    plan_item_details_quantites:{
+        fontFamily: 'SimplyDiet',
+        color:"#fff",
+        position:"absolute",
+        fontSize:11,
+        right:6, 
+        bottom: 18,
+    },
+    plan_item_details_kcal:{
+        fontFamily: 'SimplyDiet',
+        color:"#fff",
+        position:"absolute",
+        right:6, 
+        bottom: 4, 
+        fontSize:11
     }
 });
 

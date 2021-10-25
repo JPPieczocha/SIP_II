@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import styles from '../common/styles'
+import stylesProfile from './Styles'
 import logo from '../../assets/logo.jpeg';
 
 import axios from 'axios'
@@ -219,9 +220,22 @@ function ProfileScreen(props) {
                     style={styles.logoIcon}
                     source={logo} />
                 </View>
+
+                <Text
+                    style={{
+                        ...stylesProfile.profile_title,
+                        textAlign:"center"  
+                    }}
+                >
+                    Perfil
+                </Text>
                 
                 <View style={styles.formGroup}>
-                    <Text>Nombre y Apellido</Text>
+                    <Text
+                        style={{
+                            ...styles.formInputLabel
+                        }}
+                    >Nombre y Apellido</Text>
                     <TextInput
                         editable={false}
                         style={styles.formInput}
@@ -231,7 +245,11 @@ function ProfileScreen(props) {
                 </View>
 
                 <View style={styles.formGroup}>
-                    <Text>Correo electrónico</Text>
+                    <Text
+                        style={{
+                            ...styles.formInputLabel
+                        }}
+                    >Correo electrónico</Text>
                     <TextInput
                         editable={false}
                         style={styles.formInput}
@@ -239,8 +257,16 @@ function ProfileScreen(props) {
                         />
                 </View>
                 
-                <View style={styles.formGroup}>
-                    <Text>Patologías</Text>
+                <View style={
+                    {
+                        ...styles.formGroup,
+                        paddingTop:20
+                    }}>
+                    <Text
+                        style={{
+                            ...stylesProfile.patologias_title
+                        }}
+                    >Patologías</Text>
                     {renderPatologias(patologias)}
                     
                 </View>
@@ -248,7 +274,10 @@ function ProfileScreen(props) {
                 <View style={styles.centeredContent}>
                     <TouchableOpacity 
                         onPress={updatePatologias} 
-                        style={styles.primaryButton}>
+                        style={{
+                            ...styles.primaryButton,
+                            marginTop:24
+                        }}>
                         <Text
                             style={styles.primaryButtonText}>Guardar</Text>
                     </TouchableOpacity>
