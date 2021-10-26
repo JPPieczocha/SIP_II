@@ -125,3 +125,21 @@ export const producto = async (data) =>{
         console.error(error)
     }
 }
+
+
+export const dummyCheckin = async()=>{
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+    try {
+        const response = await fetch(url+'Checking',options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
