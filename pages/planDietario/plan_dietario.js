@@ -40,7 +40,7 @@ function PlanDietarioScreen(props) {
     }
 
     async function getPlan(){
-        await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico=${patologiasUsuario.aptoDiabetes}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
+        await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
         .then(function(response){
             setPlanDietario(response.data)
             scrollRef.current?.scrollTo({
@@ -167,7 +167,7 @@ function PlanDietarioScreen(props) {
                         style={stylesPlanDietario.patologias_text}
                     >Celiaco</Text>
                 </View> : null}
-                {patologiasUsuario.aptoDiabetes ? 
+                {patologiasUsuario.aptoDiabetes1 || patologiasUsuario.aptoDiabetes2 ? 
                 <View
                     style={stylesPlanDietario.container_patologias}
                 >
@@ -196,27 +196,33 @@ function PlanDietarioScreen(props) {
 
     function refreshUserData(){
         let loggedUserData = props.getUserData()
-        let aptoDiabetes = false;
+        let aptoDiabetes1 = false;
+        let aptoDiabetes2 = false;
         let aptoCeliaco = false;
         let aptoObesidad = false;
 
         if(loggedUserData.patologias != undefined && loggedUserData.patologias.length > 0){
-            if(loggedUserData.patologias.find((e) => e.patologias.descripcion === "Diabetes")){
-                aptoDiabetes = true
+            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "diabetes_1")){
+                aptoDiabetes1 = true
             }
 
-            if(loggedUserData.patologias.find((e) => e.patologias.descripcion === "Celiaquía")){
+            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "diabetes_2")){
+                aptoDiabetes2 = true
+            }
+
+            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "celiaquia")){
                 aptoCeliaco = true
             }
 
-            if(loggedUserData.patologias.find((e) => e.patologias.descripcion === "Obesidad")){
+            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "obesidad")){
                 aptoObesidad = true
             }
 
         } 
         setPatologiasUsuario({
             aptoCeliaco: aptoCeliaco,
-            aptoDiabetes: aptoDiabetes,
+            aptoDiabetes1: aptoDiabetes1,
+            aptoDiabetes2: aptoDiabetes2,
             aptoObesidad: aptoObesidad
         })
     }
