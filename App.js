@@ -22,6 +22,10 @@ import Recipe from './pages/recipe/Recipe'
 
 import colors from './pages/common/colors';
 
+//------------------------
+import { dummyBD } from './controllers/commonController';
+//-----------------------
+
 function App() {
     const [userData,setUserData] = React.useState()
 
@@ -50,6 +54,32 @@ function App() {
 
     React.useEffect( () => {
         fetchUserLoggedData();
+
+        let timer1 = setTimeout(() => {
+
+            const fetchDummy = async () => {
+                const response = await dummyBD();
+                if(response === undefined){
+                }else{
+                    console.log(response);
+                }
+            }
+            fetchDummy();
+
+        },30000);
+
+        // this will clear Timeout
+        // when component unmount like in willComponentUnmount
+        // and show will not change to true
+        return () => {
+            clearTimeout(timer1);
+        };
+      // useEffect will run only one time with empty []
+      // if you pass a value to array,
+      // like this - [data]
+      // than clearTimeout will run every time
+      // this value changes (useEffect re-run)
+
     }, []);
 
     function updateLoggedUserData(){
