@@ -127,8 +127,8 @@ function App() {
 		<NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Main" component={mainTab} options={{headerShown:false}}/>
-                <Stack.Screen name="Product" component={Product}/>
-                <Stack.Screen name="Recipe" component={Recipe}/>
+                <Stack.Screen name="Product" component={Product} options={{headerShown:false}}/>
+                <Stack.Screen name="Recipe" component={Recipe} options={{headerShown:false}}/>
                 
             </Stack.Navigator>
 			
