@@ -14,8 +14,8 @@ const StylePlanDietario = StyleSheet.create({
         textDecorationLine: "underline"
     },
     card_template:{
-        width: 220,
-        height: 220,
+        width: 260,
+        height: 260,
         shadowColor: '#DB0758',
         shadowOffset: {width: 0, height: 1},
         shadowOpacity: 0.2,
@@ -23,13 +23,13 @@ const StylePlanDietario = StyleSheet.create({
         marginBottom:36
     },
     card_image: {
-        width: 220,
-        height: 220,
+        width: 260,
+        height: 260,
         borderRadius : 10
     },
     text_container:{
         position: "absolute",
-        width: 220,
+        width: 260,
         height: 70,
         bottom:0,
         padding: 5,
@@ -82,7 +82,7 @@ const StylePlanDietario = StyleSheet.create({
         fontFamily: 'SimplyDiet',
         color:"#fff",
         fontSize:12,
-        width: 130
+        width: 170
     },
     plan_item_details_quantites:{
         fontFamily: 'SimplyDiet',

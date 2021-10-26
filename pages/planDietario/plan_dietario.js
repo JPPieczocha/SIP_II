@@ -72,7 +72,10 @@ function PlanDietarioScreen(props) {
                             >{e.type.toUpperCase()}</Text>
                             <Text
                                 style={stylesPlanDietario.plan_item_description}
-                            >{e.receta.descripcion.toUpperCase()}</Text>
+                            >{`${e.receta.descripcion.toUpperCase()} con `}</Text>
+                            <Text
+                                style={stylesPlanDietario.plan_item_description}
+                            >{e.bebida.descripcion.toUpperCase()}</Text>
                             <Text
                                 style={stylesPlanDietario.plan_item_details_quantites}
                             >Cantidades: {e.receta.cantidades}</Text>
