@@ -3,6 +3,7 @@ import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import InfoNutriItem from '../common/components/InfoNutriItem/InfoNutriItem'
+import ModalWarning from "../common/components/ModalWarningFood/ModalWarningFood";
 
 import styles from './Styles'
 import Color from '../common/colors'
@@ -55,6 +56,8 @@ export default function Product({navigation, route}) {
 
     return (
         <View>
+            <ModalWarning navigation={navigation} msg={"este producto"} show={true}/>
+
             <ScrollView>
 
                 <Image

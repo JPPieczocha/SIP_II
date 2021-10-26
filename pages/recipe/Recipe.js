@@ -4,6 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 
 import InfoIngredienteItem from "../common/components/InfoIngredienteItem/InfoIngredienteItem";
+import ModalWarning from "../common/components/ModalWarningFood/ModalWarningFood";
 
 import styles from "./Styles";
 import Color from "../common/colors";
@@ -80,6 +81,9 @@ export default function Recipe({ navigation, route }) {
 
   return (
     <View>
+
+      <ModalWarning navigation={navigation} msg={"esta receta"} show={false}/>
+
       <ScrollView>
         <Image
           resizeMode="stretch"
