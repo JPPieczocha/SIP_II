@@ -10,7 +10,8 @@ import config from '../../config';
 function ProfileScreen(props) {
     let fullName = props != undefined && props.userData != undefined && props.userData.apellido != undefined && props.userData.nombre != undefined? `${props.userData.apellido} ${props.userData.nombre}` : ""
     let email = props != undefined && props.userData != undefined ? props.userData.email : ""
-    const [diabetes, setDiabetesSelection] = useState(false);
+    const [diabetes1, setDiabetes1Selection] = useState(false);
+    const [diabetes2, setDiabetes2Selection] = useState(false);
     const [celiaquia, setCeliaquiaSelection] = useState(false);
     const [obesidad, setObesidadSelection] = useState(false);
     const [patologias, setPatologias] = useState([])
@@ -51,16 +52,18 @@ function ProfileScreen(props) {
 
     const setPatologiasByUser = () => {
         if(props != undefined && props.userData != undefined){
-            if(props.userData != undefined && props.userData.patologias.length > 0){
+            if(props.userData != undefined && props.userData.patologias != undefined && props.userData.patologias.length > 0){
                 props.userData.patologias.forEach((e) => {
                     let patologia = patologias.find((f) => f.id_patologia == e.id_patologia)
                     if(patologia != undefined){
-                        switch(patologia.descripcion){
-                            case "Celiaquía": setCeliaquiaSelection(true)
+                        switch(patologia.codigo){
+                            case "celiaquia": setCeliaquiaSelection(true)
                                 break;
-                            case "Obesidad": setObesidadSelection(true)
+                            case "obesidad": setObesidadSelection(true)
                                 break;
-                            case "Diabetes": setDiabetesSelection(true)
+                            case "diabetes_1": setDiabetes1Selection(true)
+                                break;
+                            case "diabetes_2": setDiabetes2Selection(true)
                                 break;
                         }
                     }
@@ -84,9 +87,17 @@ function ProfileScreen(props) {
 
     function renderPatologias(list){
         if(list != undefined){
-            return list.map((e) => {
-                switch(e.descripcion){
-                    case "Celiaquía": 
+            return list.sort(function(a,b){
+                if (a.descripcion > b.descripcion) {
+                    return 1;
+                  }
+                  if (a.descripcion < b.descripcion) {
+                    return -1;
+                  }
+                  return 0;
+            }).map((e) => {
+                switch(e.codigo){
+                    case "celiaquia": 
                         return(
                             <View
                                 key={e.id_patologia} 
@@ -99,21 +110,35 @@ function ProfileScreen(props) {
                                 <Text style={styles.checkboxLabel}>Celiaquía</Text>
                             </View>
                         )
-                        case "Diabetes": 
+                        case "diabetes_1": 
                         return(
                             <View 
                                 key={e.id_patologia} 
                                 style={styles.checkBoxContainer}>
                                 <CheckBox
                                     style={styles.checkBox}
-                                    value={diabetes}
-                                    onValueChange={setDiabetesSelection}
+                                    value={diabetes1}
+                                    onValueChange={setDiabetes1Selection}
                                     />
-                                <Text style={styles.checkboxLabel}>Diabetes</Text>
+                                <Text style={styles.checkboxLabel}>Diabetes Tipo 1</Text>
                             </View>
                         )
 
-                        case "Obesidad": 
+                        case "diabetes_2": 
+                        return(
+                            <View 
+                                key={e.id_patologia} 
+                                style={styles.checkBoxContainer}>
+                                <CheckBox
+                                    style={styles.checkBox}
+                                    value={diabetes2}
+                                    onValueChange={setDiabetes2Selection}
+                                    />
+                                <Text style={styles.checkboxLabel}>Diabetes Tipo 2</Text>
+                            </View>
+                        )
+
+                        case "obesidad": 
                         return(
                             <View 
                                 key={e.id_patologia} 
@@ -133,21 +158,37 @@ function ProfileScreen(props) {
     }
 
     async function updatePatologias(){
-        let userHadDiabetes = patologiasUsuario.find((e) => e.patologias.descripcion === "Diabetes") != undefined ? true : false;
-        let userHadCeliaquia = patologiasUsuario.find((e) => e.patologias.descripcion === "Celiaquía") != undefined ? true : false;
-        let userHadObesidad = patologiasUsuario.find((e) => e.patologias.descripcion === "Obesidad") != undefined ? true : false;
+        let userHadDiabetes1 = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_1") != undefined ? true : false;
+        let userHadDiabetes2 = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_2") != undefined ? true : false;
+        let userHadCeliaquia = patologiasUsuario.find((e) => e.patologias.codigo === "celiaquia") != undefined ? true : false;
+        let userHadObesidad = patologiasUsuario.find((e) => e.patologias.codigo === "obesidad") != undefined ? true : false;
         
-        if(diabetes){
-            let patologia = patologias.find((e) => e.descripcion === "Diabetes");
-            if(!userHadDiabetes){
+        if(diabetes1){
+            let patologia = patologias.find((e) => e.codigo === "diabetes_1");
+            if(!userHadDiabetes1){
                 await updatePatologia(patologia.id_patologia)
             }
         } else {
-            if(userHadDiabetes){
-                let patologia = patologiasUsuario.find((e) => e.patologias.descripcion === "Diabetes");
+            if(userHadDiabetes1){
+                let patologia = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_1");
                 if(patologia != undefined){
                     await deletePatologia(patologia.id_patologia)
-                    setDiabetesSelection(false)
+                    setDiabetes1Selection(false)
+                }
+            }
+        }
+
+        if(diabetes2){
+            let patologia = patologias.find((e) => e.codigo === "diabetes_2");
+            if(!userHadDiabetes2){
+                await updatePatologia(patologia.id_patologia)
+            }
+        } else {
+            if(userHadDiabetes2){
+                let patologia = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_2");
+                if(patologia != undefined){
+                    await deletePatologia(patologia.id_patologia)
+                    setDiabetes2Selection(false)
                 }
             }
         }
@@ -276,7 +317,8 @@ function ProfileScreen(props) {
                         onPress={updatePatologias} 
                         style={{
                             ...styles.primaryButton,
-                            marginTop:24
+                            marginTop:8,
+                            marginBottom: 20
                         }}>
                         <Text
                             style={styles.primaryButtonText}>Guardar</Text>
