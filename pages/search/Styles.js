@@ -5,8 +5,6 @@ const styles = StyleSheet.create({
     container:{
         width: '100%',
         height:'100%',
-
-        justifyContent:'center'
     },
     header:{
         height: '20%',
@@ -53,8 +51,9 @@ const styles = StyleSheet.create({
     iconFilterText:{
         color: 'black'
     },
+
     main:{
-        maxHeight: '70%'
+        maxHeight: '70%',
     },
 
     //--------------------------
@@ -68,7 +67,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0, 0.6)',
     },
     modalContainer:{
-        height: '30%',
 
         width: '80%',
         
@@ -113,6 +111,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         flexDirection: 'row',
         justifyContent: 'space-evenly'
+    },
+    formContainerItem:{
+        alignItems: 'center'
     },
     checkBox:{
         height: 25,

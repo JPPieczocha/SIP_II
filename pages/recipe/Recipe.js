@@ -146,8 +146,8 @@ export default function Recipe({ navigation, route }) {
         </TouchableOpacity>
 
         <View style={!ingrPasos ? { display: "none" } : {}}>
-          <Text style={styles.title}>Información Nutricional</Text>
-          <Text style={styles.description}>Porción: {infoReceta.porción}</Text>
+          <Text style={styles.title}>Ingredientes</Text>
+          <Text style={styles.description}></Text>
 
           <View style={styles.infoNutricional}>
             {ingedientesData.map((item) => {

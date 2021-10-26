@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     buttonSwapIngr: {
-        backgroundColor: Color.secondaryv2,
+        backgroundColor: Color.secondary,
     },
     buttonSwapPasos: {
         backgroundColor: Color.primaryv2,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     listaPasos: {
         width: '90%',
         alignSelf: 'center',
-        backgroundColor: Color.extra,
+        backgroundColor: Color.secondary,
         borderRadius: 5,
         paddingHorizontal: 10,
         marginVertical: 16
