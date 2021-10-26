@@ -16,7 +16,7 @@ export default function Product({navigation, route}) {
 
     const infoData = [
         {
-            nombre: 'Kilocalorías',
+            nombre: 'Kilocalorías ',
             valor: '250'
         },
 
@@ -77,7 +77,8 @@ export default function Product({navigation, route}) {
                     <Ionicons name={fav? 'heart' : 'heart-outline'} color={Color.secondary} size={32} />
                 </TouchableOpacity>
 
-                <Text style={styles.title}>{nombre}</Text>
+                <Text style={styles.title}  adjustsFontSizeToFit={true} numberOfLines={1}>{nombre}</Text>
+
                 <Text style={styles.description}>Ullamco sit irure incididunt laborum nostrud nostrud enim. Veniam quis nulla sit eiusmod magna mollit labore.</Text>
 
                 <Text style={styles.title}>Información Nutricional</Text>

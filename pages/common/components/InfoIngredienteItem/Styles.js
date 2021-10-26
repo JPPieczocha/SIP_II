@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 24,
         maxWidth: '100%',
-        maxHeight: '100%',
         alignSelf: 'center',
         textAlign: 'center',
     },
@@ -27,6 +26,7 @@ const styles = StyleSheet.create({
     textValue: {
         color: 'white',
         fontSize: 16,
+        maxWidth: '100%',
         alignSelf: 'center',
         textAlign: 'center',
     }
