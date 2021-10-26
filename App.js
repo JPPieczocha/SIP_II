@@ -102,7 +102,7 @@ function App() {
                 })}
         >
                 <Tab.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
-                <Tab.Screen name="Search" component={Search} />
+                <Tab.Screen name="Search" component={Search} options={{headerShown:false}}/>
             <Tab.Screen 
                 name="Profile" 
                 children={()=><ProfileScreen 

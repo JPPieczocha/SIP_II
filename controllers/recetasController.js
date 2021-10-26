@@ -1,0 +1,1 @@
+import {plato, platos} from '../apiroutes/ApiRoutes';
