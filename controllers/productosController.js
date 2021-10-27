@@ -1,4 +1,4 @@
-import {producto, productos} from '../apiroutes/ApiRoutes';
+import {producto, productos, searchProductos} from '../apiroutes/ApiRoutes';
 
 export const getAllProductos = async ()=>{
     const response = await productos();
@@ -23,5 +23,18 @@ export const getProducto = async (data)=>{
         return response.status
     }
 }
+
+export const buscarProductos = async (data)=>{
+    const response = await searchProductos(data);
+    if(response.status === 200){
+        const json = await response.json();
+        return json;
+    }else{
+        console.log('ERROR en buscarProductos');
+        console.log('Codigo de respuesta en buscarProductos: ' + response.status);
+        return response.status
+    }
+}
+
 
 

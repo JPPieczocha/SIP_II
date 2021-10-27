@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     SafeAreaView,
     Platform,
+    ActivityIndicator
 } from "react-native";
 import RadioForm, {
     RadioButton,
@@ -21,8 +22,12 @@ import styles from "./Styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import logo from "../../assets/logo.jpeg";
 import colors from "../common/colors";
+import { historial } from "../../controllers/commonController";
+import { buscarPlatos } from "../../controllers/recetasController";
+import { buscarProductos } from "../../controllers/productosController";
 
 const Search = ({ navigation }) => {
+
     const dummyData = [
         {
             id: 0,
@@ -70,6 +75,12 @@ const Search = ({ navigation }) => {
     const [lowCal, setLowCal] = useState(false);
 
     const [searchInput, setSearchInput] = useState("");
+    const [historialList, setHistorialList] = useState([]);
+    const [PlatosList, setPlatoslList] = useState([]);
+    const [ProductosList, setProductosList] = useState([]);
+    const [UnionList, setUnionList] = useState([]);
+    // const [historialShow, setHistorialShow] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     var radio_props_food = [
         { label: "Recetas", value: 0 },
@@ -79,7 +90,95 @@ const Search = ({ navigation }) => {
 
     useEffect(() => {
         console.log("HOLA");
+
+        const fetchHistorial = async () => {
+            const response = await historial(1);
+            if(response === undefined){
+            }else{
+              console.log('HISTORIAL USUARIO 1: ');
+              console.log(response);
+              setHistorialList(response);
+              setLoading(false)
+            }
+        }
+
+        fetchHistorial();
     }, []);
+
+    const handleSearch = () => {
+
+        setPlatoslList([]);
+        setProductosList([])
+
+        if(searchInput === ''){
+            return null
+        }
+
+        let data = {
+            name: searchInput,
+            c: Number(taccFree),
+            d: Number(sugarFree),
+            o: Number(lowCal)
+        }
+
+        if(foodType == 1){
+            //Means both fetches.
+            console.log('Debo preguntar en ambos. Data:::');
+            console.log(data);
+
+            const fetchProductos = async () => {
+                const response = await buscarProductos(data);
+                if(response === undefined){
+                }else{
+                  console.log('Productos busqueda: ');
+                  setProductosList(response);
+                  console.log(response);
+                }
+            }
+
+            const fetchPlatos = async () => {
+                const response = await buscarPlatos(data);
+                if(response === undefined){
+                }else{
+                  console.log('Platos busqueda: ');
+                  setPlatoslList(response);
+                  console.log(response);
+                }
+            }
+            fetchProductos();
+            fetchPlatos();
+        }else if(foodType == 0){
+            //Solo recetas
+            const fetchPlatos = async () => {
+                const response = await buscarPlatos(data);
+                if(response === undefined){
+                }else{
+                  console.log('Platos busqueda: ');
+                  setPlatoslList(response);
+                  console.log(response);
+                }
+            }
+            fetchPlatos()
+        }else{
+            //Solo productos
+            const fetchProductos = async () => {
+                const response = await buscarProductos(data);
+                if(response === undefined){
+                }else{
+                  console.log('Productos busqueda: ');
+                  setProductosList(response);
+                  console.log(response);
+                }
+            }
+            fetchProductos();
+        }
+    }
+
+    const handleApplyFilter = () => {
+        setShowFilter(false);
+        console.log('TRIGUEREAR RE BUSQUEDA');
+        handleSearch()
+    }
 
     const filterModal = () => {
         return (
@@ -156,7 +255,7 @@ const Search = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableOpacity style={styles.applyButton}>
+                        <TouchableOpacity style={styles.applyButton} onPress={()=>handleApplyFilter()}>
                             <Text style={styles.applyButtonText}>Aplicar</Text>
                         </TouchableOpacity>
                     </View>
@@ -178,7 +277,7 @@ const Search = ({ navigation }) => {
                     placeholder={"Escriba aquí"}
                     onChangeText={(text) => setSearchInput(text)}
                     keyboardType={"default"}
-                    onSubmitEditing={() => console.log(searchInput)}
+                    onSubmitEditing={() => handleSearch()}
                 ></TextInput>
                 <TouchableOpacity
                     style={styles.iconFilter}
@@ -189,18 +288,42 @@ const Search = ({ navigation }) => {
             </View>
 
             <Text style={[styles.headerTitle, { marginLeft: 10 }]}>
-                Recientes
+                {searchInput.length == 0 ? 'Recientes' : 'Resultados'}
             </Text>
 
+            { searchInput.length == 0 ?
             <View style={styles.main}>
                 <FlatList
-                    data={dummyData}
+                    data={historialList}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={(item) => (
                         <FoodSearch navigation={navigation} data={item.item} />
                     )}
+                    ListEmptyComponent={()=>{
+                        if(loading){
+                            return <ActivityIndicator size={'large'} color={'#000000'}/>
+                        }
+                        return <Text style={{marginHorizontal: 10}}>No existen busquedas recientes</Text>
+                    }}
                 />
             </View>
+            :
+            <View style={styles.main}>
+                <FlatList
+                    data={PlatosList.concat(ProductosList)}
+                    keyExtractor={(item) => item.ID.toString()}
+                    renderItem={(item) => (
+                        <FoodSearch navigation={navigation} data={item.item} />
+                    )}
+                    ListEmptyComponent={()=>{
+                        if(loading){
+                            return <ActivityIndicator size={'large'} color={'#000000'}/>
+                        }
+                        return <Text style={{marginHorizontal: 10}}>No existen elementos asociados a tu búsqueda</Text>
+                    }}
+                />
+            </View>
+            }
 
             {filterModal()}
         </View>
