@@ -106,6 +106,10 @@ const Search = ({ navigation }) => {
     }, []);
 
     const handleSearch = () => {
+
+        setPlatoslList([]);
+        setProductosList([])
+
         if(searchInput === ''){
             return null
         }
@@ -284,7 +288,7 @@ const Search = ({ navigation }) => {
             </View>
 
             <Text style={[styles.headerTitle, { marginLeft: 10 }]}>
-                Recientes
+                {searchInput.length == 0 ? 'Recientes' : 'Resultados'}
             </Text>
 
             { searchInput.length == 0 ?
@@ -307,7 +311,7 @@ const Search = ({ navigation }) => {
             <View style={styles.main}>
                 <FlatList
                     data={PlatosList.concat(ProductosList)}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item.ID.toString()}
                     renderItem={(item) => (
                         <FoodSearch navigation={navigation} data={item.item} />
                     )}
