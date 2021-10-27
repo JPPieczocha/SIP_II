@@ -29,7 +29,8 @@ export default function Product({navigation, route}) {
               // setFetched(true);
             }
         }
-        fetchProducto()
+        fetchProducto();
+        handlePatology()
 
     }, []);
 
@@ -76,9 +77,32 @@ export default function Product({navigation, route}) {
         
     ]
 
+
+
+    const handlePatology = () => {
+
+        let userDummy = {
+            Usuario: 1,
+            Celiaquia: 1,
+            Tipo1: 1,
+            Tipo2: 0,
+            Obesidad: 1,
+            Nombre: "TESTE",
+            Mail: "test@gmail.com",
+            Clave: "123"
+        }
+
+        if(userDummy.Celiaquia == data.Celiaquia && data.Celiaquia === 1) return true;
+        if(userDummy.Tipo1 == data.Tipo1 && data.Tipo1 === 1) return true;
+        if(userDummy.Tipo2 == data.Tipo2 && data.Tipo2 === 1) return true;
+        if(userDummy.Obesidad == data.Obesidad && data.Obesidad === 1) return true;
+        return false;
+
+    }
+
     return (
         <View>
-            <ModalWarning navigation={navigation} msg={"este producto"} show={false}/>
+            <ModalWarning navigation={navigation} msg={"este producto"} show={()=>handlePatology()}/>
 
             <ScrollView>
 
