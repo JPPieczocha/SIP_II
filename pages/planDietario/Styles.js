@@ -47,14 +47,17 @@ const StylePlanDietario = StyleSheet.create({
         borderRadius: 8,
         marginLeft:8,
         backgroundColor:"#d1d1d1",
-        width: 70,
+        width: 80,
         display:"flex",
         justifyContent:"center",
-        alignItems:"center"
+        alignItems:"center",
+        flexDirection:"row"
     },
     patologias_text: {
         fontFamily: 'SimplyDiet',
-        fontSize:16
+        fontSize:14,
+        width: "80%",
+        textAlign: "center"
     },
     totals_details:{
         fontFamily: 'SimplyDiet',
@@ -82,7 +85,7 @@ const StylePlanDietario = StyleSheet.create({
         fontFamily: 'SimplyDiet',
         color:"#fff",
         fontSize:12,
-        width: 170
+        width: "80%"
     },
     plan_item_details_quantites:{
         fontFamily: 'SimplyDiet',
