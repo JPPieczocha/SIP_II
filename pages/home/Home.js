@@ -153,7 +153,7 @@ function HomeScreen({ navigation}) {
             const response = await dummyBD();
             if(response === undefined){
             }else{
-              console.log(response);
+              console.log(response[0].FUCK_IT);
               setFetched(true);
             }
           }
