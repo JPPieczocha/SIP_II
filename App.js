@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -54,32 +54,6 @@ function App() {
 
     React.useEffect( () => {
         fetchUserLoggedData();
-
-        let timer1 = setTimeout(() => {
-
-            const fetchDummy = async () => {
-                const response = await dummyBD();
-                if(response === undefined){
-                }else{
-                    console.log(response);
-                }
-            }
-            fetchDummy();
-
-        },30000);
-
-        // this will clear Timeout
-        // when component unmount like in willComponentUnmount
-        // and show will not change to true
-        return () => {
-            clearTimeout(timer1);
-        };
-      // useEffect will run only one time with empty []
-      // if you pass a value to array,
-      // like this - [data]
-      // than clearTimeout will run every time
-      // this value changes (useEffect re-run)
-
     }, []);
 
     function updateLoggedUserData(){

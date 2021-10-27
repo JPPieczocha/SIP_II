@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './Styles';
 
 
 export default function FoodItem({navigation, data}) {
 
+    
+
     const handleTouch = () => {
         if(data.type === 'product'){
-            navigation.navigate('Product', {nombre: data.title, id: data.id, imagen: data.imagen});
+            navigation.navigate('Product', {nombre: data.Nombre, id: data.ID, imagen: data.Foto, data: data});
         }else{
-            navigation.navigate('Recipe',  {nombre: data.title, id: data.id, imagen: data.imagen});
+            navigation.navigate('Recipe',  {nombre: data.Nombre, id: data.ID, imagen: data.Foto,  data: data});
         }
     }
 
@@ -18,11 +20,12 @@ export default function FoodItem({navigation, data}) {
             <Image
                 style= {{width: '100%', height: '100%', borderRadius: 15}}
                 source={{
-                    uri: data.imagen,
+                    // uri: data.imagen,
+                    uri: data.Foto,
                 }}
             />
             <View style={styles.tag}>
-                <Text style={styles.tagText} adjustsFontSizeToFit={true} numberOfLines={2}>{data.title}</Text>
+                <Text style={styles.tagText} adjustsFontSizeToFit={true} numberOfLines={2}>{data.Nombre}</Text>
             </View>
         </TouchableOpacity>
     )

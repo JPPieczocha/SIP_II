@@ -1,4 +1,4 @@
-const url = '';
+const url = 'https://damp-reef-82590.herokuapp.com/';
 
 //-----------Endpoints-----------------------------
 
@@ -9,10 +9,9 @@ export const allFavourites = async (data) =>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
     }
     try {
-        const response = await fetch(url+'favorito',options);
+        const response = await fetch(url+'favorito/id/'+data,options);
         return response
     } 
     catch (error) {
@@ -27,10 +26,9 @@ export const history = async (data) =>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
     }
     try {
-        const response = await fetch(url+'historial',options);
+        const response = await fetch(url+'historial/id/'+data,options);
         return response
     } 
     catch (error) {
@@ -45,10 +43,9 @@ export const profile = async (data) =>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
     }
     try {
-        const response = await fetch(url+'perfil',options);
+        const response = await fetch(url+'perfil/id/'+data,options);
         return response
     } 
     catch (error) {
@@ -81,10 +78,9 @@ export const plato = async (data) =>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
     }
     try {
-        const response = await fetch(url+'plato',options);
+        const response = await fetch(url+'plato/id/'+data,options);
         return response
     } 
     catch (error) {
@@ -115,10 +111,9 @@ export const producto = async (data) =>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
     }
     try {
-        const response = await fetch(url+'producto',options);
+        const response = await fetch(url+'producto/id/'+data,options);
         return response
     } 
     catch (error) {
@@ -133,7 +128,6 @@ export const dummyCheckin = async()=>{
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
     }
     try {
         const response = await fetch(url+'Checking',options);
@@ -143,3 +137,37 @@ export const dummyCheckin = async()=>{
         console.error(error)
     }
 }
+
+
+export const searchPlatos = async(data)=>{
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'SearchPlatos/name/'+data.name+'/c/'+data.c+'/d/'+data.d+'/o/'+data.o,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+
+export const searchProductos = async(data)=>{
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'SearchProductos/name/'+data.name+'/c/'+data.c+'/d/'+data.d+'/o/'+data.o,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+

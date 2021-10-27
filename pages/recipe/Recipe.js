@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 
@@ -8,11 +8,37 @@ import InfoIngredienteItem from "../common/components/InfoIngredienteItem/InfoIn
 import styles from "./Styles";
 import Color from "../common/colors";
 
+import { getPLato } from "../../controllers/recetasController";
+
 export default function Recipe({ navigation, route }) {
-  const { nombre, id, imagen } = route.params;
+  const { nombre, id, imagen, data } = route.params;
 
   const [fav, setFav] = useState(false);
   const [ingrPasos, setIngrPasos] = useState(true);
+
+  
+  // const {nombre, id, imagen} = route.params;
+
+  const [listingredientes, setListIngredientes] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+      const fetchProducto = async () => {
+          const response = await getPLato(id);
+          if(response === undefined){
+          }else{
+            console.log('Ingredientes: ');
+            console.log(response);
+            setListIngredientes(response);
+            setLoading(false);
+            // setFetched(true);
+          }
+      }
+      fetchProducto()
+
+  }, []);
 
   const infoReceta = {
     tiempo: "120 min",
@@ -27,12 +53,13 @@ export default function Recipe({ navigation, route }) {
 
   let pasos = []
 
-  for (let i = 0; i < infoReceta.pasos.split(";").length; i++) {
+  // for (let i = 0; i < infoReceta.pasos.split(";").length; i++) {
+  for (let i = 0; i < data.Pasos.split(";").length; i++) {
     
     let itemPaso = (
       <View key={i} style={styles.paso}>
         <Text style={styles.pasoTitle}>Paso {i + 1}:</Text>
-        <Text style={styles.pasoDescription}>   {infoReceta.pasos.split(";")[i]}</Text>
+        <Text style={styles.pasoDescription}>   {data.Pasos.split(";")[i]}</Text>
       </View>
     )
 
@@ -80,6 +107,7 @@ export default function Recipe({ navigation, route }) {
 
   return (
     <View>
+      {loading ? <ActivityIndicator size={'large'} color={'#000000'}/> :
       <ScrollView>
         <Image
           resizeMode="stretch"
@@ -131,7 +159,7 @@ export default function Recipe({ navigation, route }) {
           </View>
         </View>
 
-        <Text style={styles.description}>{infoReceta.descripción}</Text>
+        <Text style={styles.description}>{data.Descripcion}</Text>
 
         <TouchableOpacity
           style={[
@@ -150,23 +178,24 @@ export default function Recipe({ navigation, route }) {
           <Text style={styles.description}>Porción: {infoReceta.porción}</Text>
 
           <View style={styles.infoNutricional}>
-            {ingedientesData.map((item) => {
-              return <InfoIngredienteItem key={item.nombre} data={item} />;
+            {listingredientes == undefined ? null : listingredientes.map((item) => {
+              return <InfoIngredienteItem key={item.Nombre} data={item}/>;
             })}
           </View>
         </View>
 
         <View style={ingrPasos ? { display: "none" } : {}}>
           <Text style={styles.title}>Pasos</Text>
-          <Text style={styles.description}>
+          {/* <Text style={styles.description}>
             Dificultad: {infoReceta.dificultad}
-          </Text>
+          </Text> */}
 
           <View style={styles.listaPasos}>
             {pasos}
           </View>
         </View>
       </ScrollView>
+}
     </View>
   );
 }

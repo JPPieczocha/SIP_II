@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -7,10 +7,32 @@ import InfoNutriItem from '../common/components/InfoNutriItem/InfoNutriItem'
 import styles from './Styles'
 import Color from '../common/colors'
 
+import { getProducto } from '../../controllers/productosController';
+
 
 export default function Product({navigation, route}) {
 
-    const {nombre, id, imagen} = route.params
+    const {nombre, id, imagen} = route.params;
+
+    const [listingredientes, setListIngredientes] = useState([]);
+
+    useEffect(() => {
+
+        const fetchProducto = async () => {
+            const response = await getProducto(id);
+            if(response === undefined){
+            }else{
+              console.log('Ingredientes: ');
+              console.log(response);
+              setListIngredientes(response);
+              // setFetched(true);
+            }
+        }
+        fetchProducto()
+
+    }, []);
+
+    // const {nombre, id, imagen} = route.params
 
     const [fav, setFav] = useState(false)
 
@@ -85,10 +107,10 @@ export default function Product({navigation, route}) {
                 <Text style={styles.description}>Porción: 25gr</Text>
                 
                 <View style={styles.infoNutricional}>
-                    {
-                        infoData.map(item => {
+                    {listingredientes === undefined ? null :
+                        listingredientes.map(item => {
                             return(
-                                <InfoNutriItem key={item.nombre} data={item}/>
+                                <InfoNutriItem key={item.Nombre} data={item}/>
                             )
                         })
                     }

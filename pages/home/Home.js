@@ -1,11 +1,20 @@
-import React from "react";
-import { Text, View, Image, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, Image, ScrollView, ActivityIndicator} from "react-native";
 
 import Carousel from "../common/components/Carousel/Carousel";
 
 import styles from "./Styles";
 
 import logoSafeDiet from "../../assets/logo.png";
+import { dummyBD } from '../../controllers/commonController';
+// import { getAllPlatos } from "../../controllers/recetasController";
+import { historial } from "../../controllers/commonController";
+import { favoritos } from "../../controllers/commonController";
+import { getAllPlatos } from '../../controllers/recetasController';
+import { getAllProductos } from '../../controllers/productosController';
+
+
+
 
 const carouselData = [
   {
@@ -88,9 +97,98 @@ const carouselData = [
   },
 ];
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ navigation}) {
+
+  const [fetched, setFetched] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const [listFavoritos,setFavoritos] = useState();
+  const [listPlatos, setListPlatos] = useState();
+  const [listProductos, setListProductos] = useState();
+
+
+  useEffect(
+    () => {
+      let timer1 = setTimeout(() => {
+
+        setSeconds(seconds+1);
+        if(!fetched){
+          console.log('ENTRÉ FETCH FAVORITOS');
+          
+          let data = "1"
+  
+          const fetchFavoritos = async () => {
+            const response = await favoritos(data);
+            if(response === undefined){
+            }else{
+              console.log('Favoritos: ');
+              console.log(response);
+              setFavoritos(response);
+              // setFetched(true);
+            }
+          }
+  
+          const fetchPlatos = async () => {
+            const response = await getAllPlatos();
+            if(response === undefined){
+            }else{
+              console.log('platos: ');
+              console.log(response);
+              setListPlatos(response);
+              // setFetched(true);
+            }
+          }
+  
+          const fetchProductos = async () => {
+            const response = await getAllProductos();
+            if(response === undefined){
+            }else{
+              console.log('PRODUCTOS: ');
+              console.log(response);
+              setListProductos(response);
+              // setFetched(true);
+            }
+          }
+  
+          fetchFavoritos();
+          fetchPlatos();
+          fetchProductos();
+          setFetched(true);
+          setLoading(false);
+        }else{
+          console.log('TIRÉ CONSULTA DUMMY');
+          const fetchDummy = async () => {
+            const response = await dummyBD();
+            if(response === undefined){
+            }else{
+              console.log(response);
+              setFetched(true);
+            }
+          }
+          fetchDummy();
+        }
+      }, 20000);
+
+      // this will clear Timeout
+      // when component unmount like in willComponentUnmount
+      // and show will not change to true
+      return () => {
+        clearTimeout(timer1);
+      };
+    },
+    // useEffect will run only one time with empty []
+    // if you pass a value to array,
+    // like this - [data]
+    // than clearTimeout will run every time
+    // this value changes (useEffect re-run)
+    [seconds]
+  );
+
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {loading ? <ActivityIndicator size={'large'} color={'#000000'}/>:  <View>
       <View style={styles.header}>
         <View style={styles.titleContainer}>
           <Text
@@ -107,12 +205,18 @@ function HomeScreen({ navigation }) {
       </View>
 
       <View>
-        <Carousel key={0} data={carouselData[0]} navigation={navigation} />
-        <Carousel key={1} data={carouselData[1]} navigation={navigation} />
-        <Carousel key={2} data={carouselData[2]} navigation={navigation} />
+        {/* <Carousel key={0} data={carouselData[0]} navigation={navigation} /> */}
+        {/* <Carousel key={1} data={carouselData[1]} navigation={navigation} /> */}
+        <Carousel key={0} data={listFavoritos} navigation={navigation} type={'recipe'} title={'Favoritos'} />
+        <Carousel key={1} data={listPlatos} navigation={navigation} type={'recipe'} title={'Platos recomendados'} />
+        <Carousel key={2} data={listProductos} navigation={navigation} type={'product'} title={'Productos recomendados'} />
+        
+        {/* <Carousel key={2} data={carouselData[2]} navigation={navigation} /> */}
       </View>
 
       <Text></Text>
+      </View>
+      }
     </ScrollView>
   );
 }

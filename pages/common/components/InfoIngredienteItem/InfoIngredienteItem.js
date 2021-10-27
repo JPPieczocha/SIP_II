@@ -5,9 +5,9 @@ import styles from './Styles'
 export default function InfoIngredienteItem({data}) {
     return (
         <View style={styles.container}>
-            <Text style={styles.text} adjustsFontSizeToFit={true} numberOfLines={1}>{data.emoji}</Text>
-            <Text style={styles.text} adjustsFontSizeToFit={true} numberOfLines={1}>{data.nombre}</Text>
-            <Text style={styles.textValue} adjustsFontSizeToFit={true} numberOfLines={1}>{data.valor}</Text>
+            {/* <Text style={styles.text} adjustsFontSizeToFit={true} numberOfLines={1}>{data.emoji}</Text> */}
+            <Text style={styles.text} adjustsFontSizeToFit={true} numberOfLines={1}>{data.Nombre}</Text>
+            <Text style={styles.textValue} adjustsFontSizeToFit={true} numberOfLines={1}>{data.Cantidad}</Text>
         </View>
     )
 }
