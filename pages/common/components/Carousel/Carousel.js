@@ -11,7 +11,7 @@ export default function Carousel({navigation, data, type, title}) {
             <Text style={styles.titleText}>{title}</Text>
 
             <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                {data === undefined ? null : data.map(item => <FoodItem key={type + item.ID.toString()} data={item} navigation={navigation}/>)}
+                {data === undefined ? null : data.map(item => <FoodItem key={type + item.ID.toString()} type={type} data={item} navigation={navigation}/>)}
 
             </ScrollView>
         </View>
