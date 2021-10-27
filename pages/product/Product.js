@@ -13,19 +13,19 @@ import { getProducto } from '../../controllers/productosController';
 
 export default function Product({navigation, route}) {
 
-    const {nombre, id, imagen} = route.params;
+    const { data } = route.params;
 
-    const [listingredientes, setListIngredientes] = useState([]);
+    const [listInfoNutr, setListInfoNutr] = useState([]);
 
     useEffect(() => {
 
         const fetchProducto = async () => {
-            const response = await getProducto(id);
+            const response = await getProducto(data.ID);
             if(response === undefined){
             }else{
-              console.log('Ingredientes: ');
+              console.log('InfoNutricional: ');
               console.log(response);
-              setListIngredientes(response);
+              setListInfoNutr(response);
               // setFetched(true);
             }
         }
@@ -78,7 +78,7 @@ export default function Product({navigation, route}) {
 
     return (
         <View>
-            <ModalWarning navigation={navigation} msg={"este producto"} show={true}/>
+            <ModalWarning navigation={navigation} msg={"este producto"} show={false}/>
 
             <ScrollView>
 
@@ -90,7 +90,7 @@ export default function Product({navigation, route}) {
                         justifyContent:'flex-end'
                     }}
                     source={{
-                        uri: imagen
+                        uri: data.Foto
                     }}
                 />
 
@@ -102,16 +102,16 @@ export default function Product({navigation, route}) {
                     <Ionicons name={fav? 'heart' : 'heart-outline'} color={Color.secondary} size={32} />
                 </TouchableOpacity>
 
-                <Text style={styles.title}  adjustsFontSizeToFit={true} numberOfLines={1}>{nombre}</Text>
+                <Text style={styles.title}  adjustsFontSizeToFit={true} numberOfLines={2}>{data.Nombre}</Text>
 
-                <Text style={styles.description}>Ullamco sit irure incididunt laborum nostrud nostrud enim. Veniam quis nulla sit eiusmod magna mollit labore.</Text>
+                <Text style={styles.description}>{data.Descripcion}</Text>
 
                 <Text style={styles.title}>Información Nutricional</Text>
                 <Text style={styles.description}>Porción: 25gr</Text>
                 
                 <View style={styles.infoNutricional}>
-                    {listingredientes === undefined ? null :
-                        listingredientes.map(item => {
+                    {listInfoNutr === undefined ? null :
+                        listInfoNutr.map(item => {
                             return(
                                 <InfoNutriItem key={item.Nombre} data={item}/>
                             )

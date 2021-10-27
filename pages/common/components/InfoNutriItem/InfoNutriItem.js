@@ -5,8 +5,8 @@ import styles from './Styles'
 export default function InfoNutriItem({data}) {
     return (
         <View style={styles.container}>
-            <Text style={styles.text} adjustsFontSizeToFit={true} numberOfLines={1}>{data.nombre}</Text>
-            <Text style={styles.textValue}>{data.valor}</Text>
+            <Text style={styles.text} adjustsFontSizeToFit={true} numberOfLines={1}>{data.Nombre}</Text>
+            <Text style={styles.textValue}>{data.Cantidad}</Text>
         </View>
     )
 }
