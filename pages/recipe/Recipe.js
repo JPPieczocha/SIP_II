@@ -4,6 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 
 import InfoIngredienteItem from "../common/components/InfoIngredienteItem/InfoIngredienteItem";
+import ModalWarning from "../common/components/ModalWarningFood/ModalWarningFood";
 
 import styles from "./Styles";
 import Color from "../common/colors";
@@ -107,7 +108,11 @@ export default function Recipe({ navigation, route }) {
 
   return (
     <View>
+      <ModalWarning navigation={navigation} msg={"esta receta"} show={false}/>
+      {/* SE ROMPE ACA */}
       {loading ? <ActivityIndicator size={'large'} color={'#000000'}/> :
+
+
       <ScrollView>
         <Image
           resizeMode="stretch"
@@ -174,8 +179,8 @@ export default function Recipe({ navigation, route }) {
         </TouchableOpacity>
 
         <View style={!ingrPasos ? { display: "none" } : {}}>
-          <Text style={styles.title}>Información Nutricional</Text>
-          <Text style={styles.description}>Porción: {infoReceta.porción}</Text>
+          <Text style={styles.title}>Ingredientes</Text>
+          <Text style={styles.description}></Text>
 
           <View style={styles.infoNutricional}>
             {listingredientes == undefined ? null : listingredientes.map((item) => {
@@ -193,6 +198,7 @@ export default function Recipe({ navigation, route }) {
           <View style={styles.listaPasos}>
             {pasos}
           </View>
+          
         </View>
       </ScrollView>
 }

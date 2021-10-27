@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     container: {
         width: '27%',
         aspectRatio: 1/1,
-        backgroundColor: Color.primaryv2,
+        backgroundColor: Color.extra,
         borderRadius: 25,
         margin: 7,
         padding: 3,
