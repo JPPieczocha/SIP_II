@@ -12,7 +12,7 @@ import Color from "../common/colors";
 import { getPLato } from "../../controllers/recetasController";
 
 export default function Recipe({ navigation, route }) {
-  const { nombre, id, imagen, data } = route.params;
+  const { data } = route.params;
 
   const [fav, setFav] = useState(false);
   const [ingrPasos, setIngrPasos] = useState(true);
@@ -27,7 +27,7 @@ export default function Recipe({ navigation, route }) {
   useEffect(() => {
 
       const fetchProducto = async () => {
-          const response = await getPLato(id);
+          const response = await getPLato(data.ID);
           if(response === undefined){
           }else{
             console.log('Ingredientes: ');
@@ -122,7 +122,7 @@ export default function Recipe({ navigation, route }) {
             justifyContent: "flex-end",
           }}
           source={{
-            uri: imagen,
+            uri: data.Foto,
           }}
         />
 
@@ -149,18 +149,18 @@ export default function Recipe({ navigation, route }) {
           adjustsFontSizeToFit={true}
           numberOfLines={1}
         >
-          {nombre}
+          {data.Nombre}
         </Text>
 
         <View style={styles.iconsContainer}>
           <View style={styles.iconItem}>
             <Ionicons name={"timer-outline"} color={Color.primary} size={32} />
-            <Text>{infoReceta.tiempo}</Text>
+            <Text>{data.Tiempo}</Text>
           </View>
 
           <View style={styles.iconItem}>
             <Fontisto name={"fire"} color={Color.secondary} size={32} />
-            <Text>{infoReceta.calorías}</Text>
+            <Text>{data.Kcal}</Text>
           </View>
         </View>
 
