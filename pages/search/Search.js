@@ -127,6 +127,7 @@ const Search = ({ navigation }) => {
                 if(response === undefined){
                 }else{
                   console.log('Productos busqueda: ');
+                  setProductosList(response);
                   console.log(response);
                 }
             }
@@ -136,6 +137,7 @@ const Search = ({ navigation }) => {
                 if(response === undefined){
                 }else{
                   console.log('Platos busqueda: ');
+                  setPlatoslList(response);
                   console.log(response);
                 }
             }
@@ -148,6 +150,7 @@ const Search = ({ navigation }) => {
                 if(response === undefined){
                 }else{
                   console.log('Platos busqueda: ');
+                  setPlatoslList(response);
                   console.log(response);
                 }
             }
@@ -159,12 +162,12 @@ const Search = ({ navigation }) => {
                 if(response === undefined){
                 }else{
                   console.log('Productos busqueda: ');
+                  setProductosList(response);
                   console.log(response);
                 }
             }
             fetchProductos();
         }
-
     }
 
     const handleApplyFilter = () => {
@@ -303,7 +306,7 @@ const Search = ({ navigation }) => {
             :
             <View style={styles.main}>
                 <FlatList
-                    data={historialList}
+                    data={PlatosList.concat(ProductosList)}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={(item) => (
                         <FoodSearch navigation={navigation} data={item.item} />
