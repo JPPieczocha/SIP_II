@@ -113,10 +113,7 @@ function HomeScreen({ navigation}) {
             const response = await favoritos(data);
             if(response === undefined){
             }else{
-              console.log('Favoritos: ');
-              console.log(response);
               setFavoritos(response);
-              // setFetched(true);
             }
           }
   
@@ -124,10 +121,7 @@ function HomeScreen({ navigation}) {
             const response = await getAllPlatos();
             if(response === undefined){
             }else{
-              console.log('platos: ');
-              console.log(response);
               setListPlatos(response);
-              // setFetched(true);
             }
           }
   
@@ -135,10 +129,7 @@ function HomeScreen({ navigation}) {
             const response = await getAllProductos();
             if(response === undefined){
             }else{
-              console.log('PRODUCTOS: ');
-              console.log(response);
               setListProductos(response);
-              // setFetched(true);
             }
           }
   
