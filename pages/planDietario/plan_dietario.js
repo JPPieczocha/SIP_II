@@ -8,7 +8,7 @@ import { useIsFocused } from '@react-navigation/native'
 import stylesPlanDietario from './Styles'
 import { FontAwesome5 } from '@expo/vector-icons';
 import StylePlanDietario from './Styles';
-
+import { AntDesign } from '@expo/vector-icons'
 
 function PlanDietarioScreen(props) {
     const [planDietario, setPlanDietario] = useState([]);
@@ -164,34 +164,44 @@ function PlanDietarioScreen(props) {
             >
                 {patologiasUsuario.aptoCeliaco ? 
                 <View
-                    style={stylesPlanDietario.container_patologias}
-                >
-                    <Text
-                        style={stylesPlanDietario.patologias_text}
-                    >Celiaco</Text>
-                </View> : null}
-                {patologiasUsuario.aptoDiabetes1 || patologiasUsuario.aptoDiabetes2 ? 
-                <View
-                    style={stylesPlanDietario.container_patologias}
+                    style={{
+                        ...stylesPlanDietario.container_patologias,
+                    }}
                 >
                     <Text
                         style={{
                             ...stylesPlanDietario.patologias_text,
-                            width: 55,
+                        }}
+                    >Celiaco</Text>
+                    <AntDesign name="checkcircleo" size={16} color="#2BA174" />
+                </View> : null}
+                {patologiasUsuario.aptoDiabetes1 || patologiasUsuario.aptoDiabetes2 ? 
+                <View
+                    style={{
+                        ...stylesPlanDietario.container_patologias,
+                    }}
+                >
+                    <Text
+                        style={{
+                            ...stylesPlanDietario.patologias_text,
                         }}
                     >
                         Diabetes
                     </Text>
+                    <AntDesign name="checkcircleo" size={16} color="#2BA174" />
                 </View> : null}
                 {patologiasUsuario.aptoObesidad ? 
                 <View
                     style={
-                        {...stylesPlanDietario.container_patologias,
-                            width: 70,
+                        {
+                            ...stylesPlanDietario.container_patologias,
                         }}
                 >
                     <Text
-                    style={stylesPlanDietario.patologias_text}>Obesidad</Text>
+                        style={{
+                            ...stylesPlanDietario.patologias_text,
+                        }}>Obesidad</Text>
+                    <AntDesign name="checkcircleo" size={16} color="#2BA174" />
                 </View> : null}
             </View>
         )
