@@ -4,32 +4,23 @@ import styles from "./Styles";
 
 export default function FoodItem({ navigation, data }) {
   const handleTouch = () => {
-    // if (data.type === "product") {
-    //   navigation.navigate("Product", {
-    //     nombre: data.title,
-    //     id: data.id,
-    //     imagen: data.imagen,
-    //   });
-    // } else {
-    //   navigation.navigate("Recipe", {
-    //     nombre: data.title,
-    //     id: data.id,
-    //     imagen: data.imagen,
-    //   });
-    // }
 
-    if (data.Tiempo == undefined) {
+    if (!data.hasOwnProperty('Pasos')) {
       navigation.navigate("Product", {
         nombre: data.Nombre,
         id: data.ID,
         imagen: data.Foto,
+        data: data
       });
     } else {
       navigation.navigate("Recipe", {
         nombre: data.Nombre,
         id: data.ID,
         imagen: data.Foto,
+        data: data
+
       });
+      console.log('ENTRE');
     }
   };
 
