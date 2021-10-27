@@ -159,7 +159,7 @@ function HomeScreen({ navigation}) {
           }
           fetchDummy();
         }
-      }, 20000);
+      }, 5000);
 
       // this will clear Timeout
       // when component unmount like in willComponentUnmount
