@@ -301,7 +301,7 @@ const Search = ({ navigation }) => {
                     )}
                     ListEmptyComponent={()=>{
                         if(loading){
-                            return <ActivityIndicator size={'large'} color={'#000000'}/>
+                            return <ActivityIndicator size={'large'} color={colors.secondary}/>
                         }
                         return <Text style={{marginHorizontal: 10}}>No existen busquedas recientes</Text>
                     }}
