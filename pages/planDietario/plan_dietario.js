@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal } from 'react-native';
 import styles from '../common/styles'
 import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
@@ -16,6 +16,7 @@ function PlanDietarioScreen(props) {
     const [planDietario, setPlanDietario] = useState([]);
     const [patologiasUsuario, setPatologiasUsuario] = useState({});
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
     const scrollRef = React.useRef();
 
     function logResponseError(context,error){
@@ -44,6 +45,8 @@ function PlanDietarioScreen(props) {
 
     async function getPlan(){
         setLoading(true)
+
+        
         await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
         .then(function(response){
             setPlanDietario(response.data)
@@ -235,8 +238,9 @@ function PlanDietarioScreen(props) {
             if(loggedUserData.patologias.find((e) => e.patologias.codigo === "obesidad")){
                 aptoObesidad = true
             }
-
-        } 
+        } else {
+            setShowModal(true)
+        }
         setPatologiasUsuario({
             aptoCeliaco: aptoCeliaco,
             aptoDiabetes1: aptoDiabetes1,
@@ -264,6 +268,25 @@ function PlanDietarioScreen(props) {
 
     return (
         <View>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={showModal}
+                onRequestClose={() => props.navigation.goBack()} //Back de android
+            >
+                <View style={stylesPlanDietario.modal_filter}>
+                    <View style={stylesPlanDietario.modal_container}>
+                        <Text style={stylesPlanDietario.modal_title}>Plan dietario</Text>
+                        <Text style={stylesPlanDietario.modal_description}>
+                            Debe cargar patologías en su perfíl para ver el plan dietario.
+                        </Text>
+
+                        <TouchableOpacity style={stylesPlanDietario.modal_button} onPress={() => setShowModal(false)}>
+                            <Text style={stylesPlanDietario.modal_button_text}>Aceptar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             {loading ? <ActivityIndicator 
                 size={'large'} 
                 style={{

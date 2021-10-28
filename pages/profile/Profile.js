@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, Alert, ActivityIndicator } from 'react-native';
+import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal } from 'react-native';
 import styles from '../common/styles'
 import stylesProfile from './Styles'
 import logo from '../../assets/logo.jpeg';
@@ -17,6 +17,7 @@ function ProfileScreen(props) {
     const [patologias, setPatologias] = useState([])
     const [patologiasUsuario, setPatologiasUsuario] = useState([])
     const [loading, setLoading] = useState(true)
+    const [showModal, setShowModal] = useState(false)
 
     function logResponseError(context,error){
         console.log("Error ocurrido en contexto: ", context)
@@ -225,11 +226,7 @@ function ProfileScreen(props) {
                 }
             }
         }
-        props.onProfileUpdate();
-        Alert.alert(
-            "Patologías",
-            "Patologías actualizadas!"
-        )
+        setShowModal(true)
     }
 
     function updatePatologia(idPatologia){
@@ -256,6 +253,11 @@ function ProfileScreen(props) {
         
     }
 
+    function okModal(){
+        setShowModal(false);
+        props.onProfileUpdate();
+    }
+
     return (
         <View style={{
             ...styles.container,
@@ -263,6 +265,27 @@ function ProfileScreen(props) {
             width:"100%",
             height:"100%",
             }} showsVerticalScrollIndicator={false}>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={showModal}
+                onRequestClose={() => props.navigation.goBack()} //Back de android
+            >
+                <View style={stylesProfile.modal_filter}>
+                    <View style={stylesProfile.modal_container}>
+                        <Text style={stylesProfile.modal_title}>Patologias</Text>
+                        <Text style={stylesProfile.modal_description}>
+                            ¡Patologías actualizadas!
+                        </Text>
+
+                        <TouchableOpacity style={stylesProfile.modal_button} onPress={okModal}>
+                            <Text style={stylesProfile.modal_button_text}>Aceptar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
             {loading ? <ActivityIndicator size={'large'} color={Color.secondary}/>: 
             
             <ScrollView 
