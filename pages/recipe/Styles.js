@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     infoNutricional:{
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        minHeight: '90%'
     },
 
     listaPasos: {

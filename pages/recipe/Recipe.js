@@ -198,29 +198,31 @@ export default function Recipe({ navigation, route }) {
             Ver {ingrPasos ? "Pasos" : "Ingredientes"}
           </Text>
         </TouchableOpacity>
+        
+        {
+          ingrPasos ? 
+            <>
+              <Text style={styles.title}>Ingredientes</Text>
+              <Text style={styles.description}></Text>
 
-        <View style={!ingrPasos ? { display: "none" } : {}}>
-          <Text style={styles.title}>Ingredientes</Text>
-          <Text style={styles.description}></Text>
+              <View style={styles.infoNutricional}>
+                {listingredientes == undefined ? null : listingredientes.map((item) => {
+                  return <InfoIngredienteItem key={item.Nombre} data={item}/>;
+                })}
+              </View>
+            </>
+            :
+            <>
+              <Text style={styles.title}>Pasos</Text>
+              {/* <Text style={styles.description}>
+                Dificultad: {infoReceta.dificultad}
+              </Text> */}
 
-          <View style={styles.infoNutricional}>
-            {listingredientes == undefined ? null : listingredientes.map((item) => {
-              return <InfoIngredienteItem key={item.Nombre} data={item}/>;
-            })}
-          </View>
-        </View>
-
-        <View style={ingrPasos ? { display: "none" } : {}}>
-          <Text style={styles.title}>Pasos</Text>
-          {/* <Text style={styles.description}>
-            Dificultad: {infoReceta.dificultad}
-          </Text> */}
-
-          <View style={styles.listaPasos}>
-            {pasos}
-          </View>
-          
-        </View>
+              <View style={styles.listaPasos}>
+                {pasos}
+              </View>
+            </>
+        }
       </ScrollView>
 }
     </View>

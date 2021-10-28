@@ -24,13 +24,12 @@ const styles = StyleSheet.create({
     },
     mainIput:{
         height: '10%',
-        flexDirection: 'row',
 
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center'
     },
     input:{
-        width: '70%',
+        width: '90%',
         height: 40,
         paddingHorizontal: 10,
 
@@ -41,15 +40,9 @@ const styles = StyleSheet.create({
     },
     iconFilter:{
         width: '15%',
-        height: 40,
-
-        borderColor: 'black',
-        borderWidth:1,
+        position: 'absolute',
+        right: 20,
         alignItems: 'center',
-        justifyContent: 'center'
-    },
-    iconFilterText:{
-        color: 'black'
     },
 
     main:{

@@ -30,7 +30,7 @@ export default function FoodItem({ navigation, data }) {
       <Text
         style={styles.tagText}
         adjustsFontSizeToFit={true}
-        numberOfLines={1}
+        numberOfLines={2}
       >
         {data.Nombre}
       </Text>

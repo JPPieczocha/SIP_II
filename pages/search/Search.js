@@ -224,7 +224,7 @@ const Search = ({ navigation }) => {
                                     onPress={() => setSugarFree(!sugarFree)}
                                 >
                                     <Text style={{ color: colors.secondaryv2 }}>
-                                        {sugarFree ? "X" : ""}
+                                        {sugarFree ? "✔" : ""}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -237,7 +237,7 @@ const Search = ({ navigation }) => {
                                     onPress={() => setTaccFree(!taccFree)}
                                 >
                                     <Text style={{ color: colors.secondaryv2 }}>
-                                        {taccFree ? "X" : ""}
+                                        {taccFree ? "✔" : ""}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -250,7 +250,7 @@ const Search = ({ navigation }) => {
                                     onPress={() => setLowCal(!lowCal)}
                                 >
                                     <Text style={{ color: colors.secondaryv2 }}>
-                                        {lowCal ? "X" : ""}
+                                        {lowCal ? "✔" : ""}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -278,12 +278,12 @@ const Search = ({ navigation }) => {
                     onChangeText={(text) => setSearchInput(text)}
                     keyboardType={"default"}
                     onSubmitEditing={() => handleSearch()}
-                ></TextInput>
+                />
                 <TouchableOpacity
                     style={styles.iconFilter}
                     onPress={() => setShowFilter(true)}
                 >
-                    <Text style={styles.iconFilterText}>F</Text>
+                    <Ionicons name='filter-sharp' size={24} color={colors.secondary}/>
                 </TouchableOpacity>
             </View>
 

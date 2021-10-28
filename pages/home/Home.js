@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View, Image, ScrollView, ActivityIndicator} from "react-native";
 
 import Carousel from "../common/components/Carousel/Carousel";
-
+import Color from '../common/colors'
 import styles from "./Styles";
 
 import logoSafeDiet from "../../assets/logo.png";
@@ -178,8 +178,9 @@ function HomeScreen({ navigation}) {
 
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {loading ? <ActivityIndicator size={'large'} color={'#000000'}/>:  <View>
+      <>
+      {loading ? <View style={{ flex: 1, justifyContent: "center"}}><ActivityIndicator size={'large'} color={Color.secondary}/></View>:
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <View style={styles.titleContainer}>
           <Text
@@ -206,9 +207,9 @@ function HomeScreen({ navigation}) {
       </View>
 
       <Text></Text>
-      </View>
+      </ScrollView>
       }
-    </ScrollView>
+      </>
   );
 }
 
