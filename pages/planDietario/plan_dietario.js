@@ -272,7 +272,6 @@ function PlanDietarioScreen(props) {
                 animationType="fade"
                 transparent={true}
                 visible={showModal}
-                onRequestClose={() => props.navigation.goBack()} //Back de android
             >
                 <View style={stylesPlanDietario.modal_filter}>
                     <View style={stylesPlanDietario.modal_container}>
