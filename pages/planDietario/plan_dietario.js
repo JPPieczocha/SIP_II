@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
 import styles from '../common/styles'
 import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
@@ -9,10 +9,13 @@ import stylesPlanDietario from './Styles'
 import { FontAwesome5 } from '@expo/vector-icons';
 import StylePlanDietario from './Styles';
 import { AntDesign } from '@expo/vector-icons'
+import Fontisto from "react-native-vector-icons/Fontisto";
+import Color from "../common/colors";
 
 function PlanDietarioScreen(props) {
     const [planDietario, setPlanDietario] = useState([]);
     const [patologiasUsuario, setPatologiasUsuario] = useState({});
+    const [loading, setLoading] = useState(true);
     const scrollRef = React.useRef();
 
     function logResponseError(context,error){
@@ -40,6 +43,7 @@ function PlanDietarioScreen(props) {
     }
 
     async function getPlan(){
+        setLoading(true)
         await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
         .then(function(response){
             setPlanDietario(response.data)
@@ -47,6 +51,7 @@ function PlanDietarioScreen(props) {
                 y: 0,
                 animated: true,
             });
+            setLoading(false)
         }).catch(function(error) {
             logResponseError("Get Plan Dietario",error)
         })
@@ -103,11 +108,11 @@ function PlanDietarioScreen(props) {
             <View
                 style={StylePlanDietario.container_plan_detail}
             >
-                <FontAwesome5 
-                    name="fire" 
-                    size={24} 
-                    color="#D15493"
-                    style={{
+            <Fontisto 
+                name={"fire"} 
+                color={Color.secondary} 
+                size={24} 
+                style={{
                         paddingTop: 8,
                         paddingBottom: 8,
                     }}
@@ -258,41 +263,52 @@ function PlanDietarioScreen(props) {
     }, []);
 
     return (
-        <ScrollView ref={scrollRef}>
-            <View style={styles.formContainer}>
-                <View 
-                    style={styles.formHeader}
-                >
-                    <Image
-                    style={styles.logoIcon}
-                    source={logo} />
-                </View>  
-                
-                <View 
-                    style={stylesPlanDietario.container}>
-                    <Text
-                        style={stylesPlanDietario.plan_dietario_title}
+        <View>
+            {loading ? <ActivityIndicator 
+                size={'large'} 
+                style={{
+                    height:"100%"
+                }}
+                color={Color.secondary}
+            />: 
+             <ScrollView ref={scrollRef}>
+                <View style={styles.formContainer}>
+                    <View 
+                        style={styles.formHeader}
                     >
-                        Plan Dietario
-                    </Text>
+                        <Image
+                        style={styles.logoIcon}
+                        source={logo} />
+                    </View>  
                     
-                    {renderPatologiasText()}
-                    
-                    {renderPlanDetails()}
-
-                    {renderPlan(planDietario)}
-                </View>
-
-                <View style={styles.centeredContent}>
-                    <TouchableOpacity 
-                        onPress={getPlan} 
-                        style={{...styles.primaryButton, marginBottom:12}}>
+                    <View 
+                        style={stylesPlanDietario.container}>
                         <Text
-                            style={styles.primaryButtonText}>Generar otro Plan!</Text>
-                    </TouchableOpacity>
+                            style={stylesPlanDietario.plan_dietario_title}
+                        >
+                            Plan Dietario
+                        </Text>
+                        
+                        {renderPatologiasText()}
+                        
+                        {renderPlanDetails()}
+    
+                        {renderPlan(planDietario)}
+                    </View>
+    
+                    <View style={styles.centeredContent}>
+                        <TouchableOpacity 
+                            onPress={getPlan} 
+                            style={{...styles.primaryButton, marginBottom:12}}>
+                            <Text
+                                style={styles.primaryButtonText}>Generar otro Plan!</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+            }
+        </View>
+       
     );
 }
 

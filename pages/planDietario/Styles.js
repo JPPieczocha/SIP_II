@@ -55,9 +55,9 @@ const StylePlanDietario = StyleSheet.create({
     },
     patologias_text: {
         fontFamily: 'SimplyDiet',
-        fontSize:14,
+        fontSize:16,
         width: "80%",
-        textAlign: "center"
+        textAlign: "center",
     },
     totals_details:{
         fontFamily: 'SimplyDiet',

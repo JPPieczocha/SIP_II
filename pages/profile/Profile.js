@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, Alert, ActivityIndicator } from 'react-native';
 import styles from '../common/styles'
 import stylesProfile from './Styles'
 import logo from '../../assets/logo.jpeg';
-
+import Color from "../common/colors";
 import axios from 'axios'
 import config from '../../config';
 
@@ -16,6 +16,7 @@ function ProfileScreen(props) {
     const [obesidad, setObesidadSelection] = useState(false);
     const [patologias, setPatologias] = useState([])
     const [patologiasUsuario, setPatologiasUsuario] = useState([])
+    const [loading, setLoading] = useState(true)
 
     function logResponseError(context,error){
         console.log("Error ocurrido en contexto: ", context)
@@ -74,6 +75,7 @@ function ProfileScreen(props) {
 
     async function fetchData(){
         await getPatologias();
+        setLoading(false)
     }
 
     React.useEffect(() => {
@@ -158,6 +160,7 @@ function ProfileScreen(props) {
     }
 
     async function updatePatologias(){
+        setLoading(true)
         let userHadDiabetes1 = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_1") != undefined ? true : false;
         let userHadDiabetes2 = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_2") != undefined ? true : false;
         let userHadCeliaquia = patologiasUsuario.find((e) => e.patologias.codigo === "celiaquia") != undefined ? true : false;
@@ -254,78 +257,100 @@ function ProfileScreen(props) {
     }
 
     return (
-        <ScrollView>
-            <View style={styles.formContainer}>
-                <View style={styles.formHeader}>
-                    <Image
-                    style={styles.logoIcon}
-                    source={logo} />
-                </View>
-
-                <Text
-                    style={{
-                        ...stylesProfile.profile_title,
-                        textAlign:"center"  
-                    }}
-                >
-                    Perfil
-                </Text>
-                
-                <View style={styles.formGroup}>
-                    <Text
-                        style={{
-                            ...styles.formInputLabel
-                        }}
-                    >Nombre y Apellido</Text>
-                    <TextInput
-                        editable={false}
-                        style={styles.formInput}
-                        onChangeText={text => onChangeText(text)}
-                        value={fullName}
-                        />
-                </View>
-
-                <View style={styles.formGroup}>
-                    <Text
-                        style={{
-                            ...styles.formInputLabel
-                        }}
-                    >Correo electrónico</Text>
-                    <TextInput
-                        editable={false}
-                        style={styles.formInput}
-                        value={email}
-                        />
-                </View>
-                
+        <View style={{
+            ...styles.container,
+            display:"flex",
+            width:"100%",
+            height:"100%",
+            }} showsVerticalScrollIndicator={false}>
+            {loading ? <ActivityIndicator size={'large'} color={Color.secondary}/>: 
+            
+            <ScrollView 
+                style={{
+                    width:"100%"
+                }}
+            >
                 <View style={
                     {
-                        ...styles.formGroup,
-                        paddingTop:20
-                    }}>
+                        ...styles.formContainer,
+                        display:"flex",
+                        width:"100%",
+                        paddingLeft:14,
+                        paddingRight: 14
+                    }
+                    }>
+                    <View style={styles.formHeader}>
+                        <Image
+                        style={styles.logoIcon}
+                        source={logo} />
+                    </View>
+
                     <Text
                         style={{
-                            ...stylesProfile.patologias_title
+                            ...stylesProfile.profile_title,
+                            textAlign:"center"  
                         }}
-                    >Patologías</Text>
-                    {renderPatologias(patologias)}
+                    >
+                        Perfil
+                    </Text>
                     
-                </View>
+                    <View style={styles.formGroup}>
+                        <Text
+                            style={{
+                                ...styles.formInputLabel
+                            }}
+                        >Nombre y Apellido</Text>
+                        <TextInput
+                            editable={false}
+                            style={styles.formInput}
+                            onChangeText={text => onChangeText(text)}
+                            value={fullName}
+                            />
+                    </View>
 
-                <View style={styles.centeredContent}>
-                    <TouchableOpacity 
-                        onPress={updatePatologias} 
-                        style={{
-                            ...styles.primaryButton,
-                            marginTop:8,
-                            marginBottom: 20
+                    <View style={styles.formGroup}>
+                        <Text
+                            style={{
+                                ...styles.formInputLabel
+                            }}
+                        >Correo electrónico</Text>
+                        <TextInput
+                            editable={false}
+                            style={styles.formInput}
+                            value={email}
+                            />
+                    </View>
+                    
+                    <View style={
+                        {
+                            ...styles.formGroup,
+                            paddingTop:20
                         }}>
                         <Text
-                            style={styles.primaryButtonText}>Guardar</Text>
-                    </TouchableOpacity>
+                            style={{
+                                ...stylesProfile.patologias_title
+                            }}
+                        >Patologías</Text>
+                        {renderPatologias(patologias)}
+                        
+                    </View>
+
+                    <View style={styles.centeredContent}>
+                        <TouchableOpacity 
+                            onPress={updatePatologias} 
+                            style={{
+                                ...styles.primaryButton,
+                                marginTop:8,
+                                marginBottom: 20
+                            }}>
+                            <Text
+                                style={styles.primaryButtonText}>Guardar</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+            }
+        </View>
     );
 }
 
