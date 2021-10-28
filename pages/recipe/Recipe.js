@@ -74,19 +74,20 @@ export default function Recipe({ navigation, route }) {
     let userDummy = {
         Usuario: 1,
         Celiaquia: 1,
-        Tipo1: 1,
+        Tipo1: 0,
         Tipo2: 0,
-        Obesidad: 1,
+        Obesidad: 0,
         Nombre: "TESTE",
         Mail: "test@gmail.com",
         Clave: "123"
     }
+    
 
-    if(userDummy.Celiaquia == data.Celiaquia && data.Celiaquia === 1) return true;
-    if(userDummy.Tipo1 == data.Tipo1 && data.Tipo1 === 1) return true;
-    if(userDummy.Tipo2 == data.Tipo2 && data.Tipo2 === 1) return true;
-    if(userDummy.Obesidad == data.Obesidad && data.Obesidad === 1) return true;
-    return false;
+    if (userDummy.Celiaquia == 1 && data.Celiquia == 0) return true
+    if (userDummy.Tipo1 == 1 && data.Tipo1 == 0) return true
+    if (userDummy.Tipo2 == 1 && data.Tipo2 == 0) return true
+    if (userDummy.Obesidad == 1 && data.Obesidad == 0) return true
+	return false
 
 }
 
