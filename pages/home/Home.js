@@ -167,6 +167,17 @@ function HomeScreen({ navigation}) {
     [seconds]
   );
 
+  const dummyUser = {
+    Usuario: 1,
+    Celiaquia: 1,
+    Tipo1: 0,
+    Tipo2: 0,
+    Obesidad: 0,
+    Nombre: "TESTE",
+    Mail: "test@gmail.com",
+    Clave: "123"
+  }
+
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -190,8 +201,8 @@ function HomeScreen({ navigation}) {
         {/* <Carousel key={0} data={carouselData[0]} navigation={navigation} /> */}
         {/* <Carousel key={1} data={carouselData[1]} navigation={navigation} /> */}
         {/* <Carousel key={0} data={listFavoritos} navigation={navigation} type={'recipe'} title={'Favoritos'} /> */}
-        <Carousel key={1} data={listPlatos} navigation={navigation} type={'recipe'} title={'Platos recomendados'} />
-        <Carousel key={2} data={listProductos} navigation={navigation} type={'product'} title={'Productos recomendados'} />
+        <Carousel key={1} data={listPlatos} navigation={navigation} type={'recipe'} title={'Platos recomendados'} userData={dummyUser} />
+        <Carousel key={2} data={listProductos} navigation={navigation} type={'product'} title={'Productos recomendados'} userData={dummyUser} />
         
         {/* <Carousel key={2} data={carouselData[2]} navigation={navigation} /> */}
       </View>
