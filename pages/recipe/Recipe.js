@@ -10,6 +10,7 @@ import styles from "./Styles";
 import Color from "../common/colors";
 
 import { getPLato } from "../../controllers/recetasController";
+import colors from "../common/colors";
 
 export default function Recipe({ navigation, route }) {
   const { data } = route.params;
@@ -68,44 +69,6 @@ export default function Recipe({ navigation, route }) {
 
   }
 
-  const ingedientesData = [
-    {
-      nombre: "Agua",
-      emoji: "💧",
-      valor: "1 vaso",
-    },
-
-    {
-      nombre: "Chocolate",
-      emoji: "🍫",
-      valor: "3 cucharadas",
-    },
-
-    {
-      nombre: "Café Molido",
-      emoji: "☕",
-      valor: "3 cucharadas",
-    },
-
-    {
-      nombre: "Aceite Oliva",
-      emoji: "🍇",
-      valor: "3 cucharadas",
-    },
-
-    {
-      nombre: "Frambueza",
-      emoji: "🍓",
-      valor: "3 cucharadas",
-    },
-
-    {
-      nombre: "Azúcar",
-      emoji: "🍬",
-      valor: "100 gr",
-    },
-  ];
-
   const handlePatology = () => {
 
     let userDummy = {
@@ -130,8 +93,8 @@ export default function Recipe({ navigation, route }) {
   return (
     <View>
       <ModalWarning navigation={navigation} msg={"esta receta"} show={() => handlePatology()}/>
-      {/* SE ROMPE ACA */}
-      {loading ? <ActivityIndicator size={'large'} color={'#000000'}/> :
+      
+      {loading ? <ActivityIndicator style={{height: '100%'}} size={'large'} color={colors.primary}/> :
 
 
       <ScrollView>
@@ -206,7 +169,7 @@ export default function Recipe({ navigation, route }) {
               <Text style={styles.description}></Text>
 
               <View style={styles.infoNutricional}>
-                {listingredientes == undefined ? null : listingredientes.map((item) => {
+                {listingredientes.length === 0 ? <ActivityIndicator size={'large'} color={colors.primary}/> : listingredientes.map((item) => {
                   return <InfoIngredienteItem key={item.Nombre} data={item}/>;
                 })}
               </View>
@@ -214,9 +177,9 @@ export default function Recipe({ navigation, route }) {
             :
             <>
               <Text style={styles.title}>Pasos</Text>
-              {/* <Text style={styles.description}>
-                Dificultad: {infoReceta.dificultad}
-              </Text> */}
+              <Text style={styles.description}>
+                {/* {Dificultad: {infoReceta.dificultad}} */}
+              </Text>
 
               <View style={styles.listaPasos}>
                 {pasos}

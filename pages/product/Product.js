@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import InfoNutriItem from '../common/components/InfoNutriItem/InfoNutriItem'
@@ -133,8 +133,9 @@ export default function Product({navigation, route}) {
                 <Text style={styles.title}>Información Nutricional</Text>
                 <Text style={styles.description}>Porción: 25gr</Text>
                 
+
                 <View style={styles.infoNutricional}>
-                    {listInfoNutr === undefined ? null :
+                    {listInfoNutr.length === 0 ? <ActivityIndicator color={Color.extra} size={'large'} /> :
                         listInfoNutr.map(item => {
                             return(
                                 <InfoNutriItem key={item.Nombre} data={item}/>
