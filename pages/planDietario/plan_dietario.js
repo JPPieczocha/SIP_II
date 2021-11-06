@@ -7,17 +7,24 @@ import config from '../../config';
 import { useIsFocused } from '@react-navigation/native'
 import stylesPlanDietario from './Styles'
 import { FontAwesome5 } from '@expo/vector-icons';
-import StylePlanDietario from './Styles';
 import { AntDesign } from '@expo/vector-icons'
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Color from "../common/colors";
+import { useNavigation } from '@react-navigation/native';
 
 function PlanDietarioScreen(props) {
+    const navigation = useNavigation();
     const [planDietario, setPlanDietario] = useState([]);
     const [patologiasUsuario, setPatologiasUsuario] = useState({});
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const scrollRef = React.useRef();
+
+    function goToComidaDetails(id){
+        navigation.navigate("PlanDetails",{
+            comidaData:planDietario[id]
+        })
+    }
 
     function logResponseError(context,error){
         console.log("Error ocurrido en contexto: ", context)
@@ -63,35 +70,42 @@ function PlanDietarioScreen(props) {
     function renderPlan(list){
         if(list != undefined){
             return list.map((e, index) => {
-                return (<View
+                return (
+                        <TouchableOpacity
+                            onPress={() => goToComidaDetails(index)}
                             key={index}
-                            style={stylesPlanDietario.card_template}
                         >
+                            <View
+                                
+                                style={stylesPlanDietario.card_template}
+                            >
+                            
+                                <Image 
+                                    style={stylesPlanDietario.card_image}
+                                    source={{uri:e.receta.url_imagen}}
+                                    />
+                                <View
+                                    style={stylesPlanDietario.text_container}
+                                >
+                                    <Text
+                                        style={stylesPlanDietario.plan_item_type}
+                                    >{e.type.toUpperCase()}</Text>
+                                    <Text
+                                        style={stylesPlanDietario.plan_item_description}
+                                    >{`${e.receta.descripcion.toUpperCase()} con `}</Text>
+                                    <Text
+                                        style={stylesPlanDietario.plan_item_description}
+                                    >{e.bebida.descripcion.toUpperCase()}</Text>
+                                    <Text
+                                        style={stylesPlanDietario.plan_item_details_quantites}
+                                    >Cantidades: {e.receta.cantidades}</Text>
+                                    <Text
+                                        style={stylesPlanDietario.plan_item_details_kcal}
+                                    >KCalorias: {Math.round(e.kcal*100)/100}</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                         
-                        <Image 
-                            style={stylesPlanDietario.card_image}
-                            source={{uri:e.receta.url_imagen}}
-                        />
-                        <View
-                            style={stylesPlanDietario.text_container}
-                        >
-                            <Text
-                                style={stylesPlanDietario.plan_item_type}
-                            >{e.type.toUpperCase()}</Text>
-                            <Text
-                                style={stylesPlanDietario.plan_item_description}
-                            >{`${e.receta.descripcion.toUpperCase()} con `}</Text>
-                            <Text
-                                style={stylesPlanDietario.plan_item_description}
-                            >{e.bebida.descripcion.toUpperCase()}</Text>
-                            <Text
-                                style={stylesPlanDietario.plan_item_details_quantites}
-                            >Cantidades: {e.receta.cantidades}</Text>
-                            <Text
-                                style={stylesPlanDietario.plan_item_details_kcal}
-                            >KCalorias: {Math.round(e.kcal*100)/100}</Text>
-                        </View>
-                    </View>
                 )
             })
         }
@@ -100,16 +114,10 @@ function PlanDietarioScreen(props) {
     function renderPlanDetails(){
         return(
         <View
-            style={{
-                display:"flex",
-                padding: 12,
-                flexDirection:"row",
-                marginTop: 8,
-                marginBottom: 8,
-            }}
+            style={stylesPlanDietario.container_plan_details}
         >
             <View
-                style={StylePlanDietario.container_plan_detail}
+                style={stylesPlanDietario.container_plan_detail}
             >
             <Fontisto 
                 name={"fire"} 
@@ -121,20 +129,20 @@ function PlanDietarioScreen(props) {
                     }}
                 />
                 <Text
-                    style={StylePlanDietario.totals_details}
+                    style={stylesPlanDietario.totals_details}
                 >
                     Calorías
                 </Text>
                 <Text
                     style={{
-                        ...StylePlanDietario.totals_details,
+                        ...stylesPlanDietario.totals_details,
                     }}
                 >
                     {Math.round(planDietario.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
                 </Text>
             </View>
             <View
-                style={StylePlanDietario.container_plan_detail}
+                style={stylesPlanDietario.container_plan_detail}
             >
                 <FontAwesome5 
                     name="bread-slice" 
@@ -146,13 +154,13 @@ function PlanDietarioScreen(props) {
                     }}
                     />
                 <Text
-                    style={StylePlanDietario.totals_details}
+                    style={stylesPlanDietario.totals_details}
                 >
                     Carbohidratos
                 </Text>
                 <Text
                     style={{
-                        ...StylePlanDietario.totals_details,
+                        ...stylesPlanDietario.totals_details,
                     }}
                 >
                     {Math.round(planDietario.reduce((prev,curr) => prev + curr.hc,0)*100)/100}
@@ -241,12 +249,17 @@ function PlanDietarioScreen(props) {
         } else {
             setShowModal(true)
         }
-        setPatologiasUsuario({
-            aptoCeliaco: aptoCeliaco,
-            aptoDiabetes1: aptoDiabetes1,
-            aptoDiabetes2: aptoDiabetes2,
-            aptoObesidad: aptoObesidad
-        })
+        if(aptoCeliaco != patologiasUsuario.aptoCeliaco && 
+            aptoDiabetes1 != patologiasUsuario.aptoDiabetes1 &&
+            aptoDiabetes2 != patologiasUsuario.aptoDiabetes2 &&
+            aptoObesidad != patologiasUsuario.aptoObesidad){
+                setPatologiasUsuario({
+                    aptoCeliaco: aptoCeliaco,
+                    aptoDiabetes1: aptoDiabetes1,
+                    aptoDiabetes2: aptoDiabetes2,
+                    aptoObesidad: aptoObesidad
+                })
+            }
     }
 
     React.useEffect(() => {

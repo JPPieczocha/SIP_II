@@ -25,6 +25,7 @@ import colors from "./pages/common/colors";
 
 //------------------------
 import { dummyBD } from "./controllers/commonController";
+import PlanDietarioDetails from "./pages/planDietario/plan_dietario_details";
 //-----------------------
 
 function App() {
@@ -176,6 +177,11 @@ function App() {
                 <Stack.Screen
                     name="Recipe"
                     component={Recipe}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="PlanDetails"
+                    component={PlanDietarioDetails}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>

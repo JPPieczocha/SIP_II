@@ -64,11 +64,19 @@ const StylePlanDietario = StyleSheet.create({
         fontFamily: 'SimplyDiet',
         fontSize: 18
     },
+    container_plan_details:{
+        display:"flex",
+        padding: 12,
+        flexDirection:"row",
+        marginTop: 8,
+        marginBottom: 8,
+    },
     container_plan_detail:{
-        width: "50%",
+        width:"50%",
         paddingTop:10,
         paddingBottom:10,
         display:"flex",
+        flexGrow:1,
         justifyContent:"center",
         alignItems:"center",
         borderWidth:1,
@@ -150,7 +158,53 @@ const StylePlanDietario = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         textAlignVertical: 'center',
+    },
+
+    plan_dietario_details_back_button: {
+        position: 'absolute',
+        backgroundColor: '#f2f2f2',
+        borderRadius: 10,
+        top: 10,
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 3,
+        borderColor: colors.secondary,
+        left: 10,
+        zIndex:10
+    },
+
+    plan_dietario_comida_details:{
+        display:"flex",
+        padding: 14,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        marginTop: 8,
+        marginBottom: 8,
+    },
+
+    plan_dietario_comida_title_wrapper:{
+        position: "absolute",
+        bottom: 0,
+        padding: 10, 
+        backgroundColor: "rgba(209,84,131, 0.8)",
+        borderRadius : 10,
+    },
+
+    plan_dietario_comida_title:{
+        fontSize: 30,
+        fontFamily:"SimplyDiet",
+        color:"#FFFFFF",
+    },
+
+    plan_dietario_bebida_title:{
+        fontSize: 15,
+        fontFamily:"SimplyDiet",
+        color:"#FFFFFF",
+        paddingTop:4
     }
+
 });
 
 export default StylePlanDietario
