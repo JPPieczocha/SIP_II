@@ -143,8 +143,8 @@ function HomeScreen({ navigation}) {
           }
   
           // fetchFavoritos();
-          fetchPlatos();
-          fetchProductos();
+          //fetchPlatos();
+          //fetchProductos();
           setFetched(true);
           setLoading(false);
         }else{
@@ -157,7 +157,7 @@ function HomeScreen({ navigation}) {
               setFetched(true);
             }
           }
-          fetchDummy();
+          //fetchDummy();
         }
       }, 5000);
 
