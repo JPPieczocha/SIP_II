@@ -3,7 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { Image } from "react-native";
+
 import axios from "axios";
+
+//Auth nuevo
+import * as SecureStore from 'expo-secure-store';
+import { UserContext } from './context/authContext';
+//Fin auth nuevo
 
 import { useFonts } from "expo-font";
 
@@ -30,6 +36,79 @@ import Loading from "./components/loading/Loading";
 //-----------------------
 
 function App() {
+    
+    //-------------------------------
+    //Auth
+
+    const [state, dispatch] = React.useReducer(
+        (prevState,action) => {
+            switch (action.type) {
+                case 'SET_SESION':
+                    return {
+                        loading: false,
+                        signOut: false,
+                        userData: action.userData
+                    };
+                case 'SIGN_OUT':
+                    return {
+                        loading: false,
+                        signOut: true,
+                        userData: null
+                    };
+            }
+        },
+        {
+            loading: true,
+            signOut: false,
+            userData: null
+        }
+    )
+    
+    // // React.useEffect(() => {
+    // //     try {
+    // //         const userData = await SecureStore.getItemAsync('userData')
+    // //         if (userData !== null){
+    // //             dispatch({type: 'SET_SESION', userData: JSON.parse(userData)})
+    // //         } else {
+    // //             dispatch({ type: 'SIGN_OUT' })
+    // //         }
+    // //     }catch (e){
+    // //         console.log('ERROR @ useEffect');
+    // //     }
+    // // },[]);
+
+    
+    const authContext = React.useMemo(() => ({
+        signIn: async data => {
+
+            let userData = {
+                email: data.email,
+                password: data.password
+            }
+
+            try {
+                const iniciarSesion = await login(userData)
+                if (iniciarSesion === 401) {
+                    return iniciarSesion
+                }
+                const saveKeyStore =  await SecureStore.setItemAsync('userData', JSON.stringify(iniciarSesion))
+                dispatch({type: 'SET_SESION', userData: iniciarSesion})
+            }
+            catch (e) {
+                console.log("ERROR @ UseMemo: SignIn")
+            }
+
+        },
+        signOut: async data => {
+            const deleteKeyStore = await SecureStore.deleteItemAsync('userData')
+			dispatch({ type: 'SIGN_OUT' })
+        },
+    }),
+    []
+    );
+    //---------------------------------
+
+
     const [userData, setUserData] = React.useState();
 
     async function fetchUserLoggedData() {
@@ -71,19 +150,19 @@ function App() {
         fetchUserLoggedData();
     }
 
-    // const Stack = createNativeStackNavigator();
+    // Stacks y Tabs de navigation
     const Tab = createBottomTabNavigator();
-
     const Stack = createNativeStackNavigator();
 
+    // Usar fuentes
     const [loaded] = useFonts({
         SimplyDiet: require("./assets/fonts/SimplyDiet.ttf"),
     });
-
     if (!loaded) {
         return null;
     }
 
+    //Tab navigators
     const mainTab = () => {
         return (
             <Tab.Navigator
@@ -162,8 +241,8 @@ function App() {
         );
     };
 
-    return (
-        <NavigationContainer>
+    const mainNav = () => {
+        return(
             <Stack.Navigator>
                 <Stack.Screen
                     name="loading"
@@ -173,24 +252,38 @@ function App() {
                 <Stack.Screen
                     name="Main"
                     component={mainTab}
-                    options={{ headerShown: false }}
+                    options={{headerShown: false}}
                 />
                 <Stack.Screen
                     name="Product"
                     component={Product}
-                    options={{ headerShown: false }}
+                    options={{headerShown: false}}
                 />
                 <Stack.Screen
                     name="Recipe"
                     component={Recipe}
-                    options={{ headerShown: false }}
+                    options={{headerShown: false}}
                 />
                 <Stack.Screen
                     name="PlanDetails"
                     component={PlanDietarioDetails}
-                    options={{ headerShown: false }}
+                    options={{headerShown: false}}
                 />
             </Stack.Navigator>
+        )
+    }
+
+
+
+    return (
+        <NavigationContainer>
+            <UserContext.Provider value={{authContext, state}}>
+            <Stack.Navigator>
+                    {
+                       !state.loading ? /*Loading page*/ null : state.signOut ? /*Landing*/ null :<Stack.Screen name="mainNav" component={mainNav} options={{headerShown: false}}/>
+                    }
+            </Stack.Navigator>
+            </UserContext.Provider>
         </NavigationContainer>
     );
 }
