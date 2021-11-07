@@ -85,6 +85,9 @@ const styles = StyleSheet.create({
     },
 
     pasoCard: {
+        // height: 300,
+        // justifyContent: 'space-around',
+        // alignContent: 'center',
         backgroundColor: Color.secondary,
         padding: 5,
         borderRadius: 10,
