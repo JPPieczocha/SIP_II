@@ -18,6 +18,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import styles from "./pages/common/styles";
 
+import LoadingPage from './pages/common/components/loading/Loading'
 import HomeScreen from "./pages/home/Home";
 import Search from "./pages/search/Search";
 import ProfileScreen from "./pages/profile/Profile";
@@ -245,11 +246,6 @@ function App() {
         return(
             <Stack.Navigator>
                 <Stack.Screen
-                    name="loading"
-                    component={Loading}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
                     name="Main"
                     component={mainTab}
                     options={{headerShown: false}}
@@ -279,8 +275,12 @@ function App() {
         <NavigationContainer>
             <UserContext.Provider value={{authContext, state}}>
             <Stack.Navigator>
+                    {!state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
+                    {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
                     {
-                       !state.loading ? /*Loading page*/ null : state.signOut ? /*Landing*/ null :<Stack.Screen name="mainNav" component={mainNav} options={{headerShown: false}}/>
+                        state.signOut ?
+                        /*Landing*/ null :
+                        <Stack.Screen name="mainNav" component={mainNav} options={{headerShown: false}}/>
                     }
             </Stack.Navigator>
             </UserContext.Provider>
