@@ -26,6 +26,7 @@ import colors from "./pages/common/colors";
 //------------------------
 import { dummyBD } from "./controllers/commonController";
 import PlanDietarioDetails from "./pages/planDietario/plan_dietario_details";
+import Loading from "./components/loading/Loading";
 //-----------------------
 
 function App() {
@@ -164,6 +165,11 @@ function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
+                <Stack.Screen
+                    name="loading"
+                    component={Loading}
+                    options={{ headerShown: false }}
+                />
                 <Stack.Screen
                     name="Main"
                     component={mainTab}
