@@ -43,7 +43,7 @@ function App() {
     //Auth
 
     const [state, dispatch] = React.useReducer(
-        (prevState,action) => {
+        (action) => {
             switch (action.type) {
                 case 'SET_SESION':
                     return {
@@ -182,11 +182,11 @@ function App() {
 
                         let iconName;
 
-                        if (route.name === "Home") {
+                        if (route.name === "Principal") {
                             iconName = "ios-home";
                         }
 
-                        if (route.name === "Search") {
+                        if (route.name === "Buscar") {
                             iconName = "ios-search";
                         }
 
@@ -210,12 +210,12 @@ function App() {
                 })}
             >
                 <Tab.Screen
-                    name="Home"
+                    name="Principal"
                     component={HomeScreen}
                     options={{ headerShown: false }}
                 />
                 <Tab.Screen
-                    name="Search"
+                    name="Buscar"
                     component={Search}
                     options={{ headerShown: false }}
                 />
@@ -230,7 +230,7 @@ function App() {
                     options={{ headerShown: false }}
                 />
                 <Tab.Screen
-                    name="Profile"
+                    name="Perfil"
                     children={() => (
                         <ProfileScreen
                             userData={userData}
@@ -289,10 +289,9 @@ function App() {
                 <Stack.Navigator>
                         {!state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
                         {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
-
                         {
                             !state.signOut ?
-                            <Stack.Screen name="landingNav" component={landingNav} options={{headerShown: false}}/>:
+                            <Stack.Screen name="landingNav" component={landingNav} options={{headerShown: false}}/> :
                             <Stack.Screen name="mainNav" component={mainNav} options={{headerShown: false}}/>
                         }
                         {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
