@@ -1,7 +1,8 @@
-import { StyleSheet } from 'react-native'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { StyleSheet, Dimensions } from 'react-native'
 
 import Color from '../common/colors'
+
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
     
@@ -83,19 +84,24 @@ const styles = StyleSheet.create({
         marginVertical: 16
     },
 
-    paso: {
-        marginVertical: 6
+    pasoCard: {
+        backgroundColor: Color.secondary,
+        padding: 5,
+        borderRadius: 10,
+        marginBottom: 10
     },
 
-    pasoTitle: {
+    fontNumPaso: {
+        textAlign: 'center',
+        fontSize: 24,
         color: 'white',
-        fontWeight: 'bold'
+        marginBottom: 5
     },
 
-    pasoDescription: {
+    fontDescriptionPaso: {
+        textAlign: 'center',
         color: 'white',
-        fontSize: 16,
-
+        fontSize: 16
     }
         
 
