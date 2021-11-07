@@ -18,6 +18,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import styles from "./pages/common/styles";
 
+import Landing from './pages/landing/Landing'
 import LoadingPage from './pages/common/components/loading/Loading'
 import HomeScreen from "./pages/home/Home";
 import Search from "./pages/search/Search";
@@ -60,7 +61,7 @@ function App() {
         },
         {
             loading: true,
-            signOut: false,
+            signOut: true,
             userData: null
         }
     )
@@ -269,20 +270,33 @@ function App() {
         )
     }
 
+    const landingNav = () => {
+        return(
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="Login"
+                    component= {Landing}
+                    options={{headerShown: false}}
+                />
+            </Stack.Navigator>
+        )
+    }
 
 
     return (
         <NavigationContainer>
             <UserContext.Provider value={{authContext, state}}>
-            <Stack.Navigator>
-                    {!state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
-                    {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
-                    {
-                        state.signOut ?
-                        /*Landing*/ null :
-                        <Stack.Screen name="mainNav" component={mainNav} options={{headerShown: false}}/>
-                    }
-            </Stack.Navigator>
+                <Stack.Navigator>
+                        {!state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
+                        {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
+
+                        {
+                            !state.signOut ?
+                            <Stack.Screen name="landingNav" component={landingNav} options={{headerShown: false}}/>:
+                            <Stack.Screen name="mainNav" component={mainNav} options={{headerShown: false}}/>
+                        }
+                        {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
+                </Stack.Navigator>
             </UserContext.Provider>
         </NavigationContainer>
     );
