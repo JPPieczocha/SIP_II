@@ -32,7 +32,7 @@ import colors from "./pages/common/colors";
 //------------------------
 import { dummyBD } from "./controllers/commonController";
 import PlanDietarioDetails from "./pages/planDietario/plan_dietario_details";
-import Loading from "./components/loading/Loading";
+import Loading from './pages/common/components/loading/Loading'
 //-----------------------
 
 function App() {
