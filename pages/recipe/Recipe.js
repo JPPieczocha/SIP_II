@@ -22,7 +22,12 @@ import { getPLato } from "../../controllers/recetasController";
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
+import { UserContext } from '../../context/authContext'
+
 export default function Recipe({ navigation, route }) {
+
+    const context = React.useContext(UserContext)
+
     const { data } = route.params;
 
     const [fav, setFav] = useState(false);
@@ -41,25 +46,13 @@ export default function Recipe({ navigation, route }) {
             const response = await getPLato(data.ID);
             if (response === undefined) {
             } else {
-                console.log("Ingredientes: ");
-                console.log(response);
+                console.log("Ingredientes: " + response.length);
                 setListIngredientes(response);
                 setLoading(false);
-                // setFetched(true);
             }
         };
         fetchProducto();
     }, []);
-
-    const infoReceta = {
-        tiempo: "120 min",
-        calorías: "1200 kcal",
-        porción: "25 gr",
-        descripción:
-            "Ullamco sit irure incididunt laborum nostrud nostrud enim. Veniam quis nulla sit eiusmod magna mollit labore.",
-        dificultad: "Sé lo que estoy haciendo",
-        pasos: "Eiusmod reprehenderit laborum enim eu adipisicing consectetur amet enim consectetur cillum dolore.;Ullamco veniam labore eu dolor.;Irure consequat incididunt ipsum minim ea commodo dolore.;Mollit in nostrud voluptate nisi et non incididunt id sit veniam dolore velit exercitation laborum.;Labore id irure fugiat occaecat esse laborum id reprehenderit est cupidatat.;Dolore culpa tempor voluptate ea amet culpa ea consectetur culpa consequat fugiat eu.",
-    };
 
 	const renderPasos = ({item, index}) =>{
 		return(
@@ -71,21 +64,11 @@ export default function Recipe({ navigation, route }) {
     }
 
     const handlePatology = () => {
-        let userDummy = {
-            Usuario: 1,
-            Celiaquia: 1,
-            Tipo1: 0,
-            Tipo2: 0,
-            Obesidad: 0,
-            Nombre: "TESTE",
-            Mail: "test@gmail.com",
-            Clave: "123",
-        };
 
-        if (userDummy.Celiaquia == 1 && data.Celiquia == 0) return true;
-        if (userDummy.Tipo1 == 1 && data.Tipo1 == 0) return true;
-        if (userDummy.Tipo2 == 1 && data.Tipo2 == 0) return true;
-        if (userDummy.Obesidad == 1 && data.Obesidad == 0) return true;
+        if (context.state.userData.Celiaquia == 1 && data.Celiquia == 0) return true;
+        if (context.state.userData.Tipo1 == 1 && data.Tipo1 == 0) return true;
+        if (context.state.userData.Tipo2 == 1 && data.Tipo2 == 0) return true;
+        if (context.state.userData.Obesidad == 1 && data.Obesidad == 0) return true;
         return false;
     };
 

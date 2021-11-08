@@ -26,7 +26,6 @@ export default function FoodItem({ navigation, data }) {
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => handleTouch()}>
-      {console.log(data)}
       <Text
         style={styles.tagText}
         adjustsFontSizeToFit={true}
@@ -41,23 +40,6 @@ export default function FoodItem({ navigation, data }) {
           uri: data.Foto,
         }}
       />
-
-      {/* <View style={styles.tag}>
-        <Text
-          style={styles.tagText}
-          adjustsFontSizeToFit={true}
-          numberOfLines={2}
-        >
-          {data.title}
-        </Text>
-      </View>
-
-      <Image
-        style={{ width: "100%", height: "100%", borderRadius: 15 }}
-        source={{
-          uri: data.imagen,
-        }}
-      /> */}
     </TouchableOpacity>
   );
 }

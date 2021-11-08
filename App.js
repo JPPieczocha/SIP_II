@@ -43,16 +43,18 @@ function App() {
     //Auth
 
     const [state, dispatch] = React.useReducer(
-        (action) => {
+        (prevState, action) => {
             switch (action.type) {
                 case 'SET_SESION':
                     return {
+                        ...prevState, 
                         loading: false,
                         signOut: false,
                         userData: action.userData
                     };
                 case 'SIGN_OUT':
                     return {
+                        ...prevState, 
                         loading: false,
                         signOut: true,
                         userData: null
@@ -65,21 +67,7 @@ function App() {
             userData: null
         }
     )
-    
-    // // React.useEffect(() => {
-    // //     try {
-    // //         const userData = await SecureStore.getItemAsync('userData')
-    // //         if (userData !== null){
-    // //             dispatch({type: 'SET_SESION', userData: JSON.parse(userData)})
-    // //         } else {
-    // //             dispatch({ type: 'SIGN_OUT' })
-    // //         }
-    // //     }catch (e){
-    // //         console.log('ERROR @ useEffect');
-    // //     }
-    // // },[]);
 
-    
     const authContext = React.useMemo(() => ({
         signIn: async data => {
 
@@ -89,7 +77,7 @@ function App() {
             }
 
             try {
-                const iniciarSesion = await login(userData)
+                const iniciarSesion = await login(userData) //ENDPOINT DE USUARIO - TODAVÍA NO ESTÁ
                 if (iniciarSesion === 401) {
                     return iniciarSesion
                 }
@@ -103,11 +91,67 @@ function App() {
         },
         signOut: async data => {
             const deleteKeyStore = await SecureStore.deleteItemAsync('userData')
-			dispatch({ type: 'SIGN_OUT' })
+            dispatch({ type: 'SIGN_OUT' })
         },
     }),
     []
     );
+    
+    React.useEffect(() => {
+
+        
+        fetchUserLoggedData(); //FETCH DE OCTOPUS
+
+
+        //Carga de dummyUser en el localStorage
+        async function dummySetter() {
+            try {
+                let userDummy = {
+                    Usuario: 1,
+                    Celiaquia: 1,
+                    Tipo1: 0,
+                    Tipo2: 0,
+                    Obesidad: 0,
+                    Nombre: "Otto Octavius",
+                    Mail: "YaNoSePara@gmail.com",
+                    Clave: "pass1234"
+                }
+                await SecureStore.setItemAsync('userData', JSON.stringify(userDummy))
+                console.log('dummyUser set in LocalStorage');
+            } catch (e) {
+                console.log('Error @ dummySetter')
+            }
+        }
+
+        async function dummyDeleter() {
+            try {
+                await SecureStore.deleteItemAsync('userData')
+                console.log('dummyUser deleted in LocalStorage');
+            } catch (e) {
+                console.log('Error @ dummyDeleter');
+            }
+        }
+        
+
+        async function fetchSecureStore(){
+            try {
+                
+                const userData = await SecureStore.getItemAsync('userData')
+                if (userData !== null){
+                    dispatch({type: 'SET_SESION', userData: JSON.parse(userData)})
+                } else {
+                    dispatch({ type: 'SIGN_OUT' })
+
+                }
+            }catch (e){
+                console.log('ERROR @ useEffect in App.js');
+                console.log(e);
+            }
+        }
+        // dummySetter()
+        // dummyDeleter()
+        fetchSecureStore()
+    },[]);
     //---------------------------------
 
 
@@ -123,7 +167,7 @@ function App() {
                 loggedUserData = response.data;
             })
             .catch(function (error) {
-                console.log(error);
+                console.log('Error @ getUser in App.js');
             });
 
         await axios
@@ -134,7 +178,7 @@ function App() {
                 loggedUserData.patologias = response.data;
             })
             .catch(function (error) {
-                console.log(error);
+                console.log('Error @ getPatologiasUser in App.js');
             });
 
         setUserData(loggedUserData);
@@ -143,10 +187,6 @@ function App() {
     function getUserLoggedData() {
         return userData;
     }
-
-    React.useEffect(() => {
-        fetchUserLoggedData();
-    }, []);
 
     function updateLoggedUserData() {
         fetchUserLoggedData();
@@ -170,7 +210,7 @@ function App() {
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
-                        if (route.name === "Profile") {
+                        if (route.name === "Perfil") {
                             return (
                                 <FontAwesome
                                     name={"user-circle"}
@@ -287,14 +327,12 @@ function App() {
         <NavigationContainer>
             <UserContext.Provider value={{authContext, state}}>
                 <Stack.Navigator>
-                        {!state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
-                        {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
+                        {state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
                         {
-                            !state.signOut ?
+                            state.signOut ?
                             <Stack.Screen name="landingNav" component={landingNav} options={{headerShown: false}}/> :
                             <Stack.Screen name="mainNav" component={mainNav} options={{headerShown: false}}/>
                         }
-                        {/* SACAR EL ! CUANDO LA AUTH ESTÉ FUNCIONAl */}
                 </Stack.Navigator>
             </UserContext.Provider>
         </NavigationContainer>

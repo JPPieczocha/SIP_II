@@ -28,45 +28,6 @@ import { buscarProductos } from "../../controllers/productosController";
 
 const Search = ({ navigation }) => {
 
-    const dummyData = [
-        {
-            id: 0,
-            title: "Gomitas Mogul Arcor",
-            type: "product",
-            imagen: "https://d3ugyf2ht6aenh.cloudfront.net/stores/462/517/products/captura-de-pantalla-2020-05-09-a-las-21-03-071-90a7f95c402b5edccc15890690706368-1024-1024.png",
-        },
-        {
-            id: 1,
-            title: "Canelones de Verdura TACC Free",
-            type: "product",
-            imagen: "https://palermonline.com.ar/wordpress/wp-content/uploads/2021/04/canelones-12.jpg",
-        },
-        {
-            id: 2,
-            title: "Milanesas de berenjena",
-            type: "product",
-            imagen: "https://cdn1.cocina-familiar.com/recetas/thumb/berenjenas-a-la-milanesa.JPG",
-        },
-        {
-            id: 4,
-            title: "Brownies Veganos",
-            type: "product",
-            imagen: "https://es.cravingsjournal.com/wp-content/uploads/2020/10/brownies-halloween-1.jpg",
-        },
-        {
-            id: 5,
-            title: "Lasaña TACC Free",
-            type: "product",
-            imagen: "https://www.recetasdesbieta.com/wp-content/uploads/2018/10/lasagna-original..jpg",
-        },
-        {
-            id: 6,
-            title: "Cheesecake",
-            type: "product",
-            imagen: "https://recetascheesecake.com/wp-content/uploads/cheesecake-fresa-con-gelatina.jpg",
-        },
-    ];
-
     const [showFilter, setShowFilter] = useState(false);
 
     const [foodType, setFoodType] = useState(1);
@@ -89,14 +50,11 @@ const Search = ({ navigation }) => {
     ];
 
     useEffect(() => {
-        console.log("HOLA");
-
         const fetchHistorial = async () => {
             const response = await historial(1);
             if(response === undefined){
             }else{
-              console.log('HISTORIAL USUARIO 1: ');
-              console.log(response);
+              console.log('HISTORIAL USUARIO 1: ' + response.length);
               setHistorialList(response);
               setLoading(false)
             }
@@ -130,9 +88,7 @@ const Search = ({ navigation }) => {
                 const response = await buscarProductos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Productos busqueda: ');
-                  setProductosList(response);
-                  console.log(response);
+                  console.log('Productos busqueda: ' + response.length);
                 }
             }
 
@@ -140,9 +96,8 @@ const Search = ({ navigation }) => {
                 const response = await buscarPlatos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Platos busqueda: ');
+                  console.log('Platos busqueda: ' + response.length);
                   setPlatoslList(response);
-                  console.log(response);
                 }
             }
             fetchProductos();
@@ -153,9 +108,8 @@ const Search = ({ navigation }) => {
                 const response = await buscarPlatos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Platos busqueda: ');
+                  console.log('Platos busqueda: ' + response.length );
                   setPlatoslList(response);
-                  console.log(response);
                 }
             }
             fetchPlatos()
@@ -165,9 +119,8 @@ const Search = ({ navigation }) => {
                 const response = await buscarProductos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Productos busqueda: ');
+                  console.log('Productos busqueda: ' + response);
                   setProductosList(response);
-                  console.log(response);
                 }
             }
             fetchProductos();
