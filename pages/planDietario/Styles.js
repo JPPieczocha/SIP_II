@@ -66,15 +66,16 @@ const StylePlanDietario = StyleSheet.create({
     },
     container_plan_details:{
         display:"flex",
-        padding: 12,
+        paddingTop: 8,
+        paddingLeft: 12,
+        paddingRight: 12,
         flexDirection:"row",
-        marginTop: 8,
-        marginBottom: 8,
+        marginBottom: 16,
     },
     container_plan_detail:{
-        width:"50%",
-        paddingTop:10,
-        paddingBottom:10,
+        width:"25%",
+        paddingTop:4,
+        paddingBottom:4,
         display:"flex",
         flexGrow:1,
         justifyContent:"center",
@@ -88,12 +89,12 @@ const StylePlanDietario = StyleSheet.create({
         fontFamily: 'SimplyDiet',
         paddingBottom:4, 
         color:"#fafafa",
-        fontSize:20
+        fontSize:24
     },
     plan_item_description:{
         fontFamily: 'SimplyDiet',
         color:"#fff",
-        fontSize:12,
+        fontSize:14,
         width: "80%"
     },
     plan_item_details_quantites:{
