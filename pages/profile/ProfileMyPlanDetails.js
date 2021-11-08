@@ -1,43 +1,23 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal, Dimensions } from 'react-native';
 import styles from '../common/styles'
-import logo from '../../assets/logo.jpeg';
-import axios from 'axios'
-import config from '../../config';
-import { useIsFocused } from '@react-navigation/native'
-import stylesPlanDietario from './Styles'
+import stylesProfile from './Styles'
+import stylesPlanDietario from '../planDietario/Styles'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons'
 import Fontisto from "react-native-vector-icons/Fontisto";
-import Color from "../common/colors";
+import colors from "../common/colors";
 import { useNavigation } from '@react-navigation/native';
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios'
+import config from '../../config';
 
-function PlanDietarioScreen(props) {
+function ProfileMyPlanDetailsScreen({route}) {
     const navigation = useNavigation();
     const [planDietario, setPlanDietario] = useState([]);
-    const [patologiasUsuario, setPatologiasUsuario] = useState({});
     const [loading, setLoading] = useState(true);
-    const [showModal, setShowModal] = useState(false);
-    const [showModalFav, setShowModalFav] = useState(false);
-    const [fav, setFav] = useState(false);
     const scrollRef = React.useRef();
     const [contPag, setContPag] = useState(0)
-
-    function setPlanFav(){
-        setLoading(true)
-        axios.post(config.backendURLs.planDietarioSemanalSave,{
-            id_usuario: 1,
-            plan:planDietario
-        }).then(function(response){
-            setLoading(false)
-            setShowModalFav(true)
-            setFav(true)
-        }).catch(function(error) {
-            logResponseError("Create patologia", error)
-        })
-    }
 
     function goToComidaDetails(item){
         navigation.navigate("PlanDetails",{
@@ -69,22 +49,25 @@ function PlanDietarioScreen(props) {
         console.log(error);
     }
 
-    async function getPlan(){
+    function getPlan(){
         setLoading(true)
-
-        await axios.get(`${config.backendURLs.planDietarioSemanal}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
+        return axios.get(`${config.backendURLs.planDietarioSemanalGet}?id_plan=${route.params.plan.id_plan_semanal}`)
         .then(function(response){
             setPlanDietario(response.data)
-            setFav(false)
-            scrollRef.current?.scrollTo({
-                y: 0,
-                animated: true,
-            });
             setLoading(false)
-        }).catch(function(error) {
-            logResponseError("Get Plan Dietario Semanal",error)
+        }).catch(function(error){
+            logResponseError("Get My Plan",error)
         })
     }
+
+    async function fetchData(){
+        await getPlan();
+        setLoading(false)
+    }
+
+    React.useEffect(() => {
+        fetchData();
+    }, []);
 
     function getDia(idx){
         if(idx === 0) return "Lunes"
@@ -195,7 +178,7 @@ function PlanDietarioScreen(props) {
             >
             <Fontisto 
                 name={"fire"} 
-                color={Color.secondary} 
+                color={colors.secondary} 
                 size={24} 
                 style={{
                         paddingTop: 8,
@@ -244,171 +227,39 @@ function PlanDietarioScreen(props) {
         )
     }
 
-    function renderPatologiasText(){
-        return (
-            <View
-                style={{
-                    display:"flex",
-                    flexDirection:"row",
-                }}
-            >
-                {patologiasUsuario.aptoCeliaco ? 
-                <View
-                    style={{
-                        ...stylesPlanDietario.container_patologias,
-                    }}
-                >
-                    <Text
-                        style={{
-                            ...stylesPlanDietario.patologias_text,
-                        }}
-                    >Celiaco</Text>
-                    <AntDesign name="checkcircleo" size={16} color="#2BA174" />
-                </View> : null}
-                {patologiasUsuario.aptoDiabetes1 || patologiasUsuario.aptoDiabetes2 ? 
-                <View
-                    style={{
-                        ...stylesPlanDietario.container_patologias,
-                    }}
-                >
-                    <Text
-                        style={{
-                            ...stylesPlanDietario.patologias_text,
-                        }}
-                    >
-                        Diabetes
-                    </Text>
-                    <AntDesign name="checkcircleo" size={16} color="#2BA174" />
-                </View> : null}
-                {patologiasUsuario.aptoObesidad ? 
-                <View
-                    style={
-                        {
-                            ...stylesPlanDietario.container_patologias,
-                        }}
-                >
-                    <Text
-                        style={{
-                            ...stylesPlanDietario.patologias_text,
-                        }}>Obesidad</Text>
-                    <AntDesign name="checkcircleo" size={16} color="#2BA174" />
-                </View> : null}
-            </View>
-        )
-    }
-
-    function refreshUserData(){
-        let loggedUserData = props.getUserData()
-        let aptoDiabetes1 = false;
-        let aptoDiabetes2 = false;
-        let aptoCeliaco = false;
-        let aptoObesidad = false;
-
-        if(loggedUserData.patologias != undefined && loggedUserData.patologias.length > 0){
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "diabetes_1")){
-                aptoDiabetes1 = true
-            }
-
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "diabetes_2")){
-                aptoDiabetes2 = true
-            }
-
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "celiaquia")){
-                aptoCeliaco = true
-            }
-
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "obesidad")){
-                aptoObesidad = true
-            }
-        } else {
-            setShowModal(true)
-        }
-        if(aptoCeliaco != patologiasUsuario.aptoCeliaco && 
-            aptoDiabetes1 != patologiasUsuario.aptoDiabetes1 &&
-            aptoDiabetes2 != patologiasUsuario.aptoDiabetes2 &&
-            aptoObesidad != patologiasUsuario.aptoObesidad){
-                setPatologiasUsuario({
-                    aptoCeliaco: aptoCeliaco,
-                    aptoDiabetes1: aptoDiabetes1,
-                    aptoDiabetes2: aptoDiabetes2,
-                    aptoObesidad: aptoObesidad
-                })
-            }
-    }
-
     React.useEffect(() => {
         getPlan()
-    }, [patologiasUsuario])
+    }, [])
 
-    const isFocused = useIsFocused()
-
-    React.useEffect(() => {
-        //Update the state you want to be updated
-        if(isFocused){
-            refreshUserData()
-        }
-    } , [isFocused])
 
     React.useEffect( () => {
         
     }, []);
 
-    function okModal(){
-        setShowModalFav(false);
+    const renderBackButton = function(){
+        return (
+            <TouchableOpacity
+                style={stylesProfile.profile_back_button}
+                onPress={() => navigation.goBack()}
+            >
+            <Ionicons name={"arrow-back"} color={colors.secondary} size={32} />
+            </TouchableOpacity>
+        )
     }
 
     return (
         <View>
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={showModal}
-            >
-                <View style={stylesPlanDietario.modal_filter}>
-                    <View style={stylesPlanDietario.modal_container}>
-                        <Text style={stylesPlanDietario.modal_title}>Plan dietario</Text>
-                        <Text style={stylesPlanDietario.modal_description}>
-                            Debe cargar patologías en su perfíl para ver el plan dietario.
-                        </Text>
-
-                        <TouchableOpacity style={stylesPlanDietario.modal_button} onPress={() => setShowModal(false)}>
-                            <Text style={stylesPlanDietario.modal_button_text}>Aceptar</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={showModalFav}
-                onRequestClose={() => props.navigation.goBack()} //Back de android
-            >
-                <View style={stylesPlanDietario.modal_filter}>
-                    <View style={stylesPlanDietario.modal_container}>
-                        <Text style={stylesPlanDietario.modal_title}>Favoritos</Text>
-                        <Text style={stylesPlanDietario.modal_description}>
-                            ¡Semana guardada en favoritos!
-                        </Text>
-
-                        <TouchableOpacity style={stylesPlanDietario.modal_button} onPress={okModal}>
-                            <Text style={stylesPlanDietario.modal_button_text}>Aceptar</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-
             {loading ? <ActivityIndicator 
                 size={'large'} 
                 style={{
                     height:"100%"
                 }}
-                color={Color.secondary}
+                color={colors.secondary}
             />:
              <ScrollView ref={scrollRef}>
-                 <TouchableOpacity style={stylesPlanDietario.button_fav} onPress={() => setPlanFav()}>
-                    <Ionicons name={fav ? 'heart' :'heart-outline'} color={Color.secondary} size={32} />
-                </TouchableOpacity>
+
+                {renderBackButton()}
+                
                 <View style={styles.formContainer}>
                     <View 
                         style={{
@@ -420,21 +271,10 @@ function PlanDietarioScreen(props) {
                                 paddingTop: 120
                             }}
                         >
-                            Plan Semanal
+                            Semana {route.params.planIdx + 1}
                         </Text>
                         
-                        {renderPatologiasText()}
-                            
                         {renderPlanSemanal()}
-                    </View>
-    
-                    <View style={styles.centeredContent}>
-                        <TouchableOpacity 
-                            onPress={getPlan} 
-                            style={{...styles.primaryButton, marginBottom:12}}>
-                            <Text
-                                style={styles.primaryButtonText}>Generar otro!</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>
@@ -444,4 +284,4 @@ function PlanDietarioScreen(props) {
     );
 }
 
-export default PlanDietarioScreen;
+export default ProfileMyPlanDetailsScreen;

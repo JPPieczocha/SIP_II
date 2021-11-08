@@ -60,7 +60,22 @@ const StyleProfile = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         textAlignVertical: 'center',
-    }
+    },
+
+    profile_back_button: {
+        position: 'absolute',
+        backgroundColor: '#f2f2f2',
+        borderRadius: 10,
+        top: 10,
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 3,
+        borderColor: colors.secondary,
+        left: 10,
+        zIndex:10
+    },
 });
 
 export default StyleProfile

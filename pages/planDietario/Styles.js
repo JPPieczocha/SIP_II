@@ -204,7 +204,21 @@ const StylePlanDietario = StyleSheet.create({
         fontFamily:"SimplyDiet",
         color:"#FFFFFF",
         paddingTop:4
-    }
+    },
+
+    button_fav: {
+        position: 'absolute',
+        backgroundColor: '#f2f2f2',
+        borderRadius: 10,
+        top: 35,
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 3,
+        borderColor: colors.secondary,
+        right: 20
+    },
 
 });
 

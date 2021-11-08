@@ -14,7 +14,7 @@ import { UserContext } from './context/authContext';
 import { useFonts } from "expo-font";
 
 import logo from "./assets/logo.jpeg";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { FontAwesome5 } from '@expo/vector-icons';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import styles from "./pages/common/styles";
 
@@ -24,6 +24,10 @@ import HomeScreen from "./pages/home/Home";
 import Search from "./pages/search/Search";
 import ProfileScreen from "./pages/profile/Profile";
 import PlanDietarioScreen from "./pages/planDietario/plan_dietario";
+import ProfileMyDataScreen from "./pages/profile/ProfileMyData";
+import ProfileMyPlansScreen from "./pages/profile/ProfileMyPlans";
+import ProfileMyPlanDetailsScreen from "./pages/profile/ProfileMyPlanDetails";
+
 import config from "./config";
 
 import Product from "./pages/product/Product";
@@ -212,9 +216,9 @@ function App() {
                     tabBarIcon: ({ focused, color, size }) => {
                         if (route.name === "Perfil") {
                             return (
-                                <FontAwesome
-                                    name={"user-circle"}
-                                    size={size}
+                                <FontAwesome5
+                                    name={"user"}
+                                    size={20}
                                     color={color}
                                 />
                             );
@@ -304,6 +308,23 @@ function App() {
                 <Stack.Screen
                     name="PlanDetails"
                     component={PlanDietarioDetails}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="ProfileMyData"
+                    component={ProfileMyDataScreen}
+                    options={{headerShown: false}}
+                />
+
+                <Stack.Screen
+                    name="ProfileMyPlans"
+                    component={ProfileMyPlansScreen}
+                    options={{headerShown: false}}
+                />
+
+                <Stack.Screen
+                    name="ProfileMyPlanDetails"
+                    component={ProfileMyPlanDetailsScreen}
                     options={{headerShown: false}}
                 />
             </Stack.Navigator>
