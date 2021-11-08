@@ -91,25 +91,23 @@ function PlanDietarioDetails({route}) {
             <View
                 style={{
                     display: "flex",
-                    justifyContent:"center"
+                    justifyContent:"center",
+                    width:"60%"
                 }}
             >
             
                 <Text
                     style={{
-                      fontFamily:"SimplyDiet"  
+                        fontSize: 18,
+                        fontFamily:"SimplyDiet"  
                     }}
                 >{item.key}</Text>
                 <Text
                     style={{
+                        fontSize: 14,
                         fontFamily:"SimplyDiet"  
                       }}
                 >{item.title}</Text>
-                <Text
-                    style={{
-                        fontFamily:"SimplyDiet"  
-                      }}
-                >{item.subtitle}</Text>
             </View>
             
             <EvilIcons 

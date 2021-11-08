@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal, Dimensions } from 'react-native';
 import styles from '../common/styles'
 import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
@@ -11,6 +11,8 @@ import { AntDesign } from '@expo/vector-icons'
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Color from "../common/colors";
 import { useNavigation } from '@react-navigation/native';
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import colors from '../common/colors';
 
 function PlanDietarioScreen(props) {
     const navigation = useNavigation();
@@ -19,10 +21,11 @@ function PlanDietarioScreen(props) {
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const scrollRef = React.useRef();
+    const [contPag, setContPag] = useState(0)
 
-    function goToComidaDetails(id){
+    function goToComidaDetails(item){
         navigation.navigate("PlanDetails",{
-            comidaData:planDietario[id]
+            comidaData:item
         })
     }
 
@@ -53,8 +56,7 @@ function PlanDietarioScreen(props) {
     async function getPlan(){
         setLoading(true)
 
-        
-        await axios.get(`${config.backendURLs.planDietario}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
+        await axios.get(`${config.backendURLs.planDietarioSemanal}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
         .then(function(response){
             setPlanDietario(response.data)
             scrollRef.current?.scrollTo({
@@ -63,55 +65,110 @@ function PlanDietarioScreen(props) {
             });
             setLoading(false)
         }).catch(function(error) {
-            logResponseError("Get Plan Dietario",error)
+            logResponseError("Get Plan Dietario Semanal",error)
         })
     }
 
-    function renderPlan(list){
-        if(list != undefined){
-            return list.map((e, index) => {
-                return (
-                        <TouchableOpacity
-                            onPress={() => goToComidaDetails(index)}
-                            key={index}
-                        >
-                            <View
-                                
-                                style={stylesPlanDietario.card_template}
-                            >
-                            
-                                <Image 
-                                    style={stylesPlanDietario.card_image}
-                                    source={{uri:e.receta.url_imagen}}
-                                    />
-                                <View
-                                    style={stylesPlanDietario.text_container}
-                                >
-                                    <Text
-                                        style={stylesPlanDietario.plan_item_type}
-                                    >{e.type.toUpperCase()}</Text>
-                                    <Text
-                                        style={stylesPlanDietario.plan_item_description}
-                                    >{`${e.receta.descripcion.toUpperCase()} con `}</Text>
-                                    <Text
-                                        style={stylesPlanDietario.plan_item_description}
-                                    >{e.bebida.descripcion.toUpperCase()}</Text>
-                                    <Text
-                                        style={stylesPlanDietario.plan_item_details_quantites}
-                                    >Cantidades: {e.receta.cantidades}</Text>
-                                    <Text
-                                        style={stylesPlanDietario.plan_item_details_kcal}
-                                    >KCalorias: {Math.round(e.kcal*100)/100}</Text>
-                                </View>
+    function getDia(idx){
+        if(idx === 0) return "Lunes"
+        if(idx === 1) return "Martes"
+        if(idx === 2) return "Miércoles"
+        if(idx === 3) return "Jueves"
+        if(idx === 4) return "Viernes"
+        if(idx === 5) return "Sábado"
+        if(idx === 6) return "Domingo"
+    }
+
+    function renderPlanSemanal(){
+        if(planDietario != undefined){
+            return planDietario.map((e,idx) => {
+                return(
+                    <View
+                        key={idx}
+                        style={{
+                            height:460
+                        }}
+                    >
+                        <View style={{
+                            flexDirection: 'row', 
+                            alignItems: 'center', 
+                            paddingLeft: 22,
+                            paddingRight: 22,
+                            paddingTop: 40,
+                            paddingBottom:8
+                        }}>
+                            <View style={{
+                                flex: 1, 
+                                height: 1, 
+                                backgroundColor: "#c1c1c1"
+                            }} />
+                            <View>
+                                <Text style={{
+                                    width: 90, 
+                                    textAlign: 'center', 
+                                    fontFamily:"SimplyDiet",
+                                    fontSize:22,
+                                }}>
+                                    {getDia(idx)}
+                                </Text>
                             </View>
-                        </TouchableOpacity>
-                        
+                            <View style={{
+                                flex: 1, 
+                                height: 1, 
+                                backgroundColor: "#c1c1c1"
+                            }} />
+                        </View>
+
+                        {renderPlanDetails(e)}
+
+                        <Carousel
+                            data={e}
+                            renderItem={renderPlanDiario}
+                            sliderWidth={Dimensions.get("window").width}
+                            itemWidth={Dimensions.get("window").width* .75}
+                            onSnapToItem={(i) => setContPag(i)}
+                        />
+                    </View>
                 )
             })
         }
+
+        return null;
     }
 
-    function renderPlanDetails(){
+    function renderPlanDiario({index, item}){
+        if(item != undefined){
+            return (
+                <TouchableOpacity
+                    onPress={() => goToComidaDetails(item)}
+                    key={index}
+                >
+                    <View
+                        style={stylesPlanDietario.card_template}
+                    >
+                    
+                        <Image 
+                            style={stylesPlanDietario.card_image}
+                            source={{uri:item.receta.url_imagen}}
+                            />
+                        <View
+                            style={stylesPlanDietario.text_container}
+                        >
+                            <Text
+                                style={stylesPlanDietario.plan_item_type}
+                            >{item.type.toUpperCase()}</Text>
+                            <Text
+                                style={stylesPlanDietario.plan_item_description}
+                            >{`${item.receta.descripcion.toUpperCase()}`}</Text>
+                            
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            )
+        }
+    }
+
+    function renderPlanDetails(item){
         return(
         <View
             style={stylesPlanDietario.container_plan_details}
@@ -138,7 +195,7 @@ function PlanDietarioScreen(props) {
                         ...stylesPlanDietario.totals_details,
                     }}
                 >
-                    {Math.round(planDietario.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
+                    {Math.round(item.reduce((prev,curr) => prev + curr.kcal,0)*100)/100}
                 </Text>
             </View>
             <View
@@ -163,7 +220,7 @@ function PlanDietarioScreen(props) {
                         ...stylesPlanDietario.totals_details,
                     }}
                 >
-                    {Math.round(planDietario.reduce((prev,curr) => prev + curr.hc,0)*100)/100}
+                    {Math.round(item.reduce((prev,curr) => prev + curr.hc,0)*100)/100}
                 </Text>
             </View>
         </View>
@@ -321,14 +378,12 @@ function PlanDietarioScreen(props) {
                         <Text
                             style={stylesPlanDietario.plan_dietario_title}
                         >
-                            Plan Dietario
+                            Mi Semana
                         </Text>
                         
                         {renderPatologiasText()}
-                        
-                        {renderPlanDetails()}
-    
-                        {renderPlan(planDietario)}
+                            
+                        {renderPlanSemanal()}
                     </View>
     
                     <View style={styles.centeredContent}>
@@ -336,7 +391,7 @@ function PlanDietarioScreen(props) {
                             onPress={getPlan} 
                             style={{...styles.primaryButton, marginBottom:12}}>
                             <Text
-                                style={styles.primaryButtonText}>Generar otro Plan!</Text>
+                                style={styles.primaryButtonText}>Generar otro!</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
