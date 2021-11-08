@@ -124,8 +124,7 @@ function HomeScreen({ navigation}) {
             const response = await getAllPlatos();
             if(response === undefined){
             }else{
-              console.log('platos: ');
-              console.log(response);
+              console.log('platos: '+ response.length);
               setListPlatos(response);
               // setFetched(true);
             }
@@ -135,8 +134,7 @@ function HomeScreen({ navigation}) {
             const response = await getAllProductos();
             if(response === undefined){
             }else{
-              console.log('PRODUCTOS: ');
-              console.log(response);
+              console.log('PRODUCTOS: ' + response.length);
               setListProductos(response);
               // setFetched(true);
             }
