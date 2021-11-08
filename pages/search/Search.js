@@ -7,9 +7,8 @@ import {
     Modal,
     FlatList,
     TouchableOpacity,
-    SafeAreaView,
-    Platform,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableWithoutFeedback
 } from "react-native";
 import RadioForm, {
     RadioButton,
@@ -29,6 +28,7 @@ import { buscarProductos } from "../../controllers/productosController";
 const Search = ({ navigation }) => {
 
     const [showFilter, setShowFilter] = useState(false);
+    const [filterSelection, setFilterSelection] = useState(1)
 
     const [foodType, setFoodType] = useState(1);
     const [sugarFree, setSugarFree] = useState(false);
@@ -54,9 +54,9 @@ const Search = ({ navigation }) => {
             const response = await historial(1);
             if(response === undefined){
             }else{
-              console.log('HISTORIAL USUARIO 1: ' + response.length);
-              setHistorialList(response);
-              setLoading(false)
+                console.log('HISTORIAL USUARIO 1: ' + response.length);
+                setHistorialList(response);
+                setLoading(false)
             }
         }
 
@@ -88,7 +88,7 @@ const Search = ({ navigation }) => {
                 const response = await buscarProductos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Productos busqueda: ' + response.length);
+                    console.log('Productos busqueda: ' + response.length);
                 }
             }
 
@@ -96,8 +96,8 @@ const Search = ({ navigation }) => {
                 const response = await buscarPlatos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Platos busqueda: ' + response.length);
-                  setPlatoslList(response);
+                    console.log('Platos busqueda: ' + response.length);
+                    setPlatoslList(response);
                 }
             }
             fetchProductos();
@@ -108,8 +108,8 @@ const Search = ({ navigation }) => {
                 const response = await buscarPlatos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Platos busqueda: ' + response.length );
-                  setPlatoslList(response);
+                    console.log('Platos busqueda: ' + response.length );
+                    setPlatoslList(response);
                 }
             }
             fetchPlatos()
@@ -119,8 +119,8 @@ const Search = ({ navigation }) => {
                 const response = await buscarProductos(data);
                 if(response === undefined){
                 }else{
-                  console.log('Productos busqueda: ' + response);
-                  setProductosList(response);
+                    console.log('Productos busqueda: ' + response);
+                    setProductosList(response);
                 }
             }
             fetchProductos();
@@ -143,76 +143,82 @@ const Search = ({ navigation }) => {
                 onShow={() => console.log("abrir modal")} //Al abrirse el modal, algo se hace
                 onDismiss={() => console.log("cerrar modal")} //Al cerrarse el modal, algo se hace
             >
-                <View style={styles.modalFilter}>
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalHeader}>
-                            <Text style={styles.modalTextHeader}>Filtros</Text>
-                            <TouchableOpacity
-                                style={styles.exitModalButton}
-                                onPress={() => setShowFilter(false)}
-                            >
-                                <Text style={{ fontSize: 20 }}>X</Text>
+                <TouchableOpacity
+                    style={styles.modalFilter}
+                    activeOpacity={1}
+                    onPress={() => setShowFilter(false)}
+                >
+                    <TouchableWithoutFeedback>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.modalHeader}>
+                                <Text style={styles.modalTextHeader}>Filtros</Text>
+                                <TouchableOpacity
+                                    style={styles.exitModalButton}
+                                    onPress={() => setShowFilter(false)}
+                                >
+                                    <Text style={{ fontSize: 20 }}>X</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <Text>¿Productos o recetas? {foodType}</Text>
+                            <View style={styles.formContainer}>
+                                <RadioForm
+                                    radio_props={radio_props_food}
+                                    initial={filterSelection}
+                                    onPress={(value) => {setFoodType(value); setFilterSelection(value)}}
+                                    formHorizontal={true}
+                                    labelHorizontal={false}
+                                    buttonColor={colors.primary}
+                                    animation={true}
+                                    selectedButtonColor={colors.secondaryv2}
+                                />
+                            </View>
+                            <Text>¿Quieres algunas de estas comidas?</Text>
+                            <View style={styles.formContainer}>
+                                <View style={styles.formContainerItem}>
+                                    <Text>Cero Azúcares</Text>
+
+                                    <TouchableOpacity
+                                        style={styles.checkBox}
+                                        onPress={() => setSugarFree(!sugarFree)}
+                                    >
+                                        <Text style={{ color: colors.secondaryv2 }}>
+                                            {sugarFree ? "✔" : ""}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.formContainerItem}>
+                                    <Text>Sin TACC</Text>
+
+                                    <TouchableOpacity
+                                        style={styles.checkBox}
+                                        onPress={() => setTaccFree(!taccFree)}
+                                    >
+                                        <Text style={{ color: colors.secondaryv2 }}>
+                                            {taccFree ? "✔" : ""}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.formContainerItem}>
+                                    <Text>Bajas en Calorías</Text>
+
+                                    <TouchableOpacity
+                                        style={styles.checkBox}
+                                        onPress={() => setLowCal(!lowCal)}
+                                    >
+                                        <Text style={{ color: colors.secondaryv2 }}>
+                                            {lowCal ? "✔" : ""}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <TouchableOpacity style={styles.applyButton} onPress={()=>handleApplyFilter()}>
+                                <Text style={styles.applyButtonText}>Aplicar</Text>
                             </TouchableOpacity>
                         </View>
-                        <Text>¿Productos o recetas? {foodType}</Text>
-                        <View style={styles.formContainer}>
-                            <RadioForm
-                                radio_props={radio_props_food}
-                                initial={1}
-                                onPress={(value) => setFoodType(value)}
-                                formHorizontal={true}
-                                labelHorizontal={false}
-                                buttonColor={colors.primary}
-                                animation={true}
-                                selectedButtonColor={colors.secondaryv2}
-                            />
-                        </View>
-                        <Text>¿Quieres algunas de estas comidas?</Text>
-                        <View style={styles.formContainer}>
-                            <View style={styles.formContainerItem}>
-                                <Text>Sugar Free</Text>
-
-                                <TouchableOpacity
-                                    style={styles.checkBox}
-                                    onPress={() => setSugarFree(!sugarFree)}
-                                >
-                                    <Text style={{ color: colors.secondaryv2 }}>
-                                        {sugarFree ? "✔" : ""}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.formContainerItem}>
-                                <Text>Sin TACC</Text>
-
-                                <TouchableOpacity
-                                    style={styles.checkBox}
-                                    onPress={() => setTaccFree(!taccFree)}
-                                >
-                                    <Text style={{ color: colors.secondaryv2 }}>
-                                        {taccFree ? "✔" : ""}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.formContainerItem}>
-                                <Text>Bajas en Caloría</Text>
-
-                                <TouchableOpacity
-                                    style={styles.checkBox}
-                                    onPress={() => setLowCal(!lowCal)}
-                                >
-                                    <Text style={{ color: colors.secondaryv2 }}>
-                                        {lowCal ? "✔" : ""}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <TouchableOpacity style={styles.applyButton} onPress={()=>handleApplyFilter()}>
-                            <Text style={styles.applyButtonText}>Aplicar</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                    </TouchableWithoutFeedback>
+                </TouchableOpacity>
             </Modal>
         );
     };
