@@ -1,8 +1,10 @@
-const NGROK_IP_USUARIOS = "http://1954-190-16-187-146.ngrok.io"
-const NGROK_IP_PLAN_DIETARIO = "http://5133-190-16-187-146.ngrok.io"
+const NGROK_IP_USUARIOS = "http://bfa2-190-16-187-60.ngrok.io"
+const NGROK_IP_PLAN_DIETARIO = "http://9c8e-190-16-187-60.ngrok.io"
 let config = {
     backendURLs: {
+        login:`${NGROK_IP_USUARIOS}/api/usuarios/signin`,
         getUser:`${NGROK_IP_USUARIOS}/api/usuarios/findOne`,
+        registerUser:`${NGROK_IP_USUARIOS}/api/usuarios/create`,
         patologiasList: `${NGROK_IP_USUARIOS}/api/patologias/list`,
         patologiasUsuariosCreate: `${NGROK_IP_USUARIOS}/api/usuarios_patologias/create`,
         patologiasUsuariosDelete: `${NGROK_IP_USUARIOS}/api/usuarios_patologias/deleteByIdUsuario_IdPatologia`,

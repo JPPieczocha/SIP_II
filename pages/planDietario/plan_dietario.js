@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal, Dimensions } from 'react-native';
 import styles from '../common/styles'
-import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
 import config from '../../config';
 import { useIsFocused } from '@react-navigation/native'
@@ -13,8 +12,9 @@ import Color from "../common/colors";
 import { useNavigation } from '@react-navigation/native';
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { UserContext } from "../../context/authContext";
 
-function PlanDietarioScreen(props) {
+function PlanDietarioScreen() {
     const navigation = useNavigation();
     const [planDietario, setPlanDietario] = useState([]);
     const [patologiasUsuario, setPatologiasUsuario] = useState({});
@@ -24,11 +24,13 @@ function PlanDietarioScreen(props) {
     const [fav, setFav] = useState(false);
     const scrollRef = React.useRef();
     const [contPag, setContPag] = useState(0)
-
+    const context = React.useContext(UserContext);
+    const userData = context.state != undefined && context.state.userData != undefined ? context.state.userData : {}
+    
     function setPlanFav(){
         setLoading(true)
         axios.post(config.backendURLs.planDietarioSemanalSave,{
-            id_usuario: 1,
+            id_usuario: userData.Usuario,
             plan:planDietario
         }).then(function(response){
             setLoading(false)
@@ -69,12 +71,16 @@ function PlanDietarioScreen(props) {
         console.log(error);
     }
 
+    async function setPlan(plan){
+        await setPlanDietario(plan)
+    }
+
     async function getPlan(){
         setLoading(true)
 
-        await axios.get(`${config.backendURLs.planDietarioSemanal}?aptoCeliaco=${patologiasUsuario.aptoCeliaco}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2}&aptoObesidad=${patologiasUsuario.aptoObesidad}`)
+        await axios.get(`${config.backendURLs.planDietarioSemanal}?aptoCeliaco=${patologiasUsuario.aptoCeliaco == 1 ? true : false}&aptoDiabetico1=${patologiasUsuario.aptoDiabetes1 == 1 ? true : false}&aptoDiabetico2=${patologiasUsuario.aptoDiabetes2 == 1 ? true : false}&aptoObesidad=${patologiasUsuario.aptoObesidad == 1 ? true : false}`)
         .then(function(response){
-            setPlanDietario(response.data)
+            setPlan(response.data)
             setFav(false)
             scrollRef.current?.scrollTo({
                 y: 0,
@@ -298,34 +304,23 @@ function PlanDietarioScreen(props) {
     }
 
     function refreshUserData(){
-        let loggedUserData = props.getUserData()
         let aptoDiabetes1 = false;
         let aptoDiabetes2 = false;
         let aptoCeliaco = false;
         let aptoObesidad = false;
 
-        if(loggedUserData.patologias != undefined && loggedUserData.patologias.length > 0){
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "diabetes_1")){
-                aptoDiabetes1 = true
-            }
-
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "diabetes_2")){
-                aptoDiabetes2 = true
-            }
-
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "celiaquia")){
-                aptoCeliaco = true
-            }
-
-            if(loggedUserData.patologias.find((e) => e.patologias.codigo === "obesidad")){
-                aptoObesidad = true
-            }
+        if(userData != undefined && (userData.Tipo1 || userData.Tipo2 || userData.Celiaquia || userData.Obesidad)){
+            aptoDiabetes1 = userData.Tipo1
+            aptoDiabetes2 = userData.Tipo2
+            aptoCeliaco = userData.Celiaquia
+            aptoObesidad = userData.Obesidad
         } else {
             setShowModal(true)
         }
-        if(aptoCeliaco != patologiasUsuario.aptoCeliaco && 
-            aptoDiabetes1 != patologiasUsuario.aptoDiabetes1 &&
-            aptoDiabetes2 != patologiasUsuario.aptoDiabetes2 &&
+
+        if(aptoCeliaco != patologiasUsuario.aptoCeliaco || 
+            aptoDiabetes1 != patologiasUsuario.aptoDiabetes1 ||
+            aptoDiabetes2 != patologiasUsuario.aptoDiabetes2 ||
             aptoObesidad != patologiasUsuario.aptoObesidad){
                 setPatologiasUsuario({
                     aptoCeliaco: aptoCeliaco,
@@ -333,6 +328,8 @@ function PlanDietarioScreen(props) {
                     aptoDiabetes2: aptoDiabetes2,
                     aptoObesidad: aptoObesidad
                 })
+            } else{
+                setLoading(false)
             }
     }
 
@@ -345,6 +342,7 @@ function PlanDietarioScreen(props) {
     React.useEffect(() => {
         //Update the state you want to be updated
         if(isFocused){
+            setLoading(true)
             refreshUserData()
         }
     } , [isFocused])
@@ -428,14 +426,18 @@ function PlanDietarioScreen(props) {
                         {renderPlanSemanal()}
                     </View>
     
-                    <View style={styles.centeredContent}>
-                        <TouchableOpacity 
-                            onPress={getPlan} 
-                            style={{...styles.primaryButton, marginBottom:12}}>
-                            <Text
-                                style={styles.primaryButtonText}>Generar otro!</Text>
-                        </TouchableOpacity>
-                    </View>
+                    {planDietario != undefined && planDietario.length > 0 ? 
+                        <View style={styles.centeredContent}>
+                            <TouchableOpacity 
+                                onPress={getPlan} 
+                                style={{...styles.primaryButton, marginBottom:12}}>
+                                <Text
+                                    style={styles.primaryButtonText}>Generar otro!</Text>
+                            </TouchableOpacity>
+                        </View>
+                    : null 
+                    }
+
                 </View>
             </ScrollView>
             }

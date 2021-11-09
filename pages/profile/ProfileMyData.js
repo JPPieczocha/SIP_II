@@ -8,12 +8,16 @@ import axios from 'axios'
 import config from '../../config';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from "../../context/authContext";
 
 function ProfileMyDataScreen({route}) {
+    const context = React.useContext(UserContext);
+    const userData = context.state != undefined && context.state.userData != undefined ? context.state.userData : {}
     const navigation = useNavigation();
     let props = route.params;
-    let fullName = props != undefined && props.userData != undefined && props.userData.apellido != undefined && props.userData.nombre != undefined? `${props.userData.apellido} ${props.userData.nombre}` : ""
-    let email = props != undefined && props.userData != undefined ? props.userData.email : ""
+    let fullName = userData.Nombre != undefined && userData.Nombre != undefined? `${userData.Nombre}` : ""
+    let email = userData.Mail != undefined ? userData.Mail : ""
+    
     const [diabetes1, setDiabetes1Selection] = useState(false);
     const [diabetes2, setDiabetes2Selection] = useState(false);
     const [celiaquia, setCeliaquiaSelection] = useState(false);
@@ -57,24 +61,17 @@ function ProfileMyDataScreen({route}) {
     } 
 
     const setPatologiasByUser = () => {
-        if(props != undefined && props.userData != undefined){
-            if(props.userData != undefined && props.userData.patologias != undefined && props.userData.patologias.length > 0){
-                props.userData.patologias.forEach((e) => {
-                    let patologia = patologias.find((f) => f.id_patologia == e.id_patologia)
-                    if(patologia != undefined){
-                        switch(patologia.codigo){
-                            case "celiaquia": setCeliaquiaSelection(true)
-                                break;
-                            case "obesidad": setObesidadSelection(true)
-                                break;
-                            case "diabetes_1": setDiabetes1Selection(true)
-                                break;
-                            case "diabetes_2": setDiabetes2Selection(true)
-                                break;
-                        }
-                    }
-                })
-            }
+        if(userData.Tipo1){
+            setDiabetes1Selection(true)
+        }
+        if(userData.Tipo2){
+            setDiabetes2Selection(true)
+        }
+        if(userData.Celiaquia){
+            setCeliaquiaSelection(true)
+        }
+        if(userData.Obesidad){
+            setObesidadSelection(true)
         }
     }
 
@@ -87,8 +84,8 @@ function ProfileMyDataScreen({route}) {
         fetchData();
     }, []);
 
+
     React.useEffect(() => {
-        setPatologiasUsuario(props.userData.patologias)
         setPatologiasByUser();
     }, [patologias])
 
@@ -166,22 +163,25 @@ function ProfileMyDataScreen({route}) {
 
     async function updatePatologias(){
         setLoading(true)
-        let userHadDiabetes1 = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_1") != undefined ? true : false;
-        let userHadDiabetes2 = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_2") != undefined ? true : false;
-        let userHadCeliaquia = patologiasUsuario.find((e) => e.patologias.codigo === "celiaquia") != undefined ? true : false;
-        let userHadObesidad = patologiasUsuario.find((e) => e.patologias.codigo === "obesidad") != undefined ? true : false;
         
+        let userHadDiabetes1 = userData.Tipo1;
+        let userHadDiabetes2 = userData.Tipo2;
+        let userHadCeliaquia = userData.Celiaquia
+        let userHadObesidad = userData.Obesidad
+
         if(diabetes1){
             let patologia = patologias.find((e) => e.codigo === "diabetes_1");
             if(!userHadDiabetes1){
                 await updatePatologia(patologia.id_patologia)
+                userData.Tipo1 = 1;
             }
         } else {
             if(userHadDiabetes1){
-                let patologia = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_1");
+                let patologia = patologias.find((e) => e.codigo === "diabetes_1");
                 if(patologia != undefined){
                     await deletePatologia(patologia.id_patologia)
                     setDiabetes1Selection(false)
+                    userData.Tipo1 = 0;
                 }
             }
         }
@@ -190,13 +190,15 @@ function ProfileMyDataScreen({route}) {
             let patologia = patologias.find((e) => e.codigo === "diabetes_2");
             if(!userHadDiabetes2){
                 await updatePatologia(patologia.id_patologia)
+                userData.Tipo2 = 1;
             }
         } else {
             if(userHadDiabetes2){
-                let patologia = patologiasUsuario.find((e) => e.patologias.codigo === "diabetes_2");
+                let patologia = patologias.find((e) => e.codigo === "diabetes_2");
                 if(patologia != undefined){
                     await deletePatologia(patologia.id_patologia)
                     setDiabetes2Selection(false)
+                    userData.Tipo2 = 0;
                 }
             }
         }
@@ -205,13 +207,15 @@ function ProfileMyDataScreen({route}) {
             let patologia = patologias.find((e) => e.descripcion === "Celiaquía");
             if(!userHadCeliaquia){
                 await updatePatologia(patologia.id_patologia)
+                userData.Celiaquia = 1;
             }
         } else {
             if(userHadCeliaquia){
-                let patologia = patologiasUsuario.find((e) => e.patologias.descripcion === "Celiaquía"); 
+                let patologia = patologias.find((e) => e.codigo === "celiaquia"); 
                 if(patologia != undefined){
                     await deletePatologia(patologia.id_patologia)
                     setCeliaquiaSelection(false)
+                    userData.Celiaquia = 0;
                 }
             }
         }
@@ -220,13 +224,15 @@ function ProfileMyDataScreen({route}) {
             let patologia = patologias.find((e) => e.descripcion === "Obesidad");
             if(!userHadObesidad){
                 await updatePatologia(patologia.id_patologia)
+                userData.Obesidad = 1;
             }
         } else {
             if(userHadObesidad){
-                let patologia = patologiasUsuario.find((e) => e.patologias.descripcion === "Obesidad");
+                let patologia = patologias.find((e) => e.codigo === "obesidad");
                 if(patologia != undefined){
                     await deletePatologia(patologia.id_patologia)
                     setObesidadSelection(false)
+                    userData.Obesidad = 0;
                 }
             }
         }
@@ -236,7 +242,7 @@ function ProfileMyDataScreen({route}) {
     function updatePatologia(idPatologia){
         return axios.post(config.backendURLs.patologiasUsuariosCreate,{
             patologia:idPatologia,
-            usuario: props != undefined && props.userData != undefined ? props.userData.id_usuario : 0,
+            usuario: userData.Usuario,
         }).then(function(response){
             
         }).catch(function(error) {
@@ -245,8 +251,8 @@ function ProfileMyDataScreen({route}) {
     } 
 
     function deletePatologia(idPatologia){
-        if(props != undefined && props.userData != undefined){
-            return axios.delete(`${config.backendURLs.patologiasUsuariosDelete}?id_patologia=${idPatologia}&id_usuario=${props.userData.id_usuario}`)
+        if(userData != undefined){
+            return axios.delete(`${config.backendURLs.patologiasUsuariosDelete}?id_patologia=${idPatologia}&id_usuario=${userData.Usuario}`)
             .then(function(response){
     
             })
@@ -259,7 +265,7 @@ function ProfileMyDataScreen({route}) {
 
     function okModal(){
         setShowModal(false);
-        props.onProfileUpdate();
+        fetchData()
     }
 
     const renderBackButton = function(){
