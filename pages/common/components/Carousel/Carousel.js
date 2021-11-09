@@ -15,7 +15,12 @@ export default function Carousel({navigation, data, type, title}) {
             <Text style={styles.titleText}>{title}</Text>
 
             <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                {data === undefined ? null : data.map(item => {
+                {data.length === 0 ?
+                    <View>
+                        <Text style={{textAlign: 'center'}}>No hay alimentos en este momento, intente más tarde.</Text>
+                    </View>
+                :
+                    data.map(item => {
                     if((context.state.userData.Celiaquia == item.Celiquia) && context.state.userData.Celiaquia == 1 && context.state.userData.Tipo1 ==  item.Tipo1 && context.state.userData.Tipo2 ==  item.Tipo2  &&  context.state.userData.Obesidad ==  item.Obesidad){
                         return <FoodItem key={type + item.ID.toString()} type={type} data={item} navigation={navigation}/>
                     }

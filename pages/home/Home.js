@@ -118,8 +118,7 @@ function HomeScreen({ navigation }) {
                                 adjustsFontSizeToFit={true}
                                 numberOfLines={1}
                             >
-                                Hola,{" "}
-                                {context.state.userData.Nombre.split(" ")[0]}
+                                Hola, {context.state.userData.Nombre.split(" ")[0]}
                             </Text>
                             <Text style={styles.headerSubtitle}>
                                 ¿Qué querés comer hoy?
@@ -135,7 +134,13 @@ function HomeScreen({ navigation }) {
                     <View>
                         {/* <Carousel key={0} data={carouselData[0]} navigation={navigation} /> */}
                         {/* <Carousel key={1} data={carouselData[1]} navigation={navigation} /> */}
-                        {/* <Carousel key={0} data={listFavoritos} navigation={navigation} type={'recipe'} title={'Favoritos'} /> */}
+                        <Carousel
+                            key={0}
+                            data={[]}
+                            navigation={navigation}
+                            type={'fav'}
+                            title={'Favoritos'}
+                        />
                         <Carousel
                             key={1}
                             data={listPlatos}
