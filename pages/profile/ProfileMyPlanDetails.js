@@ -268,7 +268,7 @@ function ProfileMyPlanDetailsScreen({route}) {
                         <Text
                             style={{
                                 ...stylesPlanDietario.plan_dietario_title,
-                                paddingTop: 120
+                                paddingTop: 100
                             }}
                         >
                             Semana {route.params.planIdx + 1}

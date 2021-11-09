@@ -27,6 +27,8 @@ import PlanDietarioScreen from "./pages/planDietario/plan_dietario";
 import ProfileMyDataScreen from "./pages/profile/ProfileMyData";
 import ProfileMyPlansScreen from "./pages/profile/ProfileMyPlans";
 import ProfileMyPlanDetailsScreen from "./pages/profile/ProfileMyPlanDetails";
+import LoginScreen from "./pages/login/login";
+import RegisterScreen from "./pages/register/register";
 
 import config from "./config";
 
@@ -74,23 +76,30 @@ function App() {
 
     const authContext = React.useMemo(() => ({
         signIn: async data => {
-
-            let userData = {
-                email: data.email,
-                password: data.password
-            }
-
             try {
-                const iniciarSesion = await login(userData) //ENDPOINT DE USUARIO - TODAVÍA NO ESTÁ
-                if (iniciarSesion === 401) {
-                    return iniciarSesion
-                }
-                const saveKeyStore =  await SecureStore.setItemAsync('userData', JSON.stringify(iniciarSesion))
-                dispatch({type: 'SET_SESION', userData: iniciarSesion})
+                const saveKeyStore =  await SecureStore.setItemAsync('userData', JSON.stringify(data))
+                dispatch({type: 'SET_SESION', userData: data})
             }
             catch (e) {
                 console.log("ERROR @ UseMemo: SignIn")
             }
+
+            // let userData = {
+            //     email: data.email,
+            //     password: data.password
+            // }
+
+            // try {
+            //     const iniciarSesion = await login(userData) //ENDPOINT DE USUARIO - TODAVÍA NO ESTÁ
+            //     if (iniciarSesion === 401) {
+            //         return iniciarSesion
+            //     }
+            //     const saveKeyStore =  await SecureStore.setItemAsync('userData', JSON.stringify(iniciarSesion))
+            //     dispatch({type: 'SET_SESION', userData: iniciarSesion})
+            // }
+            // catch (e) {
+            //     console.log("ERROR @ UseMemo: SignIn")
+            // }
 
         },
         signOut: async data => {
@@ -102,10 +111,6 @@ function App() {
     );
     
     React.useEffect(() => {
-
-        
-        fetchUserLoggedData(); //FETCH DE OCTOPUS
-
 
         //Carga de dummyUser en el localStorage
         async function dummySetter() {
@@ -157,44 +162,6 @@ function App() {
         fetchSecureStore()
     },[]);
     //---------------------------------
-
-
-    const [userData, setUserData] = React.useState();
-
-    async function fetchUserLoggedData() {
-        let loggedUserData = {};
-        await axios
-            .get(
-                `${config.backendURLs.getUser}?id_usuario=${config.loggedUser.id}`
-            )
-            .then(function (response) {
-                loggedUserData = response.data;
-            })
-            .catch(function (error) {
-                console.log('Error @ getUser in App.js');
-            });
-
-        await axios
-            .get(
-                `${config.backendURLs.patologiasUsuariosGet}?id_usuario=${config.loggedUser.id}`
-            )
-            .then(function (response) {
-                loggedUserData.patologias = response.data;
-            })
-            .catch(function (error) {
-                console.log('Error @ getPatologiasUser in App.js');
-            });
-
-        setUserData(loggedUserData);
-    }
-
-    function getUserLoggedData() {
-        return userData;
-    }
-
-    function updateLoggedUserData() {
-        fetchUserLoggedData();
-    }
 
     // Stacks y Tabs de navigation
     const Tab = createBottomTabNavigator();
@@ -267,8 +234,6 @@ function App() {
                     name="Plan"
                     children={() => (
                         <PlanDietarioScreen
-                            userData={userData}
-                            getUserData={getUserLoggedData}
                         />
                     )}
                     options={{ headerShown: false }}
@@ -277,8 +242,6 @@ function App() {
                     name="Perfil"
                     children={() => (
                         <ProfileScreen
-                            userData={userData}
-                            onProfileUpdate={updateLoggedUserData}
                         />
                     )}
                     options={{ headerShown: false }}
@@ -327,6 +290,8 @@ function App() {
                     component={ProfileMyPlanDetailsScreen}
                     options={{headerShown: false}}
                 />
+
+                
             </Stack.Navigator>
         )
     }
@@ -337,6 +302,21 @@ function App() {
                 <Stack.Screen
                     name="Login"
                     component= {Landing}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="RegisterScreen"
+                    component={RegisterScreen}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen
+                    name="Main"
+                    component={mainTab}
                     options={{headerShown: false}}
                 />
             </Stack.Navigator>
