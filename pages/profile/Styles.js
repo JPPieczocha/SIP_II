@@ -66,7 +66,7 @@ const StyleProfile = StyleSheet.create({
         position: 'absolute',
         backgroundColor: '#f2f2f2',
         borderRadius: 10,
-        top: 10,
+        top: 30,
         width: 50,
         height: 50,
         alignItems: 'center',

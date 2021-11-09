@@ -2,21 +2,22 @@ import React, { useState } from 'react';
 import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal } from 'react-native';
 import styles from '../common/styles'
 import stylesProfile from './Styles'
-import logo from '../../assets/logo.jpeg';
 import axios from 'axios'
 import config from '../../config';
 import colors from '../common/colors';
 import { EvilIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { UserContext } from "../../context/authContext";
 
-function ProfileMyPlansScreen(props) {
+function ProfileMyPlansScreen() {
     const navigation = useNavigation();
     const [loading, setLoading] = useState(true)
     const [planes, setPlanes] = useState([])
-
+    const context = React.useContext(UserContext);
+    const userData = context.state != undefined && context.state.userData != undefined ? context.state.userData : {}
+    
     function logResponseError(context,error){
         console.log("Error ocurrido en contexto: ", context)
         if (error.response) {
@@ -43,7 +44,7 @@ function ProfileMyPlansScreen(props) {
 
     function getMyPlans(){
         setLoading(true)
-        return axios.get(`${config.backendURLs.planesDietariosFavoritos}?id_usuario=${config.loggedUser.id}`)
+        return axios.get(`${config.backendURLs.planesDietariosFavoritos}?id_usuario=${userData.Usuario}`)
         .then(function(response){
             setPlanes(response.data)    
             setLoading(false)
