@@ -1,4 +1,4 @@
-import { history, allFavourites, dummyCheckin } from "../apiroutes/ApiRoutes";
+import { history, addHistory, allFavourites, dummyCheckin, addFav, DelFav, EsFav } from "../apiroutes/ApiRoutes";
 
 /**
  * 
@@ -12,11 +12,31 @@ export const historial = async (data)=>{
         const json = await response.json();
         return json;
     }else{
-        console.log('ERROR en getProducto');
-        console.log('Codigo de respuesta en getProducto: ' + response.status);
+        console.log('ERROR en historial');
+        console.log('Codigo de respuesta en historial: ' + response.status);
         return response.status
     }
 }
+
+/**
+ * 
+ * @param {JSON} data {id: number} 
+ * @description Gets the user's search history
+ * @returns 
+ */
+ export const Addhistorial = async (data)=>{
+    const response = await addHistory(data);
+    if(response.status === 200){
+        const json = await response.json();
+        return json;
+    }else{
+        console.log('ERROR en addHistorial');
+        console.log('Codigo de respuesta en addHistorial: ' + response.status);
+        return response.status
+    }
+}
+
+//-------------------------------------------------
 
 /**
  * 
@@ -30,11 +50,65 @@ export const favoritos = async (data)=>{
         const json = await response.json();
         return json;
     }else{
-        console.log('ERROR en getProducto');
-        console.log('Codigo de respuesta en getProducto: ' + response.status);
+        console.log('ERROR en favoritos');
+        console.log('Codigo de respuesta en favoritos: ' + response.status);
         return response.status
     }
 }
+
+/**
+ * 
+ * @param {String} data idUser
+ * @returns 
+ */
+export const Addfavorito = async (data)=>{
+    const response = await addFav(data);
+    if(response.status === 200){
+        const json = await response.json();
+        return json;
+    }else{
+        console.log('ERROR en Addfavorito');
+        console.log('Codigo de respuesta en Addfavorito: ' + response.status);
+        return response.status
+    }
+}
+
+/**
+ * 
+ * @param {String} data idUser
+ * @returns 
+ */
+ export const Delfavorito = async (data)=>{
+    const response = await DelFav(data);
+    if(response.status === 200){
+        const json = await response.json();
+        return json;
+    }else{
+        console.log('ERROR en Delfavorito');
+        console.log('Codigo de respuesta en Delfavorito: ' + response.status);
+        return response.status
+    }
+}
+
+/**
+ * 
+ * @param {String} data idUser
+ * @returns 
+ */
+ export const Esfavorito = async (data)=>{
+    const response = await EsFav(data);
+    if(response.status === 200){
+        const json = await response.json();
+        return json;
+    }else{
+        console.log('ERROR en Esfavorito');
+        console.log('Codigo de respuesta en Esfavorito: ' + response.status);
+        return response.status
+    }
+}
+
+//-------------------------------------------------
+
 
 /**
  * @description dummy get para que no se caiga la BD
