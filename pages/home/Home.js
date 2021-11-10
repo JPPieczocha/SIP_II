@@ -16,6 +16,8 @@ import { getAllProductos } from "../../controllers/productosController";
 
 import { UserContext } from "../../context/authContext";
 
+import { useFocusEffect } from '@react-navigation/native';
+
 function HomeScreen({ navigation }) {
     const context = React.useContext(UserContext);
 
@@ -26,6 +28,22 @@ function HomeScreen({ navigation }) {
     const [listFavoritos, setFavoritos] = useState();
     const [listPlatos, setListPlatos] = useState();
     const [listProductos, setListProductos] = useState();
+
+    useFocusEffect(()=>{
+        console.log('JEJEJE')
+        let data = context.state.userData.Usuario;
+        const fetchFavoritos = async () => {
+            const response = await favoritos(data);
+            if (response === undefined) {
+            } else {
+                console.log("Favoritos: " + response.length);
+                setFavoritos(response.reverse());
+                // setFetched(true);
+            }
+        };
+        fetchFavoritos();
+    })
+
 
     useEffect(
         () => {

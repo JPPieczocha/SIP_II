@@ -98,6 +98,7 @@ const Search = ({ navigation }) => {
                 const response = await buscarProductos(data);
                 if(response === undefined){
                 }else{
+                    setProductosList(response)
                     console.log('Productos busqueda: ' + response.length);
                 }
             }

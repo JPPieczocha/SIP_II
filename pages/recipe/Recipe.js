@@ -59,13 +59,15 @@ export default function Recipe({ navigation, route }) {
         const fetchFav = async () => {
             const req = {
                 Usuario: context.state.userData.Usuario,
-                idProducto: data.ID,
-                idPlato: 0
+                idProducto: 0,
+                idPlato: data.ID
             }
 
             const response = await Esfavorito(req)
-            if (response !== undefined)
+            if (response !== undefined){
                 setFav(response)
+                console.log("Es fav" + response);
+            }
             setLoadingFav(false)
         };
 
