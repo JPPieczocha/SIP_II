@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "./Styles";
 
-export default function FoodItem({ navigation, data }) {
+export default function FoodSearch({ navigation, data }) {
   const handleTouch = () => {
 
     if (!data.hasOwnProperty('Pasos')) {
@@ -25,21 +25,27 @@ export default function FoodItem({ navigation, data }) {
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => handleTouch()}>
-      <Text
-        style={styles.tagText}
-        adjustsFontSizeToFit={true}
-        numberOfLines={2}
-      >
-        {data.Nombre}
-      </Text>
-
-      <Image
-        style={{ width: "30%", height: "100%", borderRadius: 15 }}
-        source={{
-          uri: data.Foto,
-        }}
-      />
-    </TouchableOpacity>
+    <View>
+      {
+        data !== undefined ?
+        <TouchableOpacity style={styles.container} onPress={() => handleTouch()}>
+          <Text
+            style={styles.tagText}
+            adjustsFontSizeToFit={true}
+            numberOfLines={2}
+          >
+            {data.Nombre}
+          </Text>
+          <Image
+            style={{ width: "30%", height: "100%", borderRadius: 15 }}
+            source={{
+              uri: data.Foto,
+            }}
+          />
+        </TouchableOpacity>
+        :
+        null
+      }
+    </View>
   );
 }

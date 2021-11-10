@@ -21,9 +21,10 @@ import styles from "./Styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import logo from "../../assets/logo.jpeg";
 import colors from "../common/colors";
+
 import { historial } from "../../controllers/commonController";
-import { buscarPlatos } from "../../controllers/recetasController";
-import { buscarProductos } from "../../controllers/productosController";
+import { buscarPlatos, getAllPlatos } from "../../controllers/recetasController";
+import { buscarProductos, getAllProductos } from "../../controllers/productosController";
 
 
 import { UserContext } from "../../context/authContext";
@@ -47,6 +48,11 @@ const Search = ({ navigation }) => {
     const [ProductosList, setProductosList] = useState([]);
     const [UnionList, setUnionList] = useState([]);
     // const [historialShow, setHistorialShow] = useState(true);
+
+
+    const [allPlatos, setAllPlatos] = useState([])
+    const [allProd, setAllProd] = useState([])
+
     const [loading, setLoading] = useState(true);
 
     var radio_props_food = [
@@ -64,10 +70,26 @@ const Search = ({ navigation }) => {
             if(response === undefined){
             }else{
                 console.log('HISTORIAL USUARIO ' + data + ': ' + response.length);
-                console.log(response);
                 setHistorialList(response);
-                setLoading(false)
             }
+            
+            const platos = await getAllPlatos()
+            if(platos === undefined){
+            }else{
+                console.log('Levanté todos los platos');
+                setAllPlatos(platos);
+                
+            }
+
+            const prod = await getAllProductos()
+            if(prod === undefined){
+            }else{
+                console.log('Levanté todos los prods');
+                setAllProd(prod);
+            }
+
+            setLoading(false)
+
         }
 
         fetchHistorial();
@@ -265,10 +287,27 @@ const Search = ({ navigation }) => {
             <View style={styles.main}>
                 <FlatList
                     data={historialList}
+                    
+                    renderItem={(item) => {
+
+                        if(allProd != undefined && allPlatos != undefined){
+
+                            if (item.item.Plato === 0){
+                                //producto aca
+                                return (<FoodSearch navigation={navigation} data={allProd.filter(prod => prod.ID === item.item.producto)[0]} key={item.index} />)
+                            } else {
+                                //plato acá
+                                return (<FoodSearch navigation={navigation} data={allPlatos.filter(prod => prod.ID === item.item.plato)[0]} key={item.index} />)
+                            }
+                        } else {
+                            return <Text> undefinido</Text>
+                        }
+
+
+                    }}
+                    
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={(item) => (
-                        <FoodSearch navigation={navigation} data={item.item} key={item.index} />
-                    )}
+                    
                     ListEmptyComponent={()=>{
                         if(loading){
                             return <ActivityIndicator size={'large'} color={colors.secondary}/>
