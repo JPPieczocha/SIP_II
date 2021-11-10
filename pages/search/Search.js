@@ -25,7 +25,13 @@ import { historial } from "../../controllers/commonController";
 import { buscarPlatos } from "../../controllers/recetasController";
 import { buscarProductos } from "../../controllers/productosController";
 
+
+import { UserContext } from "../../context/authContext";
+
 const Search = ({ navigation }) => {
+
+    
+    const context = React.useContext(UserContext);
 
     const [showFilter, setShowFilter] = useState(false);
     const [filterSelection, setFilterSelection] = useState(1)
@@ -51,10 +57,14 @@ const Search = ({ navigation }) => {
 
     useEffect(() => {
         const fetchHistorial = async () => {
-            const response = await historial(1);
+
+            let data = context.state.userData.Usuario;
+
+            const response = await historial(data);
             if(response === undefined){
             }else{
-                console.log('HISTORIAL USUARIO 1: ' + response.length);
+                console.log('HISTORIAL USUARIO ' + data + ': ' + response.length);
+                console.log(response);
                 setHistorialList(response);
                 setLoading(false)
             }
@@ -254,9 +264,9 @@ const Search = ({ navigation }) => {
             <View style={styles.main}>
                 <FlatList
                     data={historialList}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={(item) => (
-                        <FoodSearch navigation={navigation} data={item.item} />
+                        <FoodSearch navigation={navigation} data={item.item} key={item.index} />
                     )}
                     ListEmptyComponent={()=>{
                         if(loading){
@@ -270,9 +280,9 @@ const Search = ({ navigation }) => {
             <View style={styles.main}>
                 <FlatList
                     data={PlatosList.concat(ProductosList)}
-                    keyExtractor={(item) => item.ID.toString()}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={(item) => (
-                        <FoodSearch navigation={navigation} data={item.item} />
+                        <FoodSearch navigation={navigation} data={item.item} key={item.index} />
                     )}
                     ListEmptyComponent={()=>{
                         if(loading){

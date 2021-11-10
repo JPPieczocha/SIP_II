@@ -39,8 +39,7 @@ export default function Carousel({navigation, data, type, title}) {
                                 return <FoodItem key={item.index} type={type} data={item.item} navigation={navigation}/>
                             }
                             
-                            return <FoodItem key={item.index} type={type} data={item.item} navigation={navigation}/>
-
+                            
                         }}
                         keyExtractor={(item, index) => index.toString()}
                     />
