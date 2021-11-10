@@ -231,7 +231,7 @@ export const addHistory = async(data)=>{
         },
     }
     try {
-        const response = await fetch(url+'AddFav/id/'+data.Usuario+'/producto/'+data.idProducto+'/plato/'+data.idPlato,options);
+        const response = await fetch(url+'AddHistorial/id/'+data.Usuario+'/producto/'+data.idProducto+'/plato/'+data.idPlato,options);
         return response
     } 
     catch (error) {

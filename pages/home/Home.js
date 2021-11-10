@@ -29,29 +29,50 @@ function HomeScreen({ navigation }) {
     const [listPlatos, setListPlatos] = useState();
     const [listProductos, setListProductos] = useState();
 
-    useFocusEffect(()=>{
-        console.log('JEJEJE')
-        let data = context.state.userData.Usuario;
-        const fetchFavoritos = async () => {
-            const response = await favoritos(data);
-            if (response === undefined) {
-            } else {
-                console.log("Favoritos: " + response.length);
-                setFavoritos(response.reverse());
-                // setFetched(true);
-            }
-        };
-        fetchFavoritos();
-    })
+    // useFocusEffect(()=>{
+    //     React.useCallback(() => {
+    //         // const unsubscribe = API.subscribe(userId, user => setUser(data));
+
+    //         console.log('JEJEJE')
+    //         const fetchFavoritos = async () => {
+    //             const response = await favoritos(context.state.userData.Usuario);
+    //             if (response === undefined) {
+    //             } else {
+    //                 console.log("Favoritos: " + response.length);
+    //                 setFavoritos(response.reverse());
+    //             }
+    //         };
+    //         // fetchFavoritos();
+    //     return () => fetchFavoritos();
+    //     }, [context.state.userData.Usuario])
+    // })
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // const unsubscribe = API.subscribe(userId, user => setUser(data));
+            console.log('JEJE');
+            const fetchFavoritos = async () => {
+                const response = await favoritos(context.state.userData.Usuario);
+                if (response === undefined) {
+                } else {
+                    console.log("Favoritos: " + response.length);
+                    setFavoritos(response.reverse());
+                }
+            };
+            fetchFavoritos()
+            return () => fetchFavoritos();
+          }, [])
+    )
 
 
     useEffect(
         () => {
-            let timer1 = setTimeout(() => {
-                setSeconds(seconds + 1);
-                if (!fetched) {
-                    console.log("ENTRÉ FETCH FAVORITOS");
-                    setFetched(true);
+            // let timer1 = setTimeout(() => {
+            //     setSeconds(seconds + 1);
+            //     if (!fetched) {
+            //         console.log("ENTRÉ FETCH FAVORITOS");
+            //         setFetched(true);
+            console.log('USEEFFECT');
 
                     let data = context.state.userData.Usuario;
                     console.log("Data: " + data);
@@ -90,25 +111,25 @@ function HomeScreen({ navigation }) {
                     fetchPlatos();
                     fetchProductos();
                     setLoading(false);
-                } else {
-                    //console.log('TIRÉ CONSULTA DUMMY');
-                    const fetchDummy = async () => {
-                        const response = await dummyBD();
-                        if (response === undefined) {
-                        } else {
-                            //console.log(response[0].FUCK_IT);
-                            setFetched(true);
-                        }
-                    };
-                    fetchDummy();
-                }
-            }, 5000);
+            //     } else {
+            //         //console.log('TIRÉ CONSULTA DUMMY');
+            //         const fetchDummy = async () => {
+            //             const response = await dummyBD();
+            //             if (response === undefined) {
+            //             } else {
+            //                 //console.log(response[0].FUCK_IT);
+            //                 setFetched(true);
+            //             }
+            //         };
+            //         fetchDummy();
+            //     }
+            // }, 5000);
 
             // this will clear Timeout
             // when component unmount like in willComponentUnmount
             // and show will not change to true
             return () => {
-                clearTimeout(timer1);
+                // clearTimeout(timer1);
             };
         },
         // useEffect will run only one time with empty []

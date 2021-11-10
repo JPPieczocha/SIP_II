@@ -26,6 +26,9 @@ import { historial } from "../../controllers/commonController";
 import { buscarPlatos, getAllPlatos } from "../../controllers/recetasController";
 import { buscarProductos, getAllProductos } from "../../controllers/productosController";
 
+import { useFocusEffect } from '@react-navigation/native';
+
+
 
 import { UserContext } from "../../context/authContext";
 
@@ -61,39 +64,75 @@ const Search = ({ navigation }) => {
         { label: "Productos", value: 2 },
     ];
 
-    useEffect(() => {
-        const fetchHistorial = async () => {
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchHistorial = async () => {
 
-            let data = context.state.userData.Usuario;
-
-            const response = await historial(data);
-            if(response === undefined){
-            }else{
-                console.log('HISTORIAL USUARIO ' + data + ': ' + response.length);
-                setHistorialList(response);
-            }
-            
-            const platos = await getAllPlatos()
-            if(platos === undefined){
-            }else{
-                console.log('Levanté todos los platos');
-                setAllPlatos(platos);
+                let data = context.state.userData.Usuario;
+    
+                const response = await historial(data);
+                if(response === undefined){
+                }else{
+                    console.log('HISTORIAL USUARIO ' + data + ': ' + response.length);
+                    setHistorialList(response);
+                }
                 
+                const platos = await getAllPlatos()
+                if(platos === undefined){
+                }else{
+                    console.log('Levanté todos los platos');
+                    setAllPlatos(platos);
+                    
+                }
+    
+                const prod = await getAllProductos()
+                if(prod === undefined){
+                }else{
+                    console.log('Levanté todos los prods');
+                    setAllProd(prod);
+                }
+    
+                setLoading(false)
+    
             }
+            fetchHistorial()
+            return () => fetchHistorial();
+          }, [])
+    )
 
-            const prod = await getAllProductos()
-            if(prod === undefined){
-            }else{
-                console.log('Levanté todos los prods');
-                setAllProd(prod);
-            }
+    // useEffect(() => {
+    //     const fetchHistorial = async () => {
 
-            setLoading(false)
+    //         let data = context.state.userData.Usuario;
 
-        }
+    //         const response = await historial(data);
+    //         if(response === undefined){
+    //         }else{
+    //             console.log('HISTORIAL USUARIO ' + data + ': ' + response.length);
+    //             setHistorialList(response);
+    //         }
+            
+    //         const platos = await getAllPlatos()
+    //         if(platos === undefined){
+    //         }else{
+    //             console.log('Levanté todos los platos');
+    //             setAllPlatos(platos);
+                
+    //         }
 
-        fetchHistorial();
-    }, []);
+    //         const prod = await getAllProductos()
+    //         if(prod === undefined){
+    //         }else{
+    //             console.log('Levanté todos los prods');
+    //             setAllProd(prod);
+    //         }
+
+    //         setLoading(false)
+
+    //     }
+
+    //     fetchHistorial();
+    // }, []);
 
     const handleSearch = () => {
 
@@ -292,7 +331,7 @@ const Search = ({ navigation }) => {
 
                         if(allProd != undefined && allPlatos != undefined){
 
-                            if (item.item.Plato === 0){
+                            if (item.item.plato === 0){
                                 //producto aca
                                 return (<FoodSearch navigation={navigation} data={allProd.filter(prod => prod.ID === item.item.producto)[0]} key={item.index} />)
                             } else {
