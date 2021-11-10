@@ -59,8 +59,8 @@ export default function Recipe({ navigation, route }) {
         const fetchFav = async () => {
             const req = {
                 Usuario: context.state.userData.Usuario,
-                idProducto: 0,
-                idPlato: data.ID
+                idProducto: data.ID,
+                idPlato: 0
             }
 
             const response = await Esfavorito(req)
@@ -70,6 +70,7 @@ export default function Recipe({ navigation, route }) {
         };
 
         fetchProducto();
+        handlePatology()
         fetchFav()
 
     }, []);

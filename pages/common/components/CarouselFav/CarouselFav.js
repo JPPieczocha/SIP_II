@@ -33,7 +33,7 @@ export default function CarouselFav({navigation, data, productos, platos}) {
                     <FlatList
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
-                        data={data.reverse()}
+                        data={data}
                         renderItem={(item) => handleRender(item)}
                         keyExtractor={(item, index) => index.toString()}
                     />

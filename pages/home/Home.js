@@ -43,7 +43,7 @@ function HomeScreen({ navigation }) {
                         if (response === undefined) {
                         } else {
                             console.log("Favoritos: " + response.length);
-                            setFavoritos(response);
+                            setFavoritos(response.reverse());
                             // setFetched(true);
                         }
                     };

@@ -16,6 +16,8 @@ import styles from "./Styles";
 import Color from "../common/colors";
 
 import { getProducto } from "../../controllers/productosController";
+import { Esfavorito, Addfavorito, Delfavorito } from '../../controllers/commonController'
+
 
 import { UserContext } from "../../context/authContext";
 
@@ -25,6 +27,8 @@ export default function Product({ navigation, route }) {
     const { data } = route.params;
 
     const [listInfoNutr, setListInfoNutr] = useState([]);
+    
+    const [loadingFav, setLoadingFav] = useState(true)
 
     useEffect(() => {
         const fetchProducto = async () => {
@@ -35,7 +39,23 @@ export default function Product({ navigation, route }) {
                 setListInfoNutr(response);
             }
         };
+
+        const fetchFav = async () => {
+            const req = {
+                Usuario: context.state.userData.Usuario,
+                idProducto: data.ID,
+                idPlato: 0
+            }
+
+            const response = await Esfavorito(req)
+            if (response !== undefined)
+                setFav(response)
+            setLoadingFav(false)
+        };
+
+
         fetchProducto();
+        fetchFav()
         handlePatology();
     }, []);
 
@@ -52,6 +72,28 @@ export default function Product({ navigation, route }) {
             return true;
         return false;
     };
+
+    const handleFav = async () => {
+
+        setLoadingFav(true)
+        const req = {
+            Usuario: context.state.userData.Usuario,
+            idProducto: data.ID,
+            idPlato: 0
+        }
+        let res
+        if (fav) {
+            //Tengo que eliminarlo de favs
+            res = await Delfavorito(req)
+            setFav(false)
+        } else {
+            //Tengo que agregarlo a favs
+            res = await Addfavorito(req)
+            setFav(true)
+        }
+
+        setLoadingFav(false)
+    }
 
     return (
         <View>
@@ -77,6 +119,7 @@ export default function Product({ navigation, route }) {
                 <TouchableOpacity
                     style={[styles.button, styles.backButton]}
                     onPress={() => navigation.goBack()}
+                    disabled={loadingFav}
                 >
                     <Ionicons
                         name={"arrow-back"}
@@ -87,13 +130,22 @@ export default function Product({ navigation, route }) {
 
                 <TouchableOpacity
                     style={[styles.button, styles.favButton]}
-                    onPress={() => setFav(!fav)}
+                    onPress={() => handleFav()}
+                    disabled={loadingFav}
                 >
-                    <Ionicons
-                        name={fav ? "heart" : "heart-outline"}
-                        color={Color.secondary}
-                        size={32}
-                    />
+                    {loadingFav ? 
+                        <ActivityIndicator
+                            style={{ height: "100%" }}
+                            size={"small"}
+                            color={Color.secondary}
+                        />
+                    :
+                        <Ionicons
+                            name={fav ? "heart" : "heart-outline"}
+                            color={Color.secondary}
+                            size={32}
+                        />
+                    }
                 </TouchableOpacity>
 
                 <Text

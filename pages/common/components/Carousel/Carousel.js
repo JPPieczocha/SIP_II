@@ -38,6 +38,8 @@ export default function Carousel({navigation, data, type, title}) {
                             if((context.state.userData.Obesidad == item.item.Obesidad) && context.state.userData.Obesidad == 1 && context.state.userData.Tipo1 ==  item.item.Tipo1 && context.state.userData.Tipo2 ==  item.item.Tipo2 &&  context.state.userData.Obesidad ==  item.item.Obesidad){
                                 return <FoodItem key={item.index} type={type} data={item.item} navigation={navigation}/>
                             }
+                            
+                            return <FoodItem key={item.index} type={type} data={item.item} navigation={navigation}/>
 
                         }}
                         keyExtractor={(item, index) => index.toString()}
