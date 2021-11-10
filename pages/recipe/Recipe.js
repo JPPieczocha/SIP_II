@@ -19,6 +19,7 @@ import styles from "./Styles";
 import Color from "../common/colors";
 
 import { getPLato } from "../../controllers/recetasController";
+import { Esfavorito, Addfavorito, Delfavorito } from '../../controllers/commonController'
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
@@ -40,6 +41,9 @@ export default function Recipe({ navigation, route }) {
     const [listingredientes, setListIngredientes] = useState([]);
 
     const [loading, setLoading] = useState(true);
+    const [loadingFav, setLoadingFav] = useState(true)
+
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         const fetchProducto = async () => {
@@ -51,7 +55,23 @@ export default function Recipe({ navigation, route }) {
                 setLoading(false);
             }
         };
+
+        const fetchFav = async () => {
+            const req = {
+                Usuario: context.state.userData.Usuario,
+                idProducto: 0,
+                idPlato: data.ID
+            }
+
+            const response = await Esfavorito(req)
+            if (response !== undefined)
+                setFav(response)
+            setLoadingFav(false)
+        };
+
         fetchProducto();
+        fetchFav()
+
     }, []);
 
 	const renderPasos = ({item, index}) =>{
@@ -71,6 +91,28 @@ export default function Recipe({ navigation, route }) {
         if (context.state.userData.Obesidad == 1 && data.Obesidad == 0) return true;
         return false;
     };
+
+    const handleFav = async () => {
+
+        setLoadingFav(true)
+        const req = {
+            Usuario: context.state.userData.Usuario,
+            idProducto: 0,
+            idPlato: data.ID
+        }
+        let res
+        if (fav) {
+            //Tengo que eliminarlo de favs
+            res = await Delfavorito(req)
+            setFav(false)
+        } else {
+            //Tengo que agregarlo a favs
+            res = await Addfavorito(req)
+            setFav(true)
+        }
+
+        setLoadingFav(false)
+    }
 
     return (
         <View>
@@ -103,6 +145,7 @@ export default function Recipe({ navigation, route }) {
                     <TouchableOpacity
                         style={[styles.button, styles.backButton]}
                         onPress={() => navigation.goBack()}
+                        disabled={loadingFav}
                     >
                         <Ionicons
                             name={"arrow-back"}
@@ -113,13 +156,22 @@ export default function Recipe({ navigation, route }) {
 
                     <TouchableOpacity
                         style={[styles.button, styles.favButton]}
-                        onPress={() => setFav(!fav)}
+                        onPress={() => handleFav()}
+                        disabled={loadingFav}
                     >
-                        <Ionicons
-                            name={fav ? "heart" : "heart-outline"}
-                            color={Color.secondary}
-                            size={32}
-                        />
+                        {loadingFav ? 
+                            <ActivityIndicator
+                                style={{ height: "100%" }}
+                                size={"small"}
+                                color={Color.secondary}
+                            />
+                        :
+                            <Ionicons
+                                name={fav ? "heart" : "heart-outline"}
+                                color={Color.secondary}
+                                size={32}
+                            />
+                        }
                     </TouchableOpacity>
 
                     <Text

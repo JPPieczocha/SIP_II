@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View, Image, ScrollView, ActivityIndicator } from "react-native";
 
 import Carousel from "../common/components/Carousel/Carousel";
+import CarouselFav from "../common/components/CarouselFav/CarouselFav";
 import Color from "../common/colors";
 import styles from "./Styles";
 
@@ -34,14 +35,14 @@ function HomeScreen({ navigation }) {
                     console.log("ENTRÉ FETCH FAVORITOS");
                     setFetched(true);
 
-                    let data = "1";
+                    let data = context.state.userData.Usuario;
+                    console.log("Data: " + data);
 
                     const fetchFavoritos = async () => {
                         const response = await favoritos(data);
                         if (response === undefined) {
                         } else {
-                            console.log("Favoritos: ");
-                            console.log(response);
+                            console.log("Favoritos: " + response.length);
                             setFavoritos(response);
                             // setFetched(true);
                         }
@@ -67,7 +68,7 @@ function HomeScreen({ navigation }) {
                         }
                     };
 
-                    // fetchFavoritos();
+                    fetchFavoritos();
                     fetchPlatos();
                     fetchProductos();
                     setLoading(false);
@@ -97,7 +98,7 @@ function HomeScreen({ navigation }) {
         // like this - [data]
         // than clearTimeout will run every time
         // this value changes (useEffect re-run)
-        [seconds]
+        []
     );
 
     return (
@@ -132,15 +133,14 @@ function HomeScreen({ navigation }) {
                     </View>
 
                     <View>
-                        {/* <Carousel key={0} data={carouselData[0]} navigation={navigation} /> */}
-                        {/* <Carousel key={1} data={carouselData[1]} navigation={navigation} /> */}
-                        <Carousel
-                            key={0}
-                            data={[]}
+                        
+                        <CarouselFav
+                            data={listFavoritos}
+                            productos={listProductos}
+                            platos={listPlatos}
                             navigation={navigation}
-                            type={'fav'}
-                            title={'Favoritos'}
                         />
+
                         <Carousel
                             key={1}
                             data={listPlatos}
@@ -156,7 +156,6 @@ function HomeScreen({ navigation }) {
                             title={"Productos recomendados"}
                         />
 
-                        {/* <Carousel key={2} data={carouselData[2]} navigation={navigation} /> */}
                     </View>
 
                     <Text></Text>

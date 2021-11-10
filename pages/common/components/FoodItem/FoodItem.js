@@ -20,7 +20,6 @@ export default function FoodItem({navigation, data, type}) {
             <Image
                 style= {{width: '100%', height: '100%', borderRadius: 15}}
                 source={{
-                    // uri: data.imagen,
                     uri: data.Foto,
                 }}
             />

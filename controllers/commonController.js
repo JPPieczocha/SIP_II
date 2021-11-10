@@ -64,13 +64,12 @@ export const favoritos = async (data)=>{
 export const Addfavorito = async (data)=>{
     const response = await addFav(data);
     if(response.status === 200){
-        const json = await response.json();
-        return json;
+        console.log("Se agregó a fav");
     }else{
         console.log('ERROR en Addfavorito');
         console.log('Codigo de respuesta en Addfavorito: ' + response.status);
-        return response.status
     }
+    return response.status
 }
 
 /**
@@ -81,13 +80,12 @@ export const Addfavorito = async (data)=>{
  export const Delfavorito = async (data)=>{
     const response = await DelFav(data);
     if(response.status === 200){
-        const json = await response.json();
-        return json;
+        console.log("Se eliminó de Fav");
     }else{
         console.log('ERROR en Delfavorito');
         console.log('Codigo de respuesta en Delfavorito: ' + response.status);
-        return response.status
     }
+    return response.status
 }
 
 /**
@@ -99,7 +97,7 @@ export const Addfavorito = async (data)=>{
     const response = await EsFav(data);
     if(response.status === 200){
         const json = await response.json();
-        return json;
+        return json.length !== 0;
     }else{
         console.log('ERROR en Esfavorito');
         console.log('Codigo de respuesta en Esfavorito: ' + response.status);
