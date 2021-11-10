@@ -2,40 +2,6 @@ const url = 'https://damp-reef-82590.herokuapp.com/';
 
 //-----------Endpoints-----------------------------
 
-//GET de favoritos, ya sea receta o producto.
-export const allFavourites = async (data) =>{
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }
-    try {
-        const response = await fetch(url+'favorito/id/'+data,options);
-        return response
-    } 
-    catch (error) {
-        console.error(error)
-    }
-}
-
-//GET de historial, ya sea receta o producto.
-export const history = async (data) =>{
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }
-    try {
-        const response = await fetch(url+'historial/id/'+data,options);
-        return response
-    } 
-    catch (error) {
-        console.error(error)
-    }
-}
-
 //GET de datos de perfil segun ID.
 export const profile = async (data) =>{
     const options = {
@@ -171,3 +137,104 @@ export const searchProductos = async(data)=>{
     }
 }
 
+//-----------------------------------------
+
+//GET de favoritos, ya sea receta o producto.
+export const allFavourites = async (data) =>{
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'favorito/id/'+data,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+
+export const addFav = async(data)=>{
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'AddFav/id/'+data.Usuario+'/producto/'+data.idProducto+'/plato/'+data.idPlato,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+
+export const DelFav = async(data)=>{
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'DeleteFav/id/'+data.Usuario+'/producto/'+data.idProducto+'/plato/'+data.idPlato,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+
+export const EsFav = async(data)=>{
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'EsFav/id/'+data.Usuario+'/producto/'+data.idProducto+'/plato/'+data.idPlato,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+
+//----------------------------------------------------
+
+//GET de historial, ya sea receta o producto.
+export const history = async (data) =>{
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'historial/id/'+data,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+
+export const addHistory = async(data)=>{
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'AddFav/id/'+data.Usuario+'/producto/'+data.idProducto+'/plato/'+data.idPlato,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
