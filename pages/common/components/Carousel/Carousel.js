@@ -15,7 +15,7 @@ export default function Carousel({navigation, data, type, title}) {
             <Text style={styles.titleText}>{title}</Text>
 
             <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                {data.length === 0 ?
+                {data === undefined ?
                     <View>
                         <Text style={{textAlign: 'center'}}>No hay alimentos en este momento, intente más tarde.</Text>
                     </View>

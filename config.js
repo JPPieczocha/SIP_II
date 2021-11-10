@@ -1,5 +1,5 @@
-const NGROK_IP_USUARIOS = "http://bfa2-190-16-187-60.ngrok.io"
-const NGROK_IP_PLAN_DIETARIO = "http://9c8e-190-16-187-60.ngrok.io"
+const NGROK_IP_USUARIOS = "http://ed6d-190-16-156-198.ngrok.io"
+const NGROK_IP_PLAN_DIETARIO = "http://2143-190-16-156-198.ngrok.io"
 let config = {
     backendURLs: {
         login:`${NGROK_IP_USUARIOS}/api/usuarios/signin`,
