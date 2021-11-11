@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,6 +9,8 @@ import axios from "axios";
 //Auth nuevo
 import * as SecureStore from 'expo-secure-store';
 import { UserContext } from './context/authContext';
+import { DataContext } from "./context/prodContext";
+
 //Fin auth nuevo
 
 import { useFonts } from "expo-font";
@@ -37,11 +39,13 @@ import Recipe from "./pages/recipe/Recipe";
 
 import colors from "./pages/common/colors";
 
+
 //------------------------
 import { dummyBD } from "./controllers/commonController";
 import PlanDietarioDetails from "./pages/planDietario/plan_dietario_details";
 import Loading from './pages/common/components/loading/Loading'
 //-----------------------
+import { getAllPlatos } from './controllers/recetasController'
 
 function App() {
     
@@ -84,23 +88,6 @@ function App() {
                 console.log("ERROR @ UseMemo: SignIn")
             }
 
-            // let userData = {
-            //     email: data.email,
-            //     password: data.password
-            // }
-
-            // try {
-            //     const iniciarSesion = await login(userData) //ENDPOINT DE USUARIO - TODAVÍA NO ESTÁ
-            //     if (iniciarSesion === 401) {
-            //         return iniciarSesion
-            //     }
-            //     const saveKeyStore =  await SecureStore.setItemAsync('userData', JSON.stringify(iniciarSesion))
-            //     dispatch({type: 'SET_SESION', userData: iniciarSesion})
-            // }
-            // catch (e) {
-            //     console.log("ERROR @ UseMemo: SignIn")
-            // }
-
         },
         signOut: async data => {
             const deleteKeyStore = await SecureStore.deleteItemAsync('userData')
@@ -109,37 +96,10 @@ function App() {
     }),
     []
     );
+
+    const [listPlatos, setListPlatos] = useState();
     
     React.useEffect(() => {
-
-        //Carga de dummyUser en el localStorage
-        async function dummySetter() {
-            try {
-                let userDummy = {
-                    Usuario: 1,
-                    Celiaquia: 1,
-                    Tipo1: 0,
-                    Tipo2: 0,
-                    Obesidad: 0,
-                    Nombre: "Otto Octavius",
-                    Mail: "YaNoSePara@gmail.com",
-                    Clave: "pass1234"
-                }
-                await SecureStore.setItemAsync('userData', JSON.stringify(userDummy))
-                console.log('dummyUser set in LocalStorage');
-            } catch (e) {
-                console.log('Error @ dummySetter')
-            }
-        }
-
-        async function dummyDeleter() {
-            try {
-                await SecureStore.deleteItemAsync('userData')
-                console.log('dummyUser deleted in LocalStorage');
-            } catch (e) {
-                console.log('Error @ dummyDeleter');
-            }
-        }
         
 
         async function fetchSecureStore(){
@@ -157,8 +117,17 @@ function App() {
                 console.log(e);
             }
         }
-        // dummySetter()
-        // dummyDeleter()
+
+        const fetchPlatos = async () => {
+            const response = await getAllPlatos();
+            if (response === undefined) {
+            } else {
+                console.log("platos: " + response.length);
+                setListPlatos(response);
+                // setFetched(true);
+            }
+        };
+        fetchPlatos()
         fetchSecureStore()
     },[]);
     //---------------------------------
@@ -326,7 +295,7 @@ function App() {
 
     return (
         <NavigationContainer>
-            <UserContext.Provider value={{authContext, state}}>
+            <UserContext.Provider value={{authContext, state, listPlatos}}>
                 <Stack.Navigator>
                         {state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
                         {

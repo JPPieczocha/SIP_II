@@ -185,14 +185,15 @@ function HomeScreen({ navigation }) {
                             data={listPlatos}
                             navigation={navigation}
                             type={"recipe"}
-                            title={"Platos recomendados"}
+                            title={"Platos populares"}
                         />
+                        
                         <Carousel
                             key={2}
                             data={listProductos}
                             navigation={navigation}
                             type={"product"}
-                            title={"Productos recomendados"}
+                            title={"Productos populares"}
                         />
 
                     </View>

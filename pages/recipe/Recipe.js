@@ -31,6 +31,9 @@ export default function Recipe({ navigation, route }) {
 
     const { data } = route.params;
 
+    console.log("Estoy en recipe");
+    console.log(data.Nombre + data.ID);
+
     const [fav, setFav] = useState(false);
     const [ingrPasos, setIngrPasos] = useState(true);
 

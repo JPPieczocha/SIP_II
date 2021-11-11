@@ -10,9 +10,15 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
+import { UserContext } from '../../context/authContext';
+
 function PlanDietarioDetails({route}) {
-    const navigation = useNavigation();
     const { comidaData } = route.params;
+    const context = React.useContext(UserContext);
+
+
+    const navigation = useNavigation();
+    
     const keyExtractor = (item, index) => index.toString()
     const planItems = [
         {
@@ -41,23 +47,18 @@ function PlanDietarioDetails({route}) {
         let screenName = ""
         let item = planItems.find((e) => e.id == id)
         if(item.key == "Bebida" || item.key == "Extra"){
-            screenName = "Product"
-        }
-
-        if(item.key == "Comida"){
-            screenName = "Recipe"
-        }
-        navigation.navigate(screenName,{
-            id:item.id,
-            nombre:item.title,
-            imagen:item.url_imagen,
-            data:{
+            navigation.navigate("Product", 
+            {data :{
                 ID:item.id,
                 Nombre:item.title,
                 Descripcion:item.title,
-                Foto:item.url_imagen
-            }
-        })
+                Foto:item.url_imagen,
+            }})
+        }
+
+        if(item.key == "Comida"){
+            navigation.navigate("Recipe", {data: context.listPlatos.filter(item => item.ID == comidaData.receta.ID)[0]})
+        }
     }
 
     const renderItem = (item) => 

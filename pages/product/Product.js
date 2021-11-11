@@ -159,7 +159,6 @@ export default function Product({ navigation, route }) {
                 <Text style={styles.description}>{data.Descripcion}</Text>
 
                 <Text style={styles.title}>Información Nutricional</Text>
-                <Text style={styles.description}>Porción: 25gr</Text>
 
                 <View style={styles.infoNutricional}>
                     {listInfoNutr.length === 0 ? (
