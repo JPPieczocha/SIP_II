@@ -47,8 +47,12 @@ export const historial = async (data)=>{
 export const favoritos = async (data)=>{
     const response = await allFavourites(data);
     if(response.status === 200){
-        const json = await response.json();
-        return json;
+        try {
+            const json = await response.json();
+            return json;
+        } catch (e) {
+            // console.error(e)
+        }
     }else{
         console.log('ERROR en favoritos');
         console.log('Codigo de respuesta en favoritos: ' + response.status);

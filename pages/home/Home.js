@@ -16,7 +16,7 @@ import { getAllProductos } from "../../controllers/productosController";
 
 import { UserContext } from "../../context/authContext";
 
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 
 function HomeScreen({ navigation }) {
     const context = React.useContext(UserContext);
@@ -25,9 +25,9 @@ function HomeScreen({ navigation }) {
     const [seconds, setSeconds] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    const [listFavoritos, setFavoritos] = useState();
-    const [listPlatos, setListPlatos] = useState();
-    const [listProductos, setListProductos] = useState();
+    const [listFavoritos, setFavoritos] = useState(undefined);
+    const [listPlatos, setListPlatos] = useState(undefined);
+    const [listProductos, setListProductos] = useState(undefined);
 
     // useFocusEffect(()=>{
     //     React.useCallback(() => {
@@ -50,20 +50,22 @@ function HomeScreen({ navigation }) {
     useFocusEffect(
         React.useCallback(() => {
             // const unsubscribe = API.subscribe(userId, user => setUser(data));
-            console.log('JEJE');
+            console.log("JEJE");
             const fetchFavoritos = async () => {
-                const response = await favoritos(context.state.userData.Usuario);
+                const response = await favoritos(
+                    context.state.userData.Usuario
+                );
                 if (response === undefined) {
+                    setFavoritos([]);
                 } else {
                     console.log("Favoritos: " + response.length);
                     setFavoritos(response.reverse());
                 }
             };
-            fetchFavoritos()
+            fetchFavoritos();
             return () => fetchFavoritos();
-          }, [])
-    )
-
+        }, [])
+    );
 
     useEffect(
         () => {
@@ -72,45 +74,48 @@ function HomeScreen({ navigation }) {
             //     if (!fetched) {
             //         console.log("ENTRÉ FETCH FAVORITOS");
             //         setFetched(true);
-            console.log('USEEFFECT');
+            console.log("USEEFFECT");
 
-                    let data = context.state.userData.Usuario;
-                    console.log("Data: " + data);
+            let data = context.state.userData.Usuario;
+            console.log("Data: " + data);
 
-                    const fetchFavoritos = async () => {
-                        const response = await favoritos(data);
-                        if (response === undefined) {
-                        } else {
-                            console.log("Favoritos: " + response.length);
-                            setFavoritos(response.reverse());
-                            // setFetched(true);
-                        }
-                    };
+            const fetchFavoritos = async () => {
+                const response = await favoritos(data);
+                if (response === undefined) {
+                    setFavoritos([]);
+                } else {
+                    console.log("Favoritos: " + response.length);
+                    setFavoritos(response.reverse());
+                    // setFetched(true);
+                }
+            };
 
-                    const fetchPlatos = async () => {
-                        const response = await getAllPlatos();
-                        if (response === undefined) {
-                        } else {
-                            console.log("platos: " + response.length);
-                            setListPlatos(response);
-                            // setFetched(true);
-                        }
-                    };
+            const fetchPlatos = async () => {
+                const response = await getAllPlatos();
+                if (response === undefined) {
+                    setListPlatos([]);
+                } else {
+                    console.log("platos: " + response.length);
+                    setListPlatos(response);
+                    // setFetched(true);
+                }
+            };
 
-                    const fetchProductos = async () => {
-                        const response = await getAllProductos();
-                        if (response === undefined) {
-                        } else {
-                            console.log("PRODUCTOS: " + response.length);
-                            setListProductos(response);
-                            // setFetched(true);
-                        }
-                    };
+            const fetchProductos = async () => {
+                const response = await getAllProductos();
+                if (response === undefined) {
+                    setListProductos([]);
+                } else {
+                    console.log("PRODUCTOS: " + response.length);
+                    setListProductos(response);
+                    // setFetched(true);
+                }
+            };
 
-                    fetchFavoritos();
-                    fetchPlatos();
-                    fetchProductos();
-                    setLoading(false);
+            fetchFavoritos();
+            fetchPlatos();
+            fetchProductos();
+            setLoading(false);
             //     } else {
             //         //console.log('TIRÉ CONSULTA DUMMY');
             //         const fetchDummy = async () => {
@@ -158,7 +163,8 @@ function HomeScreen({ navigation }) {
                                 adjustsFontSizeToFit={true}
                                 numberOfLines={1}
                             >
-                                Hola, {context.state.userData.Nombre.split(" ")[0]}
+                                Hola,{" "}
+                                {context.state.userData.Nombre.split(" ")[0]}
                             </Text>
                             <Text style={styles.headerSubtitle}>
                                 ¿Qué querés comer hoy?
@@ -172,7 +178,6 @@ function HomeScreen({ navigation }) {
                     </View>
 
                     <View>
-                        
                         <CarouselFav
                             data={listFavoritos}
                             productos={listProductos}
@@ -187,7 +192,7 @@ function HomeScreen({ navigation }) {
                             type={"recipe"}
                             title={"Platos populares"}
                         />
-                        
+
                         <Carousel
                             key={2}
                             data={listProductos}
@@ -195,7 +200,6 @@ function HomeScreen({ navigation }) {
                             type={"product"}
                             title={"Productos populares"}
                         />
-
                     </View>
 
                     <Text></Text>

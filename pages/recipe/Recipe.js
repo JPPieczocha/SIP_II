@@ -249,10 +249,6 @@ export default function Recipe({ navigation, route }) {
 
                     <View style={ingrPasos ? {display: 'none'}: {}}>
                         <Text style={styles.title}>Pasos</Text>
-                        <Text style={styles.description}>
-                            {/* {Dificultad: {infoReceta.dificultad}} */}
-                        </Text>
-
 
                         <Pagination
                             dotsLength={data.Pasos.split(";").length}
@@ -261,13 +257,11 @@ export default function Recipe({ navigation, route }) {
                                 width: 10,
                                 height: 10,
                                 borderRadius: 5,
-                                marginHorizontal: 8,
                                 backgroundColor: Color.secondary
                             }}
                             inactiveDotOpacity={0.4}
                             inactiveDotScale={0.6}
                         />
-                            
                         <Carousel
                             layout={"default"}
                             data={data.Pasos.split(";")}

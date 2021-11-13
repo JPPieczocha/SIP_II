@@ -3,8 +3,12 @@ import {plato, platos, searchPlatos} from '../apiroutes/ApiRoutes';
 export const getAllPlatos = async ()=>{
     const response = await platos();
     if(response.status === 200){
-        const json = await response.json();
-        return json;
+        try {
+            const json = await response.json();
+            return json;
+        } catch (e) {
+            // console.error(e)
+        }
     }else{
         console.log('ERROR en getAllProductos');
         console.log('Codigo de respuesta en getAllProductos: ' + response.status);
