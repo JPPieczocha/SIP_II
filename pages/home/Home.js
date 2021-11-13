@@ -49,8 +49,7 @@ function HomeScreen({ navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
-            // const unsubscribe = API.subscribe(userId, user => setUser(data));
-            console.log("JEJE");
+            // console.log("useFocusEffect");
             const fetchFavoritos = async () => {
                 const response = await favoritos(
                     context.state.userData.Usuario
@@ -62,7 +61,9 @@ function HomeScreen({ navigation }) {
                     setFavoritos(response.reverse());
                 }
             };
+
             fetchFavoritos();
+            
             return () => fetchFavoritos();
         }, [])
     );
@@ -74,17 +75,17 @@ function HomeScreen({ navigation }) {
             //     if (!fetched) {
             //         console.log("ENTRÉ FETCH FAVORITOS");
             //         setFetched(true);
-            console.log("USEEFFECT");
+            console.log("UseEffect");
 
             let data = context.state.userData.Usuario;
-            console.log("Data: " + data);
+            console.log("ID User logeado: " + data);
 
             const fetchFavoritos = async () => {
                 const response = await favoritos(data);
                 if (response === undefined) {
                     setFavoritos([]);
                 } else {
-                    console.log("Favoritos: " + response.length);
+                    console.log("TOTAL Favoritos: " + response.length);
                     setFavoritos(response.reverse());
                     // setFetched(true);
                 }
@@ -95,7 +96,7 @@ function HomeScreen({ navigation }) {
                 if (response === undefined) {
                     setListPlatos([]);
                 } else {
-                    console.log("platos: " + response.length);
+                    console.log("TOTAL Platos: " + response.length);
                     setListPlatos(response);
                     // setFetched(true);
                 }
@@ -106,7 +107,7 @@ function HomeScreen({ navigation }) {
                 if (response === undefined) {
                     setListProductos([]);
                 } else {
-                    console.log("PRODUCTOS: " + response.length);
+                    console.log("TOTAL Productos: " + response.length);
                     setListProductos(response);
                     // setFetched(true);
                 }

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import styles from "./Styles";
 import FoodItem from "../FoodItem/FoodItem";
@@ -64,24 +64,27 @@ export default function CarouselFav({ navigation, data, productos, platos }) {
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}>Favoritos</Text>
-            {data === undefined &&
-            productos === undefined &&
-            platos === undefined ? (
-                <View>
-                    <Text style={{ textAlign: "center" }}>
-                        No hay alimentos en este momento, intente más tarde.
-                    </Text>
+            {data === undefined ||
+            productos === undefined ||
+            platos === undefined ? 
+                <View style={styles.activityIndicator}>
+                    <ActivityIndicator size='large' color={colors.secondary} />
                 </View>
-            ) : (
-                <FlatList
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={data}
-                    renderItem={(item) => handleRender(item)}
-                    keyExtractor={(item, index) => index.toString()}
-                    ListEmptyComponent={renderEmpty}
-                />
-            )}
+            :
+                <>
+                { data.length === 0 ?
+                    renderEmpty
+                :
+                    <FlatList
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        data={data}
+                        renderItem={(item) => handleRender(item)}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                }
+                </>
+            }
         </View>
     );
 }

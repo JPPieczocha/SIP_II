@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
 
     container:{
         marginTop: 10,
-        minHeight: 210
+        minHeight: 210,
     },
 
     titleText: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
 
     emptyContainer: {
-        maxWidth: '100%',
+        height: 210,
         justifyContent: 'space-around',
         alignContent: 'center'
     },
@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 18,
         color: colors.secondaryv2
+    },
+
+    activityIndicator: {
+        height: 210,
+        justifyContent: 'center'
     }
 });
 
