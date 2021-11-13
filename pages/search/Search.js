@@ -8,7 +8,7 @@ import {
     FlatList,
     TouchableOpacity,
     ActivityIndicator,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
 } from "react-native";
 import RadioForm, {
     RadioButton,
@@ -19,26 +19,29 @@ import RadioForm, {
 import FoodSearch from "../common/components/FoodSearch/FoodSearch";
 import styles from "./Styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Entypo from "react-native-vector-icons/Entypo";
 import logo from "../../assets/logo.jpeg";
 import colors from "../common/colors";
 
 import { historial } from "../../controllers/commonController";
-import { buscarPlatos, getAllPlatos } from "../../controllers/recetasController";
-import { buscarProductos, getAllProductos } from "../../controllers/productosController";
+import {
+    buscarPlatos,
+    getAllPlatos,
+} from "../../controllers/recetasController";
+import {
+    buscarProductos,
+    getAllProductos,
+} from "../../controllers/productosController";
 
-import { useFocusEffect } from '@react-navigation/native';
-
-
+import { useFocusEffect } from "@react-navigation/native";
 
 import { UserContext } from "../../context/authContext";
 
 const Search = ({ navigation }) => {
-
-    
     const context = React.useContext(UserContext);
 
     const [showFilter, setShowFilter] = useState(false);
-    const [filterSelection, setFilterSelection] = useState(1)
+    const [filterSelection, setFilterSelection] = useState(1);
 
     const [foodType, setFoodType] = useState(1);
     const [sugarFree, setSugarFree] = useState(false);
@@ -46,17 +49,16 @@ const Search = ({ navigation }) => {
     const [lowCal, setLowCal] = useState(false);
 
     const [searchInput, setSearchInput] = useState("");
-    const [historialList, setHistorialList] = useState([]);
-    const [PlatosList, setPlatoslList] = useState([]);
-    const [ProductosList, setProductosList] = useState([]);
-    const [UnionList, setUnionList] = useState([]);
-    // const [historialShow, setHistorialShow] = useState(true);
+    const [historialList, setHistorialList] = useState(undefined);
+    const [PlatosList, setPlatoslList] = useState(undefined);
+    const [ProductosList, setProductosList] = useState(undefined);
 
+    const [allPlatos, setAllPlatos] = useState([]);
+    const [allProd, setAllProd] = useState([]);
 
-    const [allPlatos, setAllPlatos] = useState([])
-    const [allProd, setAllProd] = useState([])
-
-    const [loading, setLoading] = useState(true);
+    const [submitted, setSubmitted] = useState(true)
+    const [mainLoading, setMainLoading] = useState(true);
+    
 
     var radio_props_food = [
         { label: "Recetas", value: 0 },
@@ -67,38 +69,39 @@ const Search = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             const fetchHistorial = async () => {
-
-                let data = context.state.userData.Usuario;
-    
-                const response = await historial(data);
-                if(response === undefined){
-                }else{
-                    console.log('HISTORIAL USUARIO ' + data + ': ' + response.length);
-                    setHistorialList(response);
-                }
                 
-                const platos = await getAllPlatos()
-                if(platos === undefined){
-                }else{
-                    console.log('Levanté todos los platos');
-                    setAllPlatos(platos);
-                    
+                setMainLoading(true);
+                
+                let data = context.state.userData.Usuario; 
+
+                const response = await historial(data);
+                if (response !== undefined){
+                    console.log(
+                        "User ID " + data + " History: " + response.length
+                    );
                 }
-    
-                const prod = await getAllProductos()
-                if(prod === undefined){
-                }else{
-                    console.log('Levanté todos los prods');
+                setHistorialList(response);
+
+                const platos = await getAllPlatos();
+                if (platos === undefined) {
+                } else {
+                    console.log("Levanté todos los platos");
+                    setAllPlatos(platos);
+                }
+
+                const prod = await getAllProductos();
+                if (prod === undefined) {
+                } else {
+                    console.log("Levanté todos los prods");
                     setAllProd(prod);
                 }
-    
-                setLoading(false)
-    
-            }
-            fetchHistorial()
+
+                setMainLoading(false);
+            };
+            fetchHistorial();
             return () => fetchHistorial();
-          }, [])
-    )
+        }, [])
+    );
 
     // useEffect(() => {
     //     const fetchHistorial = async () => {
@@ -111,13 +114,13 @@ const Search = ({ navigation }) => {
     //             console.log('HISTORIAL USUARIO ' + data + ': ' + response.length);
     //             setHistorialList(response);
     //         }
-            
+
     //         const platos = await getAllPlatos()
     //         if(platos === undefined){
     //         }else{
     //             console.log('Levanté todos los platos');
     //             setAllPlatos(platos);
-                
+
     //         }
 
     //         const prod = await getAllProductos()
@@ -135,75 +138,76 @@ const Search = ({ navigation }) => {
     // }, []);
 
     const handleSearch = () => {
-
         setPlatoslList([]);
-        setProductosList([])
+        setProductosList([]);
 
-        if(searchInput === ''){
-            return null
+        if (searchInput === "") {
+            return null;
         }
 
         let data = {
             name: searchInput,
             c: Number(taccFree),
             d: Number(sugarFree),
-            o: Number(lowCal)
-        }
+            o: Number(lowCal),
+        };
 
-        if(foodType == 1){
+        if (foodType == 1) {
             //Means both fetches.
-            console.log('Debo preguntar en ambos. Data:::');
+            console.log("Debo preguntar en ambos. Data:::");
             console.log(data);
 
             const fetchProductos = async () => {
                 const response = await buscarProductos(data);
-                if(response === undefined){
-                }else{
-                    setProductosList(response)
-                    console.log('Productos busqueda: ' + response.length);
+                if (response === undefined) {
+                } else {
+                    setProductosList(response);
+                    console.log("Productos busqueda: " + response.length);
                 }
-            }
+            };
 
             const fetchPlatos = async () => {
                 const response = await buscarPlatos(data);
-                if(response === undefined){
-                }else{
-                    console.log('Platos busqueda: ' + response.length);
+                if (response === undefined) {
+                } else {
+                    console.log("Platos busqueda: " + response.length);
                     setPlatoslList(response);
                 }
-            }
+            };
             fetchProductos();
             fetchPlatos();
-        }else if(foodType == 0){
+        } else if (foodType == 0) {
             //Solo recetas
             const fetchPlatos = async () => {
                 const response = await buscarPlatos(data);
-                if(response === undefined){
-                }else{
-                    console.log('Platos busqueda: ' + response.length );
+                if (response === undefined) {
+                } else {
+                    console.log("Platos busqueda: " + response.length);
                     setPlatoslList(response);
                 }
-            }
-            fetchPlatos()
-        }else{
+            };
+            fetchPlatos();
+        } else {
             //Solo productos
             const fetchProductos = async () => {
                 const response = await buscarProductos(data);
-                if(response === undefined){
-                }else{
-                    console.log('Productos busqueda: ' + response);
+                if (response === undefined) {
+                } else {
+                    console.log("Productos busqueda: " + response);
                     setProductosList(response);
                 }
-            }
+            };
             fetchProductos();
         }
-    }
+        
+        setSubmitted(true)
+    };
 
     const handleApplyFilter = () => {
         setShowFilter(false);
-        console.log('TRIGUEREAR RE BUSQUEDA');
-        handleSearch()
-    }
+        console.log("TRIGUEREAR RE BUSQUEDA");
+        handleSearch();
+    };
 
     const filterModal = () => {
         return (
@@ -223,7 +227,9 @@ const Search = ({ navigation }) => {
                     <TouchableWithoutFeedback>
                         <View style={styles.modalContainer}>
                             <View style={styles.modalHeader}>
-                                <Text style={styles.modalTextHeader}>Filtros</Text>
+                                <Text style={styles.modalTextHeader}>
+                                    Filtros
+                                </Text>
                                 <TouchableOpacity
                                     style={styles.exitModalButton}
                                     onPress={() => setShowFilter(false)}
@@ -236,7 +242,10 @@ const Search = ({ navigation }) => {
                                 <RadioForm
                                     radio_props={radio_props_food}
                                     initial={filterSelection}
-                                    onPress={(value) => {setFoodType(value); setFilterSelection(value)}}
+                                    onPress={(value) => {
+                                        setFoodType(value);
+                                        setFilterSelection(value);
+                                    }}
                                     formHorizontal={true}
                                     labelHorizontal={false}
                                     buttonColor={colors.primary}
@@ -253,7 +262,11 @@ const Search = ({ navigation }) => {
                                         style={styles.checkBox}
                                         onPress={() => setSugarFree(!sugarFree)}
                                     >
-                                        <Text style={{ color: colors.secondaryv2 }}>
+                                        <Text
+                                            style={{
+                                                color: colors.secondaryv2,
+                                            }}
+                                        >
                                             {sugarFree ? "✔" : ""}
                                         </Text>
                                     </TouchableOpacity>
@@ -266,7 +279,11 @@ const Search = ({ navigation }) => {
                                         style={styles.checkBox}
                                         onPress={() => setTaccFree(!taccFree)}
                                     >
-                                        <Text style={{ color: colors.secondaryv2 }}>
+                                        <Text
+                                            style={{
+                                                color: colors.secondaryv2,
+                                            }}
+                                        >
                                             {taccFree ? "✔" : ""}
                                         </Text>
                                     </TouchableOpacity>
@@ -279,14 +296,23 @@ const Search = ({ navigation }) => {
                                         style={styles.checkBox}
                                         onPress={() => setLowCal(!lowCal)}
                                     >
-                                        <Text style={{ color: colors.secondaryv2 }}>
+                                        <Text
+                                            style={{
+                                                color: colors.secondaryv2,
+                                            }}
+                                        >
                                             {lowCal ? "✔" : ""}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                            <TouchableOpacity style={styles.applyButton} onPress={()=>handleApplyFilter()}>
-                                <Text style={styles.applyButtonText}>Aplicar</Text>
+                            <TouchableOpacity
+                                style={styles.applyButton}
+                                onPress={() => handleApplyFilter()}
+                            >
+                                <Text style={styles.applyButtonText}>
+                                    Aplicar
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </TouchableWithoutFeedback>
@@ -306,72 +332,148 @@ const Search = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     placeholder={"Escriba aquí"}
-                    onChangeText={(text) => setSearchInput(text)}
+                    onChangeText={(text) => {setSubmitted(false); setSearchInput(text)}}
                     keyboardType={"default"}
                     onSubmitEditing={() => handleSearch()}
+                    value={searchInput}
                 />
+
+                { searchInput === "" ?
+                    null
+                :
+                    <TouchableOpacity
+                        style={styles.eraseFilter}
+                        onPress={() => {setSubmitted(false); setSearchInput("")}}
+                    >
+                        <Entypo
+                            name="erase"
+                            size={24}
+                            color={colors.secondary}
+                        />
+                    </TouchableOpacity>
+                }
+
                 <TouchableOpacity
                     style={styles.iconFilter}
                     onPress={() => setShowFilter(true)}
                 >
-                    <Ionicons name='filter-sharp' size={24} color={colors.secondary}/>
+                    <Ionicons
+                        name="filter-sharp"
+                        size={24}
+                        color={colors.secondary}
+                    />
                 </TouchableOpacity>
             </View>
 
-            <Text style={[styles.headerTitle, { marginLeft: 10 }]}>
-                {searchInput.length == 0 ? 'Recientes' : 'Resultados'}
-            </Text>
+            {mainLoading ? (
+                <View style={styles.emptyContainer}>
+                    <ActivityIndicator
+                        color={colors.secondary}
+                        size={"large"}
+                    />
+                </View>
+            ) : (
+                <>
+                    {historialList === undefined ? (
+                        <View style={styles.emptyContainer}>
+                            <Text style={styles.emptyText}>
+                                No pudimos acceder al historial, intentelo más tarde.
+                            </Text>
+                        </View>
+                    ) : (
+                        <>
+                            <Text style={[styles.headerTitle, { marginLeft: 10 }]}>
+                                {searchInput.length == 0 ? "Recientes" : "Resultados"}
+                            </Text>
 
-            { searchInput.length == 0 ?
-            <View style={styles.main}>
-                <FlatList
-                    data={historialList}
-                    
-                    renderItem={(item) => {
-
-                        if(allProd != undefined && allPlatos != undefined){
-
-                            if (item.item.plato === 0){
-                                //producto aca
-                                return (<FoodSearch navigation={navigation} data={allProd.filter(prod => prod.ID === item.item.producto)[0]} key={item.index} />)
-                            } else {
-                                //plato acá
-                                return (<FoodSearch navigation={navigation} data={allPlatos.filter(prod => prod.ID === item.item.plato)[0]} key={item.index} />)
-                            }
-                        } else {
-                            return <Text> undefinido</Text>
-                        }
-
-
-                    }}
-                    
-                    keyExtractor={(item, index) => index.toString()}
-                    
-                    ListEmptyComponent={()=>{
-                        if(loading){
-                            return <ActivityIndicator size={'large'} color={colors.secondary}/>
-                        }
-                        return <Text style={{marginHorizontal: 10}}>No existen busquedas recientes</Text>
-                    }}
-                />
-            </View>
-            :
-            <View style={styles.main}>
-                <FlatList
-                    data={PlatosList.concat(ProductosList)}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={(item) => (
-                        <FoodSearch navigation={navigation} data={item.item} key={item.index} />
+                            {searchInput.length == 0 ? (
+                                <View style={styles.main}>
+                                    <FlatList
+                                        data={historialList}
+                                        renderItem={(item) => {
+                                            if (
+                                                allProd != undefined &&
+                                                allPlatos != undefined
+                                            ) {
+                                                if (item.item.plato === 0) {
+                                                    //producto aca
+                                                    return (
+                                                        <FoodSearch
+                                                            navigation={navigation}
+                                                            data={allProd.filter((prod) => prod.ID === item.item.producto)[0]}
+                                                            key={item.index}
+                                                        />
+                                                    );
+                                                } else {
+                                                    //plato acá
+                                                    return (
+                                                        <FoodSearch
+                                                            navigation={navigation}
+                                                            data={allPlatos.filter((prod) =>prod.ID ===item.item.plato)[0]}
+                                                            key={item.index}
+                                                        />
+                                                    );
+                                                }
+                                            } else {
+                                                return <Text> undefinido</Text>;
+                                            }
+                                        }}
+                                        keyExtractor={(item, index) =>
+                                            index.toString()
+                                        }
+                                        ListEmptyComponent={() =>
+                                            <View style={styles.emptyContainer}>
+                                                <Text
+                                                    style={styles.emptyText}
+                                                >
+                                                    No existen busquedas recientes
+                                                </Text>
+                                            </View>
+                                        }
+                                    />
+                                </View>
+                            ) : (
+                                <>
+                                {
+                                    PlatosList !== undefined && ProductosList !== undefined && submitted?
+                                        <View style={styles.main}>
+                                            <FlatList
+                                                data={PlatosList.concat(ProductosList)}
+                                                keyExtractor={(item, index) =>
+                                                    index.toString()
+                                                }
+                                                renderItem={(item) => (
+                                                    <FoodSearch
+                                                        navigation={navigation}
+                                                        data={item.item}
+                                                        key={item.index}
+                                                    />
+                                                )}
+                                                ListEmptyComponent={() => {
+                                                    return (
+                                                        <View style={styles.emptyContainer}>
+                                                            <Text
+                                                                style={styles.emptyText}
+                                                            >
+                                                                No existen elementos
+                                                                asociados a tu búsqueda
+                                                            </Text>
+                                                        </View>
+                                                    );
+                                                }}
+                                            />
+                                        </View>
+                                    :
+                                        <View style={styles.emptyContainer}>
+                                            <ActivityIndicator color={colors.secondary} size={"large"}/>
+                                        </View>
+                                }
+                                </>
+                            )}
+                        </>
                     )}
-                    ListEmptyComponent={()=>{
-                        if(loading){
-                            return <ActivityIndicator size={'large'} color={'#000000'}/>
-                        }
-                        return <Text style={{marginHorizontal: 10}}>No existen elementos asociados a tu búsqueda</Text>
-                    }}
-                />
-            </View>
-            }
+                </>
+            )}
 
             {filterModal()}
         </View>

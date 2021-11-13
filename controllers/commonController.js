@@ -14,7 +14,7 @@ export const historial = async (data)=>{
     }else{
         console.log('ERROR en historial');
         console.log('Codigo de respuesta en historial: ' + response.status);
-        return response.status
+        return undefined //response.status
     }
 }
 
