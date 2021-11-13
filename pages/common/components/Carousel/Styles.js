@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
     emptyContainer: {
         maxWidth: '100%',
-        height: 200,
+        height: 192,
         justifyContent: 'center'
     },
 

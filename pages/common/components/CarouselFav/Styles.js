@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
 
     emptyContainer: {
-        height: 210,
+        height: 192,
         justifyContent: 'space-around',
         alignContent: 'center'
     },
