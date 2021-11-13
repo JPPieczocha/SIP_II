@@ -56,9 +56,8 @@ const Search = ({ navigation }) => {
     const [allPlatos, setAllPlatos] = useState([]);
     const [allProd, setAllProd] = useState([]);
 
-    const [submitted, setSubmitted] = useState(true)
+    const [submitted, setSubmitted] = useState(true);
     const [mainLoading, setMainLoading] = useState(true);
-    
 
     var radio_props_food = [
         { label: "Recetas", value: 0 },
@@ -69,13 +68,12 @@ const Search = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             const fetchHistorial = async () => {
-                
                 setMainLoading(true);
-                
-                let data = context.state.userData.Usuario; 
+
+                let data = context.state.userData.Usuario;
 
                 const response = await historial(data);
-                if (response !== undefined){
+                if (response !== undefined) {
                     console.log(
                         "User ID " + data + " History: " + response.length
                     );
@@ -199,8 +197,8 @@ const Search = ({ navigation }) => {
             };
             fetchProductos();
         }
-        
-        setSubmitted(true)
+
+        setSubmitted(true);
     };
 
     const handleApplyFilter = () => {
@@ -332,18 +330,22 @@ const Search = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     placeholder={"Escriba aquí"}
-                    onChangeText={(text) => {setSubmitted(false); setSearchInput(text)}}
+                    onChangeText={(text) => {
+                        setSubmitted(false);
+                        setSearchInput(text);
+                    }}
                     keyboardType={"default"}
                     onSubmitEditing={() => handleSearch()}
                     value={searchInput}
                 />
 
-                { searchInput === "" ?
-                    null
-                :
+                {searchInput === "" ? null : (
                     <TouchableOpacity
                         style={styles.eraseFilter}
-                        onPress={() => {setSubmitted(false); setSearchInput("")}}
+                        onPress={() => {
+                            setSubmitted(false);
+                            setSearchInput("");
+                        }}
                     >
                         <Entypo
                             name="erase"
@@ -351,7 +353,7 @@ const Search = ({ navigation }) => {
                             color={colors.secondary}
                         />
                     </TouchableOpacity>
-                }
+                )}
 
                 <TouchableOpacity
                     style={styles.iconFilter}
@@ -377,14 +379,38 @@ const Search = ({ navigation }) => {
                     {historialList === undefined ? (
                         <View style={styles.emptyContainer}>
                             <Text style={styles.emptyText}>
-                                No pudimos acceder al historial, intentelo más tarde.
+                                No pudimos acceder al historial, intentelo más
+                                tarde.
                             </Text>
                         </View>
                     ) : (
                         <>
-                            <Text style={[styles.headerTitle, { marginLeft: 10 }]}>
-                                {searchInput.length == 0 ? "Recientes" : "Resultados"}
-                            </Text>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginHorizontal: 10,
+                                }}
+                            >
+                                <Text style={[styles.headerTitle]}>
+                                    {searchInput.length == 0
+                                        ? "Recientes"
+                                        : "Resultados"}
+                                </Text>
+                                {historialList.length === 0 ? null : (
+                                    <TouchableOpacity
+                                        style={styles.clearHistory}
+                                        onPress={() => {
+                                            console.log("ENDPOINT HISTORIAL");
+                                            setHistorialList([]);
+                                        }}
+                                    >
+                                        <Text style={styles.clearHistoryText}>
+                                            Borrar Historial
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
 
                             {searchInput.length == 0 ? (
                                 <View style={styles.main}>
@@ -399,8 +425,18 @@ const Search = ({ navigation }) => {
                                                     //producto aca
                                                     return (
                                                         <FoodSearch
-                                                            navigation={navigation}
-                                                            data={allProd.filter((prod) => prod.ID === item.item.producto)[0]}
+                                                            navigation={
+                                                                navigation
+                                                            }
+                                                            data={
+                                                                allProd.filter(
+                                                                    (prod) =>
+                                                                        prod.ID ===
+                                                                        item
+                                                                            .item
+                                                                            .producto
+                                                                )[0]
+                                                            }
                                                             key={item.index}
                                                         />
                                                     );
@@ -408,37 +444,47 @@ const Search = ({ navigation }) => {
                                                     //plato acá
                                                     return (
                                                         <FoodSearch
-                                                            navigation={navigation}
-                                                            data={allPlatos.filter((prod) =>prod.ID ===item.item.plato)[0]}
+                                                            navigation={
+                                                                navigation
+                                                            }
+                                                            data={
+                                                                allPlatos.filter(
+                                                                    (prod) =>
+                                                                        prod.ID ===
+                                                                        item
+                                                                            .item
+                                                                            .plato
+                                                                )[0]
+                                                            }
                                                             key={item.index}
                                                         />
                                                     );
                                                 }
-                                            } else {
-                                                return <Text> undefinido</Text>;
                                             }
                                         }}
                                         keyExtractor={(item, index) =>
                                             index.toString()
                                         }
-                                        ListEmptyComponent={() =>
-                                            <View style={styles.emptyContainer}>
-                                                <Text
-                                                    style={styles.emptyText}
-                                                >
-                                                    No existen busquedas recientes
+                                        ListEmptyComponent={() => (
+                                                <Text style={styles.emptyText}>
+                                                    No existen busquedas
+                                                    recientes, empezá a buscar
+                                                    los productos y recetas que
+                                                    quieras y aparecerán acá.
                                                 </Text>
-                                            </View>
-                                        }
+                                        )}
                                     />
                                 </View>
                             ) : (
                                 <>
-                                {
-                                    PlatosList !== undefined && ProductosList !== undefined && submitted?
+                                    {PlatosList !== undefined &&
+                                    ProductosList !== undefined &&
+                                    submitted ? (
                                         <View style={styles.main}>
                                             <FlatList
-                                                data={PlatosList.concat(ProductosList)}
+                                                data={PlatosList.concat(
+                                                    ProductosList
+                                                )}
                                                 keyExtractor={(item, index) =>
                                                     index.toString()
                                                 }
@@ -449,25 +495,28 @@ const Search = ({ navigation }) => {
                                                         key={item.index}
                                                     />
                                                 )}
-                                                ListEmptyComponent={() => {
-                                                    return (
-                                                        <View style={styles.emptyContainer}>
-                                                            <Text
-                                                                style={styles.emptyText}
-                                                            >
-                                                                No existen elementos
-                                                                asociados a tu búsqueda
-                                                            </Text>
-                                                        </View>
-                                                    );
-                                                }}
+                                                ListEmptyComponent={() => 
+                                                    <Text
+                                                        style={
+                                                            styles.emptyText
+                                                        }
+                                                    >
+                                                        No existen
+                                                        elementos
+                                                        asociados a tu
+                                                        búsqueda
+                                                    </Text>
+                                                }
                                             />
                                         </View>
-                                    :
+                                    ) : (
                                         <View style={styles.emptyContainer}>
-                                            <ActivityIndicator color={colors.secondary} size={"large"}/>
+                                            <ActivityIndicator
+                                                color={colors.secondary}
+                                                size={"large"}
+                                            />
                                         </View>
-                                }
+                                    )}
                                 </>
                             )}
                         </>

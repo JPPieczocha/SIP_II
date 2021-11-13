@@ -136,7 +136,7 @@ function App() {
             }
         }
 
-        dummySetter()
+        // dummySetter()
         fetchSecureStore()
     },[]);
     //---------------------------------

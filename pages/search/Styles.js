@@ -56,6 +56,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 
+    clearHistory: {
+        backgroundColor: colors.secondary,
+        justifyContent: "center",
+        borderRadius: 10,
+        width: '33%',
+        marginVertical: 10
+    },
+    clearHistoryText: {
+        textAlign: "center",
+        color: 'white',
+        fontSize: 18
+
+    },
+
     main: {
         maxHeight: "63.5%",
     },
@@ -147,8 +161,8 @@ const styles = StyleSheet.create({
     //Nothing found
 
     emptyContainer: {
-        height: "65%",
-        justifyContent: "center"
+        height: "70%",
+        justifyContent: "center",
     },
 
     emptyText: {
