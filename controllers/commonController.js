@@ -1,4 +1,4 @@
-import { history, addHistory, allFavourites, dummyCheckin, addFav, DelFav, EsFav } from "../apiroutes/ApiRoutes";
+import { history, addHistory, allFavourites, dummyCheckin, addFav, DelFav, EsFav, deleteHistory } from "../apiroutes/ApiRoutes";
 
 /**
  * 
@@ -33,6 +33,22 @@ export const historial = async (data)=>{
         console.log('ERROR en addHistorial');
         console.log('Codigo de respuesta en addHistorial: ' + response.status);
         return response.status
+    }
+}
+
+/**
+ * 
+ * @param {JSON} data {id: number} 
+ * @description Gets the user's search history
+ * @returns 
+ */
+ export const Deletehistorial = async (data)=>{
+    const response = await deleteHistory(data);
+    if(response.status === 200){
+        console.log("Historial del user " + data + " fue eliminado.");
+    }else{
+        console.log('ERROR @ Deletehistorial');
+        console.log('Codigo de respuesta en Deletehistorial: ' + response.status);
     }
 }
 
@@ -108,6 +124,8 @@ export const Addfavorito = async (data)=>{
         return response.status
     }
 }
+
+
 
 //-------------------------------------------------
 

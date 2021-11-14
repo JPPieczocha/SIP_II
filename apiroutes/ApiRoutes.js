@@ -238,3 +238,19 @@ export const addHistory = async(data)=>{
         console.error(error)
     }
 }
+
+export const deleteHistory = async (data) => {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'DeleteHis/id/'+data,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}

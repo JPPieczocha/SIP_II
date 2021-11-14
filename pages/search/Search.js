@@ -23,7 +23,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import logo from "../../assets/logo.jpeg";
 import colors from "../common/colors";
 
-import { historial } from "../../controllers/commonController";
+import { historial, Deletehistorial } from "../../controllers/commonController";
 import {
     buscarPlatos,
     getAllPlatos,
@@ -74,9 +74,7 @@ const Search = ({ navigation }) => {
 
                 const response = await historial(data);
                 if (response !== undefined) {
-                    console.log(
-                        "User ID " + data + " History: " + response.length
-                    );
+                    console.log("User ID " + data + " History: " + response.length);
                 }
                 setHistorialList(response);
 
@@ -97,7 +95,7 @@ const Search = ({ navigation }) => {
                 setMainLoading(false);
             };
             fetchHistorial();
-            return () => fetchHistorial();
+            return () => fetchHistorial()
         }, [])
     );
 
@@ -134,7 +132,8 @@ const Search = ({ navigation }) => {
 
     //     fetchHistorial();
     // }, []);
-
+    
+    
     const handleSearch = () => {
         setPlatoslList([]);
         setProductosList([]);
@@ -235,7 +234,7 @@ const Search = ({ navigation }) => {
                                     <Text style={{ fontSize: 20 }}>X</Text>
                                 </TouchableOpacity>
                             </View>
-                            <Text>¿Productos o recetas? {foodType}</Text>
+                            <Text>¿Productos o recetas?</Text>
                             <View style={styles.formContainer}>
                                 <RadioForm
                                     radio_props={radio_props_food}
@@ -319,6 +318,12 @@ const Search = ({ navigation }) => {
         );
     };
 
+    const deleteHistorial = () => {
+        let data = context.state.userData.Usuario
+        const fetchDelete = Deletehistorial(data)
+        setHistorialList([]);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -397,12 +402,11 @@ const Search = ({ navigation }) => {
                                         ? "Recientes"
                                         : "Resultados"}
                                 </Text>
-                                {historialList.length === 0 ? null : (
+                                {historialList.length === 0 || searchInput.length > 0 ? null : (
                                     <TouchableOpacity
                                         style={styles.clearHistory}
                                         onPress={() => {
-                                            console.log("ENDPOINT HISTORIAL");
-                                            setHistorialList([]);
+                                            deleteHistorial()
                                         }}
                                     >
                                         <Text style={styles.clearHistoryText}>
@@ -421,7 +425,7 @@ const Search = ({ navigation }) => {
                                                 allProd != undefined &&
                                                 allPlatos != undefined
                                             ) {
-                                                if (item.item.plato === 0) {
+                                                if (item.item.Plato === 0) {
                                                     //producto aca
                                                     return (
                                                         <FoodSearch
@@ -434,7 +438,7 @@ const Search = ({ navigation }) => {
                                                                         prod.ID ===
                                                                         item
                                                                             .item
-                                                                            .producto
+                                                                            .Producto
                                                                 )[0]
                                                             }
                                                             key={item.index}
@@ -453,7 +457,7 @@ const Search = ({ navigation }) => {
                                                                         prod.ID ===
                                                                         item
                                                                             .item
-                                                                            .plato
+                                                                            .Plato
                                                                 )[0]
                                                             }
                                                             key={item.index}
