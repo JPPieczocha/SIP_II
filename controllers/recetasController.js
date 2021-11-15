@@ -1,4 +1,4 @@
-import {plato, platos, searchPlatos} from '../apiroutes/ApiRoutes';
+import {ingredientes, plato, platos, searchPlatos} from '../apiroutes/ApiRoutes';
 
 export const getAllPlatos = async ()=>{
     const response = await platos();
@@ -18,6 +18,18 @@ export const getAllPlatos = async ()=>{
 
 export const getPLato = async (data)=>{
     const response = await plato(data);
+    if(response.status === 200){
+        const json = await response.json();
+        return json[0];
+    }else{
+        console.log('ERROR en getProducto');
+        console.log('Codigo de respuesta en getProducto: ' + response.status);
+        return response.status
+    }
+}
+
+export const getIngredientes = async (data)=>{
+    const response = await ingredientes(data);
     if(response.status === 200){
         const json = await response.json();
         return json;

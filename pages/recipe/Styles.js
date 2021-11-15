@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        minHeight: '90%'
     },
 
     listaPasos: {

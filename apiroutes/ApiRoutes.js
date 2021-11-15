@@ -54,6 +54,22 @@ export const plato = async (data) =>{
     }
 }
 
+export const ingredientes = async (data) =>{
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try {
+        const response = await fetch(url+'Ingredientes/id/'+data,options);
+        return response
+    } 
+    catch (error) {
+        console.error(error)
+    }
+}
+
 //GET de todos los productos.
 export const productos = async () =>{
     const options = {
