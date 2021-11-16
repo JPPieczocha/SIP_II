@@ -46,8 +46,8 @@ export const buscarPlatos = async (data)=>{
         const json = await response.json();
         return json;
     }else{
-        console.log('ERROR en buscarProductos');
-        console.log('Codigo de respuesta en buscarProductos: ' + response.status);
+        console.log('ERROR en buscarPlatos');
+        console.log('Codigo de respuesta en buscarPlatos: ' + response.status);
         return response.status
     }
 }

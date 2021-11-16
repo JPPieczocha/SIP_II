@@ -8,8 +8,6 @@ import styles from "./Styles";
 
 import logoSafeDiet from "../../assets/logo.png";
 import { dummyBD } from "../../controllers/commonController";
-// import { getAllPlatos } from "../../controllers/recetasController";
-import { historial } from "../../controllers/commonController";
 import { favoritos } from "../../controllers/commonController";
 import { getAllPlatos } from "../../controllers/recetasController";
 import { getAllProductos } from "../../controllers/productosController";
@@ -19,33 +17,16 @@ import { UserContext } from "../../context/authContext";
 import { useFocusEffect } from "@react-navigation/native";
 
 function HomeScreen({ navigation }) {
-    const context = React.useContext(UserContext);
+    const context = React.useContext(UserContext)
 
-    const [fetched, setFetched] = useState(false);
-    const [seconds, setSeconds] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [fetched, setFetched] = useState(false)
+    const [seconds, setSeconds] = useState(0)
+    const [loading, setLoading] = useState(true)
 
-    const [listFavoritos, setFavoritos] = useState(undefined);
-    const [listPlatos, setListPlatos] = useState(undefined);
-    const [listProductos, setListProductos] = useState(undefined);
-
-    // useFocusEffect(()=>{
-    //     React.useCallback(() => {
-    //         // const unsubscribe = API.subscribe(userId, user => setUser(data));
-
-    //         console.log('JEJEJE')
-    //         const fetchFavoritos = async () => {
-    //             const response = await favoritos(context.state.userData.Usuario);
-    //             if (response === undefined) {
-    //             } else {
-    //                 console.log("Favoritos: " + response.length);
-    //                 setFavoritos(response.reverse());
-    //             }
-    //         };
-    //         // fetchFavoritos();
-    //     return () => fetchFavoritos();
-    //     }, [context.state.userData.Usuario])
-    // })
+    const [listFavoritos, setFavoritos] = useState(undefined)
+    
+    const [listPlatos, setListPlatos] = useState(undefined)
+    const [listProductos, setListProductos] = useState(undefined)
 
     useFocusEffect(
         React.useCallback(() => {
@@ -134,8 +115,7 @@ function HomeScreen({ navigation }) {
             // this will clear Timeout
             // when component unmount like in willComponentUnmount
             // and show will not change to true
-            return () => {
-                // clearTimeout(timer1);
+            return () => { // clearTimeout(timer1);
             };
         },
         // useEffect will run only one time with empty []
@@ -187,7 +167,34 @@ function HomeScreen({ navigation }) {
                         />
 
                         <Carousel
-                            key={1}
+                            data={listPlatos === undefined ? [] :
+                                listPlatos.filter((item) => {
+                                if (context.state.userData.Celiaquia == 1 && item.Celiquia == 0) return null;
+                                if (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) return null;
+                                if (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) return null;
+                                if (context.state.userData.Obesidad == 1 && item.Obesidad == 0) return null;
+                                return item;
+                            })}
+                            navigation={navigation}
+                            type={"recipe"}
+                            title={"Recetas recomendadas"}
+                        />
+
+                        <Carousel
+                            data={listProductos === undefined ? [] :
+                                listProductos.filter((item) => {
+                                if (context.state.userData.Celiaquia == 1 && item.Celiquia == 0) return null;
+                                if (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) return null;
+                                if (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) return null;
+                                if (context.state.userData.Obesidad == 1 && item.Obesidad == 0) return null;
+                                return item;
+                            })}
+                            navigation={navigation}
+                            type={"product"}
+                            title={"Productos recomendados"}
+                        />
+
+                        <Carousel
                             data={listPlatos}
                             navigation={navigation}
                             type={"recipe"}
@@ -195,7 +202,6 @@ function HomeScreen({ navigation }) {
                         />
 
                         <Carousel
-                            key={2}
                             data={listProductos}
                             navigation={navigation}
                             type={"product"}

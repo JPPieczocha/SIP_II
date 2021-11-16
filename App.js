@@ -9,7 +9,6 @@ import axios from "axios";
 //Auth nuevo
 import * as SecureStore from 'expo-secure-store';
 import { UserContext } from './context/authContext';
-import { DataContext } from "./context/prodContext";
 
 //Fin auth nuevo
 
