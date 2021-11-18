@@ -57,7 +57,7 @@ function PlanDietarioDetails({route}) {
         }
 
         if(item.key == "Comida"){
-            navigation.navigate("Recipe", {data: context.listPlatos.filter(item => item.ID == comidaData.receta.ID)[0]})
+            navigation.navigate("Recipe", {data: {ID: item.id}})
         }
     }
 
@@ -100,13 +100,11 @@ function PlanDietarioDetails({route}) {
                 <Text
                     style={{
                         fontSize: 18,
-                        fontFamily:"SimplyDiet"  
                     }}
                 >{item.key}</Text>
                 <Text
                     style={{
-                        fontSize: 14,
-                        fontFamily:"SimplyDiet"  
+                        fontSize: 14,  
                       }}
                 >{item.title}</Text>
             </View>
@@ -146,7 +144,9 @@ function PlanDietarioDetails({route}) {
                 <Image
                     style={{
                         width: "100%",
-                        height: "100%"
+                        height: "100%",
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10
                     }}
                     source={{uri: comidaData.receta.url_imagen}}
                 >
@@ -183,7 +183,7 @@ function PlanDietarioDetails({route}) {
                 >
                 <Fontisto 
                     name={"fire"} 
-                    color={Color.secondary} 
+                    color={'white'} 
                     size={24} 
                     style={{
                             paddingTop: 8,
@@ -212,7 +212,7 @@ function PlanDietarioDetails({route}) {
                     <FontAwesome5 
                         name="bread-slice" 
                         size={24} 
-                        color="#D3B23A" 
+                        color={ 'white' /*"#D3B23A" */}
                         style={{
                             paddingTop: 8,
                             paddingBottom: 8,
@@ -242,7 +242,7 @@ function PlanDietarioDetails({route}) {
                     <MaterialCommunityIcons 
                         name="food-variant" 
                         size={24} 
-                        color={Color.secondary} 
+                        color={'white'} 
                         style={{
                             paddingTop: 8,
                             paddingBottom: 8,

@@ -12,18 +12,19 @@ export const getAllPlatos = async ()=>{
     }else{
         console.log('ERROR en getAllProductos');
         console.log('Codigo de respuesta en getAllProductos: ' + response.status);
-        return response.status
+        return []
     }
 }
 
 export const getPLato = async (data)=>{
     const response = await plato(data);
+    console.log(response);
     if(response.status === 200){
         const json = await response.json();
         return json[0];
     }else{
-        console.log('ERROR en getProducto');
-        console.log('Codigo de respuesta en getProducto: ' + response.status);
+        console.log('ERROR en getPlato');
+        console.log('Codigo de respuesta en getPlato: ' + response.status);
         return response.status
     }
 }

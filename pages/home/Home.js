@@ -25,7 +25,10 @@ function HomeScreen({ navigation }) {
 
     const [listFavoritos, setFavoritos] = useState(undefined)
     
+    const [recoPlatos, setRecoPlatos] = useState(undefined)
     const [listPlatos, setListPlatos] = useState(undefined)
+
+    const [recoProd, setRecoProd] = useState(undefined)
     const [listProductos, setListProductos] = useState(undefined)
 
     useFocusEffect(
@@ -38,7 +41,7 @@ function HomeScreen({ navigation }) {
                 if (response === undefined) {
                     setFavoritos([]);
                 } else {
-                    console.log("Favoritos: " + response.length);
+                    console.log("Focus Favoritos: " + response.length);
                     setFavoritos(response.reverse());
                 }
             };
@@ -75,10 +78,17 @@ function HomeScreen({ navigation }) {
             const fetchPlatos = async () => {
                 const response = await getAllPlatos();
                 if (response === undefined) {
-                    setListPlatos([]);
+                    setListPlatos([])
+                    setRecoPlatos([])
                 } else {
                     console.log("TOTAL Platos: " + response.length);
-                    setListPlatos(response);
+                    setListPlatos(response)
+                    setRecoPlatos(response.filter((item) => {
+                        if ((context.state.userData.Celiaquia == 1 && item.Celiquia == 0) || (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) || (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) || (context.state.userData.Obesidad == 1 && item.Obesidad == 0)) {
+                            return null
+                        }
+                        return item
+                    }))
                     // setFetched(true);
                 }
             };
@@ -87,9 +97,16 @@ function HomeScreen({ navigation }) {
                 const response = await getAllProductos();
                 if (response === undefined) {
                     setListProductos([]);
+                    setRecoProd([])
                 } else {
                     console.log("TOTAL Productos: " + response.length);
                     setListProductos(response);
+                    setRecoProd(response.filter((item) => {
+                        if ((context.state.userData.Celiaquia == 1 && item.Celiquia == 0) || (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) || (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) || (context.state.userData.Obesidad == 1 && item.Obesidad == 0)) {
+                            return null
+                        }
+                        return item
+                    }))
                     // setFetched(true);
                 }
             };
@@ -167,28 +184,14 @@ function HomeScreen({ navigation }) {
                         />
 
                         <Carousel
-                            data={listPlatos === undefined ? [] :
-                                listPlatos.filter((item) => {
-                                if (context.state.userData.Celiaquia == 1 && item.Celiquia == 0) return null;
-                                if (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) return null;
-                                if (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) return null;
-                                if (context.state.userData.Obesidad == 1 && item.Obesidad == 0) return null;
-                                return item;
-                            })}
+                            data={recoPlatos}
                             navigation={navigation}
                             type={"recipe"}
-                            title={"Recetas recomendadas"}
+                            title={"Platos recomendados"}
                         />
 
                         <Carousel
-                            data={listProductos === undefined ? [] :
-                                listProductos.filter((item) => {
-                                if (context.state.userData.Celiaquia == 1 && item.Celiquia == 0) return null;
-                                if (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) return null;
-                                if (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) return null;
-                                if (context.state.userData.Obesidad == 1 && item.Obesidad == 0) return null;
-                                return item;
-                            })}
+                            data={recoProd}
                             navigation={navigation}
                             type={"product"}
                             title={"Productos recomendados"}

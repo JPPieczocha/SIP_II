@@ -173,6 +173,7 @@ export default function LoginScreen({route}) {
                         >Correo electrónico</Text>
                         <TextInput
                             autoComplete={"email"}
+                            autoCapitalize={'none'}
                             style={{
                                 ...styles.formInput,
                                 borderColor: emailHasError ? "red" : "#b2b2b2",

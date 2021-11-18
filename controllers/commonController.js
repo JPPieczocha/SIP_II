@@ -72,7 +72,7 @@ export const favoritos = async (data)=>{
     }else{
         console.log('ERROR en favoritos');
         console.log('Codigo de respuesta en favoritos: ' + response.status);
-        return response.status
+        return undefined
     }
 }
 

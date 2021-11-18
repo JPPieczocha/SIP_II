@@ -12,7 +12,7 @@ export const getAllProductos = async ()=>{
     }else{
         console.log('ERROR en getAllProductos');
         console.log('Codigo de respuesta en getAllProductos: ' + response.status);
-        return response.status
+        return undefined
     }
 }
 

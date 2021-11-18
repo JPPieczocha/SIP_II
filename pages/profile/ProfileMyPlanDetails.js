@@ -86,7 +86,7 @@ function ProfileMyPlanDetailsScreen({route}) {
                     <View
                         key={idx}
                         style={{
-                            height:460
+                            height:475
                         }}
                     >
                         <View style={{
@@ -103,12 +103,15 @@ function ProfileMyPlanDetailsScreen({route}) {
                                 backgroundColor: "#c1c1c1"
                             }} />
                             <View>
-                                <Text style={{
-                                    width: 90, 
-                                    textAlign: 'center', 
-                                    fontFamily:"SimplyDiet",
-                                    fontSize:22,
-                                }}>
+                                <Text 
+                                    adjustsFontSizeToFit={true}
+                                    numberOfLines={1}
+                                    style={{
+                                        width: 90, 
+                                        textAlign: 'center', 
+                                        fontSize:22,
+                                    }}
+                                >
                                     {getDia(idx)}
                                 </Text>
                             </View>
@@ -178,7 +181,7 @@ function ProfileMyPlanDetailsScreen({route}) {
             >
             <Fontisto 
                 name={"fire"} 
-                color={colors.secondary} 
+                color={'white'} 
                 size={24} 
                 style={{
                         paddingTop: 8,
@@ -204,7 +207,7 @@ function ProfileMyPlanDetailsScreen({route}) {
                 <FontAwesome5 
                     name="bread-slice" 
                     size={24} 
-                    color="#D3B23A" 
+                    color="white" //#D3B23A 
                     style={{
                         paddingTop: 8,
                         paddingBottom: 8,

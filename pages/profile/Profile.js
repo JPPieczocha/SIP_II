@@ -87,6 +87,8 @@ function ProfileScreen() {
                             }}
                         >
                             <Text
+                                adjustsFontSizeToFit={true}
+                                numberOfLines={1}
                                 style={{
                                     fontFamily:"SimplyDiet",
                                     fontSize: 26,
@@ -98,7 +100,6 @@ function ProfileScreen() {
 
                             <Text
                                 style={{
-                                    fontFamily:"SimplyDiet",
                                     fontSize: 14
                                 }}
                             >
@@ -142,17 +143,15 @@ function ProfileScreen() {
                             <Text
                                 style={{
                                     fontSize: 24,
-                                    fontFamily:"SimplyDiet",
                                     paddingBottom: 4
                                 }}
                             >Mis Datos</Text>
                             <Text
                                 style={{
                                     fontSize: 13,
-                                    fontFamily:"SimplyDiet"  
                                 }}
                             >
-                                Información y patologías del usuario
+                                Información y patologías del usuario.
                             </Text>
                             
                         </View>
@@ -172,7 +171,6 @@ function ProfileScreen() {
                     <TouchableOpacity
                         onPress={() => goToMyPlans()}
                         style={{
-                            height: 70,
                             padding: 12,
                             marginBottom: 20,
                             backgroundColor:"rgba(0,0,0,0.030)",
@@ -206,16 +204,14 @@ function ProfileScreen() {
                             <Text
                                 style={{
                                     fontSize: 24,
-                                    fontFamily:"SimplyDiet"  
                                 }}
                             >Mis Semanas</Text>
                             <Text
                                 style={{
                                     fontSize: 13,
-                                    fontFamily:"SimplyDiet"  
                                 }}
                             >
-                                Planes semanales favoritos
+                                Planes dietarios semanales favoritos.
                             </Text>
                             
                         </View>
