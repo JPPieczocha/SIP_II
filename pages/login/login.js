@@ -53,29 +53,29 @@ export default function LoginScreen({route}) {
             Clave: responseLogin.data.accessToken
         }
         axios.get(
-                `${config.backendURLs.patologiasUsuariosGet}?id_usuario=${responseLogin.data.idUsuario}`
-            ).then(function (response) {
-                if(response.data != undefined && response.data.length > 0){
-                    response.data.forEach((e) => {
-                        if(e.patologias.codigo == 'celiaquia'){
-                            loggedUserData.Celiaquia = 1
-                        }
-                        if(e.patologias.codigo == 'diabetes_1'){
-                            loggedUserData.Tipo1 = 1
-                        }
-                        if(e.patologias.codigo == 'diabetes_2'){
-                            loggedUserData.Tipo2 = 2
-                        }
-                        if(e.patologias.codigo == 'obesidad'){
-                            loggedUserData.Obesidad = 1
-                        }
-                    })
-                }
-                context.authContext.signIn(loggedUserData)
-            })
-            .catch(function (error) {
-                console.log('Error @ getPatologiasUser in App.js');
-            });
+            `${config.backendURLs.patologiasUsuariosGet}?id_usuario=${responseLogin.data.idUsuario}`
+        ).then(function (response) {
+            if(response.data != undefined && response.data.length > 0){
+                response.data.forEach((e) => {
+                    if(e.patologias.codigo == 'celiaquia'){
+                        loggedUserData.Celiaquia = 1
+                    }
+                    if(e.patologias.codigo == 'diabetes_1'){
+                        loggedUserData.Tipo1 = 1
+                    }
+                    if(e.patologias.codigo == 'diabetes_2'){
+                        loggedUserData.Tipo2 = 2
+                    }
+                    if(e.patologias.codigo == 'obesidad'){
+                        loggedUserData.Obesidad = 1
+                    }
+                })
+            }
+            context.authContext.signIn(loggedUserData)
+        })
+        .catch(function (error) {
+            console.log('Error @ getPatologiasUser in App.js');
+        });
     }
 
     async function validateForm(){

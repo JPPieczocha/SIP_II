@@ -6,6 +6,7 @@ import logoSafeDiet from "../../assets/logo.jpeg";
 import config from '../../config';
 import axios from 'axios'
 import colors from './../common/colors'
+import { UserContext } from "../../context/authContext";
 
 export default function RegisterScreen(props) {
     const [errorText, setErrorText] = useState("");
@@ -18,6 +19,7 @@ export default function RegisterScreen(props) {
     const [loading, setLoading] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [hasError, setHasError] = useState(false)
+    const context = React.useContext(UserContext);
 
     function logResponseError(context,error){
         console.log("Error ocurrido en contexto: ", context)
@@ -48,6 +50,35 @@ export default function RegisterScreen(props) {
         if(email == '') await setEmailHasError(true)
         if(psw == '') await setPswHasError(true)
     }
+
+    function doLogin(){
+        axios.post(config.backendURLs.login,{
+            email: email.toLowerCase(),
+            password: psw
+        }).then(function(response){
+            if(response.status == 200){
+                let loggedUserData = {
+                    Usuario: response.data.idUsuario,
+                    Celiaquia: 0,
+                    Tipo1: 0,
+                    Tipo2: 0,
+                    Obesidad: 0,
+                    Nombre: userFullName.split(' ')[0],
+                    Mail: email.toLowerCase(),
+                    Clave: response.data.accessToken
+                }
+                context.authContext.signIn(loggedUserData)
+            }
+         }).catch(function(error) {
+            setLoading(false)
+            setHasError(true)
+            if(error.response.status == 404 || error.response.status == 401){
+                setErrorText("Usuario/Clave incorrectos")
+            }
+            logResponseError("Register user", error)
+
+         })
+    }
     
     function doRegistration(){
         validateForm();
@@ -59,11 +90,14 @@ export default function RegisterScreen(props) {
                 email: email.toLowerCase(),
                 password: psw
             }).then(function(response){
-                setLoading(false)
-                setShowModal(true)
+                //setLoading(false)
+                //setShowModal(true)
                 setEmail("")
                 setPsw("")
                 setUserFullName("")
+
+                doLogin()
+
              }).catch(function(error) {
                  logResponseError("Register user", error)
              })
