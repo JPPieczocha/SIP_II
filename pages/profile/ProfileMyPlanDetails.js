@@ -18,6 +18,10 @@ function ProfileMyPlanDetailsScreen({route}) {
     const [loading, setLoading] = useState(true);
     const scrollRef = React.useRef();
     const [contPag, setContPag] = useState(0)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [showDeleteResponseModal, setShowDeleteResponseModal] = useState(false)
+    const [deleteResponseMessage, setDeleteResponseMessage] = useState("")
+    
 
     function goToComidaDetails(item){
         navigation.navigate("PlanDetails",{
@@ -247,6 +251,35 @@ function ProfileMyPlanDetailsScreen({route}) {
         )
     }
 
+    const deletePlan = function(){
+        setLoading(true)
+        axios.delete(`${config.backendURLs.planesDietariosDelete}?id_plan=${route.params.plan.id_plan_semanal}`)
+        .then(function(response){
+            setLoading(false)
+            setShowDeleteModal(false)
+            setDeleteResponseMessage("¡Plan borrado con éxito!")
+            setShowDeleteResponseModal(true)
+        })
+        .catch(function(error) {
+            setLoading(false)
+            setShowDeleteModal(false)
+            setDeleteResponseMessage("¡Ocurrió un error al borrar el plan!")
+            setShowDeleteResponseModal(true)
+            logResponseError("Eliminar plan", error)
+        })
+    }
+
+    const renderDeleteButton = function(){
+        return (
+            <TouchableOpacity
+                style={stylesProfile.plan_delete_button}
+                onPress={() => setShowDeleteModal(true)}
+            >
+            <Ionicons name={"trash"} color={colors.primaryv2} size={32} />
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <View>
             {loading ? <ActivityIndicator 
@@ -259,6 +292,53 @@ function ProfileMyPlanDetailsScreen({route}) {
              <ScrollView ref={scrollRef}>
 
                 {renderBackButton()}
+                {renderDeleteButton()}
+
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={showDeleteModal}
+                    onRequestClose={() => props.navigation.goBack()} //Back de android
+                >
+                    <View style={stylesProfile.modal_filter}>
+                        <View style={stylesProfile.modal_container}>
+                            <Text style={stylesProfile.modal_title}>Plan semanal</Text>
+                            <Text style={stylesProfile.modal_description}>
+                                ¿Estás seguro de quere borrar este plan?
+                            </Text>
+
+                            <TouchableOpacity style={{
+                                ...stylesProfile.modal_button,
+                                backgroundColor: colors.primaryv2
+                            }} onPress={deletePlan}>
+                                <Text style={stylesProfile.modal_button_text}>Aceptar</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={stylesProfile.modal_button}  onPress={() => setShowDeleteModal(false)}>
+                                <Text style={stylesProfile.modal_button_text}>Cancelar</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={showDeleteResponseModal}
+                    onRequestClose={() => props.navigation.goBack()} //Back de android
+                >
+                    <View style={stylesProfile.modal_filter}>
+                        <View style={stylesProfile.modal_container}>
+                            <Text style={stylesProfile.modal_title}>Plan semanal</Text>
+                            <Text style={stylesProfile.modal_description}>
+                                {deleteResponseMessage}
+                            </Text>
+
+                            <TouchableOpacity style={stylesProfile.modal_button} onPress={() => navigation.goBack()}>
+                                <Text style={stylesProfile.modal_button_text}>Aceptar</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
                 
                 <View style={styles.formContainer}>
                     <View 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, CheckBox, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import styles from '../common/styles'
 import stylesProfile from './Styles'
 import axios from 'axios'
@@ -7,7 +7,7 @@ import config from '../../config';
 import colors from '../common/colors';
 import { EvilIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { UserContext } from "../../context/authContext";
 
@@ -62,6 +62,15 @@ function ProfileMyPlansScreen() {
         fetchData();
     }, []);
 
+    const isFocused = useIsFocused()
+
+    React.useEffect(() => {
+        //Update the state you want to be updated
+        if(isFocused){
+            fetchData()
+        }
+    } , [isFocused])
+
     function goToPlanDetails(idx){
         navigation.navigate("ProfileMyPlanDetails",{
             planIdx:idx,
@@ -69,7 +78,33 @@ function ProfileMyPlansScreen() {
         })
     }
 
+    function renderNoPlanMessage(){
+        return (
+            <View
+                style={{
+                    padding: 12,
+                    marginBottom: 20,
+                    backgroundColor:"rgba(0,0,0,0.030)",
+                    position: "relative",
+                    display:"flex",
+                    flexDirection:"row",
+                    borderRadius:22
+                }}
+            >
+                <Text
+                    style={{
+                        textAlign:"center",
+                        fontSize:14,
+                        fontStyle:"italic",
+                        lineHeight:20
+                    }}
+                >Aquí se verán los planes semanales que guardes desde la solapa 'Plan'</Text>
+            </View>
+        )
+    }
+
     function renderMyPlans(list){
+        if(list == undefined || list.length == 0) return renderNoPlanMessage()
         return list.map((e,idx) => {
             return (
                 <TouchableOpacity

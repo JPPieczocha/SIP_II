@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { Image } from "react-native";
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 import axios from "axios";
 
@@ -171,7 +171,11 @@ function App() {
                         }
 
                         if (route.name === "Plan") {
-                            iconName = "md-list";
+                            return <MaterialCommunityIcons
+                                name="food-variant" 
+                                size={28}
+                                color={color}
+                            />
                         }
 
                         // You can return any component that you like here!
