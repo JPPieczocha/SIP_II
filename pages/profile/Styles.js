@@ -76,6 +76,21 @@ const StyleProfile = StyleSheet.create({
         left: 10,
         zIndex:10
     },
+
+    plan_delete_button: {
+        position: 'absolute',
+        backgroundColor: '#f2f2f2',
+        borderRadius: 10,
+        top: 30,
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 3,
+        borderColor: colors.primaryv2,
+        right: 10,
+        zIndex:10
+    },
 });
 
 export default StyleProfile
