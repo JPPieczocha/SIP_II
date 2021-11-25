@@ -59,7 +59,7 @@ function HomeScreen({ navigation }) {
                     setFavoritos(response.reverse());
                 }
             };
-            //fetchFavoritos()
+            fetchFavoritos()
             return () => fetchFavoritos();
           }, [])
     )
@@ -107,9 +107,9 @@ function HomeScreen({ navigation }) {
                         }
                     };
 
-                    //fetchFavoritos();
-                    //fetchPlatos();
-                    //fetchProductos();
+                    fetchFavoritos();
+                    fetchPlatos();
+                    fetchProductos();
                     setLoading(false);
             //     } else {
             //         //console.log('TIRÉ CONSULTA DUMMY');
