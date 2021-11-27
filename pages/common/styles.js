@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from './colors';
 const primaryColor = "#54D1A2";
 const secondaryColor = "#D15483";
 
@@ -26,12 +27,10 @@ const styles = StyleSheet.create({
         padding: 14
     },
     formInputLabel:{
-        fontFamily: 'SimplyDiet',
         fontSize:20,
         paddingBottom: 8
     },
     formInput:{
-        fontFamily: 'SimplyDiet',
         fontSize:16,
         width: "100%",
         height: 40,
@@ -49,23 +48,20 @@ const styles = StyleSheet.create({
     },
     checkboxLabel:{
         margin: 8,
-        fontFamily: 'SimplyDiet',
         fontSize:16
     },
     primaryButton:{
         display: "flex",
-        backgroundColor: primaryColor,
+        backgroundColor: colors.primary,
         width: 220,
         padding: 12,
         borderRadius: 12,
-        fontFamily: 'SimplyDiet',
-        fontSize: 22
+        fontSize: 22,
+        marginVertical: 30
     },
     primaryButtonText:{
         color:"#fff",
         textAlign: "center",
-        textTransform: "uppercase",
-        fontFamily: 'SimplyDiet',
         fontSize: 22
     },
     logoIcon:{

@@ -214,6 +214,7 @@ export default function RegisterScreen(props) {
                             }}
                         >Correo electrónico</Text>
                         <TextInput
+                            autoCapitalize='none'
                             autoComplete={"email"}
                             style={{
                                 ...styles.formInput,

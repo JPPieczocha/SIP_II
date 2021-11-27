@@ -30,13 +30,14 @@ const StylePlanDietario = StyleSheet.create({
     },
     text_container:{
         position: "absolute",
-        width: 260,
-        height: 70,
+        width: '100%',
+        height: '33%',
         bottom:0,
         padding: 5,
-        backgroundColor: "rgba(209,84,131, 0.8)",
+        backgroundColor: colors.secondary,
         borderBottomLeftRadius : 10,
-        borderBottomRightRadius: 10
+        borderBottomRightRadius: 10,
+        borderRadius: 10
     },
     card_title: {
        color: "white",
@@ -52,16 +53,16 @@ const StylePlanDietario = StyleSheet.create({
         display:"flex",
         justifyContent:"center",
         alignItems:"center",
-        flexDirection:"row"
+        flexDirection:"row",
     },
     patologias_text: {
-        fontFamily: 'SimplyDiet',
         fontSize:16,
         width: "80%",
         textAlign: "center",
+        marginHorizontal: 5
     },
     totals_details:{
-        fontFamily: 'SimplyDiet',
+        color: 'white',
         fontSize: 18
     },
     container_plan_details:{
@@ -73,6 +74,7 @@ const StylePlanDietario = StyleSheet.create({
         marginBottom: 16,
     },
     container_plan_detail:{
+        backgroundColor: colors.extra,
         width:"25%",
         paddingTop:4,
         paddingBottom:4,
@@ -86,16 +88,16 @@ const StylePlanDietario = StyleSheet.create({
         margin:4
     },
     plan_item_type:{
-        fontFamily: 'SimplyDiet',
-        paddingBottom:4, 
+        paddingBottom:4,
+        textAlign: 'center',
         color:"#fafafa",
         fontSize:24
     },
     plan_item_description:{
-        fontFamily: 'SimplyDiet',
         color:"#fff",
         fontSize:14,
-        width: "80%"
+        width: "100%",
+        textAlign: 'center',
     },
     plan_item_details_quantites:{
         fontFamily: 'SimplyDiet',
@@ -188,22 +190,23 @@ const StylePlanDietario = StyleSheet.create({
     plan_dietario_comida_title_wrapper:{
         position: "absolute",
         bottom: 0,
-        padding: 10, 
-        backgroundColor: "rgba(209,84,131, 0.8)",
+        padding: 10,
+        width: '100%',
+        backgroundColor: colors.secondary, //"rgba(209,84,131, 0.8)",
         borderRadius : 10,
     },
 
     plan_dietario_comida_title:{
         fontSize: 30,
-        fontFamily:"SimplyDiet",
         color:"#FFFFFF",
+        textAlign: 'center'
     },
 
     plan_dietario_bebida_title:{
         fontSize: 15,
-        fontFamily:"SimplyDiet",
         color:"#FFFFFF",
-        paddingTop:4
+        paddingTop:4,
+        textAlign: 'center'
     },
 
     button_fav: {

@@ -8,62 +8,49 @@ import styles from "./Styles";
 
 import logoSafeDiet from "../../assets/logo.png";
 import { dummyBD } from "../../controllers/commonController";
-// import { getAllPlatos } from "../../controllers/recetasController";
-import { historial } from "../../controllers/commonController";
 import { favoritos } from "../../controllers/commonController";
 import { getAllPlatos } from "../../controllers/recetasController";
 import { getAllProductos } from "../../controllers/productosController";
 
 import { UserContext } from "../../context/authContext";
 
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 
 function HomeScreen({ navigation }) {
-    const context = React.useContext(UserContext);
+    const context = React.useContext(UserContext)
 
-    const [fetched, setFetched] = useState(false);
-    const [seconds, setSeconds] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [fetched, setFetched] = useState(false)
+    const [seconds, setSeconds] = useState(0)
+    const [loading, setLoading] = useState(true)
 
-    const [listFavoritos, setFavoritos] = useState();
-    const [listPlatos, setListPlatos] = useState();
-    const [listProductos, setListProductos] = useState();
+    const [listFavoritos, setFavoritos] = useState(undefined)
+    
+    const [recoPlatos, setRecoPlatos] = useState(undefined)
+    const [listPlatos, setListPlatos] = useState(undefined)
 
-    // useFocusEffect(()=>{
-    //     React.useCallback(() => {
-    //         // const unsubscribe = API.subscribe(userId, user => setUser(data));
-
-    //         console.log('JEJEJE')
-    //         const fetchFavoritos = async () => {
-    //             const response = await favoritos(context.state.userData.Usuario);
-    //             if (response === undefined) {
-    //             } else {
-    //                 console.log("Favoritos: " + response.length);
-    //                 setFavoritos(response.reverse());
-    //             }
-    //         };
-    //         // fetchFavoritos();
-    //     return () => fetchFavoritos();
-    //     }, [context.state.userData.Usuario])
-    // })
+    const [recoProd, setRecoProd] = useState(undefined)
+    const [listProductos, setListProductos] = useState(undefined)
 
     useFocusEffect(
         React.useCallback(() => {
-            // const unsubscribe = API.subscribe(userId, user => setUser(data));
-            console.log('JEJE');
+            // console.log("useFocusEffect");
             const fetchFavoritos = async () => {
-                const response = await favoritos(context.state.userData.Usuario);
+                const response = await favoritos(
+                    context.state.userData.Usuario
+                );
                 if (response === undefined) {
+                    setFavoritos([]);
                 } else {
-                    console.log("Favoritos: " + response.length);
+                    console.log("Focus Favoritos: " + response.length);
                     setFavoritos(response.reverse());
                 }
             };
-            fetchFavoritos()
-            return () => fetchFavoritos();
-          }, [])
-    )
 
+            fetchFavoritos();
+            
+            return () => fetchFavoritos();
+        }, [])
+    );
 
     useEffect(
         () => {
@@ -72,45 +59,62 @@ function HomeScreen({ navigation }) {
             //     if (!fetched) {
             //         console.log("ENTRÉ FETCH FAVORITOS");
             //         setFetched(true);
-            console.log('USEEFFECT');
+            console.log("UseEffect");
 
-                    let data = context.state.userData.Usuario;
-                    console.log("Data: " + data);
+            let data = context.state.userData.Usuario;
+            console.log("ID User logeado: " + data);
 
-                    const fetchFavoritos = async () => {
-                        const response = await favoritos(data);
-                        if (response === undefined) {
-                        } else {
-                            console.log("Favoritos: " + response.length);
-                            setFavoritos(response.reverse());
-                            // setFetched(true);
+            const fetchFavoritos = async () => {
+                const response = await favoritos(data);
+                if (response === undefined) {
+                    setFavoritos([]);
+                } else {
+                    console.log("TOTAL Favoritos: " + response.length);
+                    setFavoritos(response.reverse());
+                    // setFetched(true);
+                }
+            };
+
+            const fetchPlatos = async () => {
+                const response = await getAllPlatos();
+                if (response === undefined) {
+                    setListPlatos([])
+                    setRecoPlatos([])
+                } else {
+                    console.log("TOTAL Platos: " + response.length);
+                    setListPlatos(response)
+                    setRecoPlatos(response.filter((item) => {
+                        if ((context.state.userData.Celiaquia == 1 && item.Celiquia == 0) || (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) || (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) || (context.state.userData.Obesidad == 1 && item.Obesidad == 0)) {
+                            return null
                         }
-                    };
+                        return item
+                    }))
+                    // setFetched(true);
+                }
+            };
 
-                    const fetchPlatos = async () => {
-                        const response = await getAllPlatos();
-                        if (response === undefined) {
-                        } else {
-                            console.log("platos: " + response.length);
-                            setListPlatos(response);
-                            // setFetched(true);
+            const fetchProductos = async () => {
+                const response = await getAllProductos();
+                if (response === undefined) {
+                    setListProductos([]);
+                    setRecoProd([])
+                } else {
+                    console.log("TOTAL Productos: " + response.length);
+                    setListProductos(response);
+                    setRecoProd(response.filter((item) => {
+                        if ((context.state.userData.Celiaquia == 1 && item.Celiquia == 0) || (context.state.userData.Tipo1 == 1 && item.Tipo1 == 0) || (context.state.userData.Tipo2 == 1 && item.Tipo2 == 0) || (context.state.userData.Obesidad == 1 && item.Obesidad == 0)) {
+                            return null
                         }
-                    };
+                        return item
+                    }))
+                    // setFetched(true);
+                }
+            };
 
-                    const fetchProductos = async () => {
-                        const response = await getAllProductos();
-                        if (response === undefined) {
-                        } else {
-                            console.log("PRODUCTOS: " + response.length);
-                            setListProductos(response);
-                            // setFetched(true);
-                        }
-                    };
-
-                    fetchFavoritos();
-                    fetchPlatos();
-                    fetchProductos();
-                    setLoading(false);
+            fetchFavoritos();
+            fetchPlatos();
+            fetchProductos();
+            setLoading(false);
             //     } else {
             //         //console.log('TIRÉ CONSULTA DUMMY');
             //         const fetchDummy = async () => {
@@ -128,8 +132,7 @@ function HomeScreen({ navigation }) {
             // this will clear Timeout
             // when component unmount like in willComponentUnmount
             // and show will not change to true
-            return () => {
-                // clearTimeout(timer1);
+            return () => { // clearTimeout(timer1);
             };
         },
         // useEffect will run only one time with empty []
@@ -158,7 +161,8 @@ function HomeScreen({ navigation }) {
                                 adjustsFontSizeToFit={true}
                                 numberOfLines={1}
                             >
-                                Hola, {context.state.userData.Nombre.split(" ")[0]}
+                                Hola,{" "}
+                                {context.state.userData.Nombre.split(" ")[0]}
                             </Text>
                             <Text style={styles.headerSubtitle}>
                                 ¿Qué querés comer hoy?
@@ -172,7 +176,6 @@ function HomeScreen({ navigation }) {
                     </View>
 
                     <View>
-                        
                         <CarouselFav
                             data={listFavoritos}
                             productos={listProductos}
@@ -181,21 +184,32 @@ function HomeScreen({ navigation }) {
                         />
 
                         <Carousel
-                            key={1}
+                            data={recoPlatos}
+                            navigation={navigation}
+                            type={"recipe"}
+                            title={"Platos recomendados"}
+                        />
+
+                        <Carousel
+                            data={recoProd}
+                            navigation={navigation}
+                            type={"product"}
+                            title={"Productos recomendados"}
+                        />
+
+                        <Carousel
                             data={listPlatos}
                             navigation={navigation}
                             type={"recipe"}
                             title={"Platos populares"}
                         />
-                        
+
                         <Carousel
-                            key={2}
                             data={listProductos}
                             navigation={navigation}
                             type={"product"}
                             title={"Productos populares"}
                         />
-
                     </View>
 
                     <Text></Text>

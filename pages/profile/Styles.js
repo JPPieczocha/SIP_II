@@ -11,7 +11,6 @@ const StyleProfile = StyleSheet.create({
     },
     
     patologias_title: {
-        fontFamily: 'SimplyDiet',
         fontSize:22,
     },
 

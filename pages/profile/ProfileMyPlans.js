@@ -144,7 +144,6 @@ function ProfileMyPlansScreen() {
                         <Text
                             style={{
                                 fontSize: 24,
-                                fontFamily:"SimplyDiet",
                                 paddingBottom: 4
                             }}
                         >

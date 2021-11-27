@@ -9,7 +9,6 @@ import axios from "axios";
 //Auth nuevo
 import * as SecureStore from 'expo-secure-store';
 import { UserContext } from './context/authContext';
-import { DataContext } from "./context/prodContext";
 
 //Fin auth nuevo
 
@@ -96,8 +95,6 @@ function App() {
     }),
     []
     );
-
-    const [listPlatos, setListPlatos] = useState();
     
     React.useEffect(() => {
         
@@ -118,16 +115,27 @@ function App() {
             }
         }
 
-        const fetchPlatos = async () => {
-            const response = await getAllPlatos();
-            if (response === undefined) {
-            } else {
-                console.log("platos: " + response.length);
-                setListPlatos(response);
-                // setFetched(true);
+        //Carga de dummyUser en el localStorage
+        async function dummySetter() {
+            try {
+                let userDummy = {
+                    Usuario: 1,
+                    Celiaquia: 1,
+                    Tipo1: 0,
+                    Tipo2: 0,
+                    Obesidad: 0,
+                    Nombre: "dummy thicc",
+                    Mail: "dummy@dummy.com",
+                    Clave: "pass1234"
+                }
+                await SecureStore.setItemAsync('userData', JSON.stringify(userDummy))
+                console.log('dummyUser set in LocalStorage');
+            } catch (e) {
+                console.log('Error @ dummySetter')
             }
-        };
-        fetchPlatos()
+        }
+
+        // dummySetter()
         fetchSecureStore()
     },[]);
     //---------------------------------
@@ -299,7 +307,7 @@ function App() {
 
     return (
         <NavigationContainer>
-            <UserContext.Provider value={{authContext, state, listPlatos}}>
+            <UserContext.Provider value={{authContext, state}}>
                 <Stack.Navigator>
                         {state.loading ? <Stack.Screen name="load" component={LoadingPage} options={{headerShown: false}}/> : null}
                         {

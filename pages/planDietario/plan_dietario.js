@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { UserContext } from "../../context/authContext";
+import colors from '../common/colors';
 
 function PlanDietarioScreen() {
     const navigation = useNavigation();
@@ -109,7 +110,7 @@ function PlanDietarioScreen() {
                     <View
                         key={idx}
                         style={{
-                            height:460
+                            height:475
                         }}
                     >
                         <View style={{
@@ -126,12 +127,16 @@ function PlanDietarioScreen() {
                                 backgroundColor: "#c1c1c1"
                             }} />
                             <View>
-                                <Text style={{
-                                    width: 90, 
-                                    textAlign: 'center', 
-                                    fontFamily:"SimplyDiet",
-                                    fontSize:22,
-                                }}>
+                                <Text
+                                    adjustsFontSizeToFit={true}
+                                    numberOfLines={1}
+                                    style={{
+                                        width: 90, 
+                                        textAlign: 'center',
+                                        fontSize:22,
+                                        
+                                    }}
+                                >
                                     {getDia(idx)}
                                 </Text>
                             </View>
@@ -182,7 +187,7 @@ function PlanDietarioScreen() {
                             >{item.type.toUpperCase()}</Text>
                             <Text
                                 style={stylesPlanDietario.plan_item_description}
-                            >{`${item.receta.descripcion.toUpperCase()}`}</Text>
+                            >{`${item.receta.descripcion}`}</Text>
                             
                         </View>
                     </View>
@@ -201,7 +206,7 @@ function PlanDietarioScreen() {
             >
             <Fontisto 
                 name={"fire"} 
-                color={Color.secondary} 
+                color={'white'} 
                 size={24} 
                 style={{
                         paddingTop: 8,
@@ -227,7 +232,7 @@ function PlanDietarioScreen() {
                 <FontAwesome5 
                     name="bread-slice" 
                     size={24} 
-                    color="#D3B23A" 
+                    color="white" 
                     style={{
                         paddingTop: 8,
                         paddingBottom: 8,
@@ -269,7 +274,7 @@ function PlanDietarioScreen() {
                             ...stylesPlanDietario.patologias_text,
                         }}
                     >Celiaco</Text>
-                    <AntDesign name="checkcircleo" size={16} color="#2BA174" />
+                    <AntDesign name="checkcircleo" size={16} color={colors.primaryv2} />
                 </View> : null}
                 {patologiasUsuario.aptoDiabetes1 || patologiasUsuario.aptoDiabetes2 ? 
                 <View
@@ -415,7 +420,7 @@ function PlanDietarioScreen() {
                         <Text
                             style={{
                                 ...stylesPlanDietario.plan_dietario_title,
-                                paddingTop: 120
+                                paddingTop: 60
                             }}
                         >
                             Plan Semanal
@@ -430,9 +435,9 @@ function PlanDietarioScreen() {
                         <View style={styles.centeredContent}>
                             <TouchableOpacity 
                                 onPress={getPlan} 
-                                style={{...styles.primaryButton, marginBottom:12}}>
+                                style= {styles.primaryButton}>
                                 <Text
-                                    style={styles.primaryButtonText}>Generar otro!</Text>
+                                    style={styles.primaryButtonText}>¡Generar otro!</Text>
                             </TouchableOpacity>
                         </View>
                     : null 
