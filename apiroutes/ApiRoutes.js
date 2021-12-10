@@ -1,4 +1,4 @@
-const url = 'https://damp-reef-82590.herokuapp.com/';
+const url = 'http://a464-186-143-197-3.ngrok.io/';
 
 //-----------Endpoints-----------------------------
 
