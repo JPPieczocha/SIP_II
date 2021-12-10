@@ -1,64 +1,69 @@
 # Seminario de Integración Profesional II - SafeDiet
+
 Aplicación Mobile de recomendación de platos y productos para personas con enfermedades autoinmunes. Desarrollado utilizando React Native.
 
 Proyecto relacionado a la materia "Seminario de Integración Profesional II" en UADE.
-Desarrollada con propósitos educativos. Developed for educational purposes. 
+Desarrollada con propósitos educativos. Developed for educational purposes.
 
 El objetivo es atacar la problemática acerca de qué platos puede o no comer una persona con las enfermedades de celiaquía, diabetes y obesidad. Con esta aplicación una persona podría acceder a la información de distintos platos y productos para saber si son aptos para el consumo.
 
 <p align="center">
-  <img alt="SafeDiet Logo" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/logo.png" />
+  <img alt="SafeDiet Logo" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/logo.png" width="200" />
 </p>
 
 ## Table of Contents
 
-- [Funcionamiento](#funcionamiento)
-- [API Components/Packages Used](#api-componentspackages-used)
+-   [Funcionamiento](#funcionamiento)
+-   [API Components/Packages Used](#api-componentspackages-used)
 
 ## Funcionamiento
 
-* Inicio de Sesión y Registro
+-   Inicio de Sesión y Registro
+
+Lo primero que va a ver un usuario al instalar la aplicación. Si es un usuario nuevo se registraría e indicaría las enfermedades que padece, si ya lo hizo simplemente inicia sesión.
 <p align="center">
-    Lo primero que va a ver un usuario al instalar la aplicación. Si es un usuario nuevo se registraría e indicaría las enfermedades que padece, si ya lo hizo simplemente inicia sesión.
-  <img alt="Login/Register" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Login.jpeg" />
+  <img alt="Login/Register" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Login.jpeg" width="300" />
 </p>
 
-* Página Principal
+-   Página Principal
+
+Una vez haya iniciado sesión verá la pantalla principal con los distintos carruseles.
 <p align="center">
-    Una vez haya iniciado sesión verá la pantalla principal con los distintos carruseles.
-  <img alt="Home" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Home.jpeg" />
+  <img alt="Home" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Home.jpeg" width="300"  />
 </p>
 
-* Información de Platos y Productos
-<p align="center">
+-   Información de Platos y Productos
+
     Al seleccionar un plato y producto se mostrará la información detallada de estos con su respectiva información. El usuario puede además agregarlo como favorito y aparecería en el carrusel de la pantalla principal.
-</p>
 
-| Recetas  | Productos | Alerta de consumo |
-| ------------- | ------------- | ------------- |
-| <img alt="Recipe" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Recipe.jpeg" />  | <img alt="Product" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Product.jpeg" />  | <img alt="Warning" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Warning.jpeg" />  |
+| Recetas                                                                                                          | Productos                                                                                                          | Alerta de consumo                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| <img alt="Recipe" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Recipe.jpeg" /> | <img alt="Product" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Product.jpeg" /> | <img alt="Warning" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Warning.jpeg" /> |
 
-* Busqueda
+-   Busqueda
+
+ El usuario puede buscar a partir del nombre de algún producto o plato. Además se puede filtrar según las patologías.
 <p align="center">
-    El usuario puede buscar a partir del nombre de algún producto o plato. Además se puede filtrar según las patologías.
-  <img alt="Search" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Search.jpeg" />
+  <img alt="Search" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Search.jpeg" width="300" />
 </p>
 
-* Plan Semanal
+-   Plan Semanal
+
+La aplicación genera un menú semanal acorde a sus patologías informando las calorías y carbohidratos. Se tiene para cada día de la semana y para cada una de las distintas comidas un alimento acompañado de una bebida.
+<p align='center'>
+    <img alt="Plan" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Plan.jpeg" width="300" />
+    <img alt="Detail" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Plan%20Detail.jpeg" width="300" />
+</p>
+
+-   Perfil
+
+En el perfil se puede ver la información del usuario y las patologías, estas pueden ser actualizadas cuando el usuario lo desee.
 <p align="center">
-    La aplicación genera un menú semanal acorde a sus patologías informando las calorías y carbohidratos. Se tiene para cada día de la semana y para cada una de las distintas comidas un alimento acompañado de una bebida.
-  <img alt="Plan" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Plan.jpeg" />
-  <img alt="Detail" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Plan%20Detail.jpeg" />
+  <img alt="Profile" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Profile.jpeg" width="300" />
 </p>
-
-* Perfil
-<p align="center">
-    En el perfil se puede ver la información del usuario y las patologías, estas pueden ser actualizadas cuando el usuario lo desee.
-  <img alt="Profile" src="https://raw.githubusercontent.com/cricartez/SIP_II/master/assets/captures/Profile.jpeg" />
-</p>
-
 
 ## API Components/Packages Used
+
     "@react-navigation/bottom-tabs": "^6.0.7",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
