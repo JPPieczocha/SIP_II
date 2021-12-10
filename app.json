@@ -4,7 +4,7 @@
     "slug": "sip_2",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.jpeg",
+    "icon": "./assets/logo_app.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,9 +21,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/logo_app.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "safediet.expo.client"
     },
     "web": {
       "favicon": "./assets/favicon.png"
